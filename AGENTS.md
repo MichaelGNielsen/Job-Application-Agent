@@ -24,6 +24,8 @@ This is a template repository for generating targeted job applications and CVs. 
 
 > **Note:** Remember to update `MIT_FIRMA_NAVN` and `MIN_JOB_BESKRIVELSE` in `.env` for each new job application!
 
+> **Note:** If company address is missing in job posting, search Google Maps for the nearest office to user's residence. Example: GomSpace → Langagervej 6, 9220 Aalborg
+
 ---
 
 ## Directory and File Naming Conventions
