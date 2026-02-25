@@ -180,6 +180,7 @@ Konverter .md-filerne til .odt med 'pandoc', finpudse layout manuelt, og konvert
 4. **Quantify** - Add numbers where possible
 5. **Team focus** - Mention mentorship willingness
 6. **Tailor each application** - Never send generic applications
+7. **Company address** - If missing in job posting, ask user or search Google Maps for the nearest office to user's residence
 
 ---
 
