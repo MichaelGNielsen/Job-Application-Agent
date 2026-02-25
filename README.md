@@ -2,6 +2,19 @@
 
 Template til at generere målrettede jobansøgninger og CV'er.
 
+## Brug OpenCode
+
+Denne template er designet til at arbejde med [OpenCode](https://opencode.ai). 
+
+Når du har sat projektet op, kan du bruge OpenCode til at:
+- Generere målrettede ansøgninger og CV'er
+- Konvertere MD til ODT og PDF
+- Analysere match mellem din profil og jobannoncen
+
+```bash
+opencode .
+```
+
 ## Kom i gang
 
 ### 1. Klon projektet
