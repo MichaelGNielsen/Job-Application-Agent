@@ -1,6 +1,10 @@
 # Environment variables (private - contains personal info)
 .env
 
+# Personal CV files
+*_cv_*.odt
+*_cv_*.pdf
+
 # Temporary files
 *.tmp
 *.swp
