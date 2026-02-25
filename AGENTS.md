@@ -106,6 +106,9 @@ cd {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}
 ```bash
 # Uses MINE_INITIALER_template_ansøgning.odt as base
 python3 create_odt.py {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md
+
+# MANUAL STEP: Open ODT in LibreOffice Writer
+# Set font size 11 and A4 format in LibreOffice Writer
 soffice --headless --convert-to pdf {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.odt
 ```
 
