@@ -1,0 +1,14 @@
+# Environment variables (private - contains personal info)
+.env
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# LibreOffice lock files
+.~lock.*
