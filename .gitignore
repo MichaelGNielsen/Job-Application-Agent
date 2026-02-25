@@ -9,6 +9,7 @@
 *.tmp
 *.swp
 *~
+*.html
 
 # OS files
 .DS_Store
