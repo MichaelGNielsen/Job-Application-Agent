@@ -91,12 +91,14 @@ cd {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}
 - If website offers "Save as PDF", use that instead of mhtml
 
 ### 4. Generate These Files (use MINE_INITIALER from .env)
+**Regel**: Sproget i ansøgning og CV skal matche jobopslagets sprog (detekteres fra job.md).
+
 | File | Description |
 |------|-------------|
-| `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md` | Targeted application letter (max 1 page, Danish) |
+| `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md` | Targeted application letter (max 1 page, matches job posting language) |
 | `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_cv.md` | Targeted CV (max 2 pages) |
-| `match.md` | Match analysis with score (0-100%) |
-| `ICAN+.md` | ICAN+ process framework |
+| `match.md` | Match analysis with score (0-100%, matches job posting language) |
+| `ICAN+.md` | ICAN+ process framework (matches job posting language) |
 
 ### 5. Convert to ODT/PDF (optional - uses template)
 ```bash
@@ -112,15 +114,19 @@ soffice --headless --convert-to pdf {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_B
 Copy and paste this prompt to generate job application materials:
 
 ```
-Læs AGENTS.md og job.md for kontekst. Brug dit brutto-CV (MINE_INITIALER_template_brutto_cv.odt) som kilde ved at køre det vedlagte Python-script med 'odfpy' for at ekstrahere teksten.
+Læs AGENTS.md og job.md for kontekst. Brug dit brutto-CV som kilde.
 
-Generér derefter følgende filer baseret på min 30-årige karriere:
-1. match.md: Lav en match-analyse med score (0-100%) og gap-analyse ud fra scorings-logikken i AGENTS.md.
-2. ansøgning_[virksomhed].md: En målrettet ansøgning på dansk (max 1 side).
-3. cv_[virksomhed].md: Et målrettet CV (max 2 sider).
-4. ICAN+.md: En samtalestøtte-guide med I, C, A, N og + (personligt).
+**VIGTIGT**: Sproget i ansøgning og CV skal matche jobopslagets sprog:
+- Hvis jobopslag er på dansk → alt på dansk
+- Hvis jobopslag er på engelsk → alt på engelsk
 
-Når teksterne er godkendt, skal du konvertere .md-filerne til .odt ved hjælp af 'pandoc', så jeg kan finpudse layoutet manuelt. Slut af med at konvertere de færdige .odt filer til .pdf med 'soffice --headless'.
+Generér derefter følgende filer:
+1. match.md: Match-analyse med score (0-100%) og gap-analyse
+2. ansøgning_[virksomhed].md: Målrettet ansøgning (max 1 side)
+3. cv_[virksomhed].md: Målrettet CV (max 2 sider)
+4. ICAN+.md: Samtalestøtte-guide med I, C, A, N og +
+
+Konverter .md-filerne til .odt med 'pandoc', finpudse layout manuelt, og konverter til .pdf med 'soffice --headless'.
 ```
 
 ---
@@ -128,7 +134,7 @@ Når teksterne er godkendt, skal du konvertere .md-filerne til .odt ved hjælp a
 ## Generated Files Format
 
 ### ansøgning_[INITIALS].md
-- Max 1 page, Danish
+- Max 1 page, language matches job posting
 - Structure:
   1. Header with contact info and date
   2. Recipient address
