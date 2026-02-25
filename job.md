@@ -1,3 +1,5 @@
+## copy paste fra linkedin eller anden webside her til job.md
+ 
 About the job
 The Opportunity
 
