@@ -93,14 +93,14 @@ cd {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}
 - If website offers "Save as PDF", use that instead of mhtml
 
 ### 4. Generate These Files (use MINE_INITIALER from .env)
-**Regel**: Sproget i ansøgning og CV skal matche jobopslagets sprog (detekteres fra job.md).
+**Regel**: Sproget i ansøgning og CV skal matche jobopslagets sprog (detekteres fra job.md). Match og ICAN+ kan forblive på dansk, eller lav en på hvert sprog.
 
 | File | Description |
 |------|-------------|
 | `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md` | Targeted application letter (max 1 page, matches job posting language) |
 | `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_cv.md` | Targeted CV (max 2 pages) |
-| `match.md` | Match analysis with score (0-100%, matches job posting language) |
-| `ICAN+.md` | ICAN+ process framework (matches job posting language) |
+| `match.md` | Match analysis with score (0-100%, Danish + optional English) |
+| `ICAN+.md` | ICAN+ process framework (Danish + optional English) |
 
 ### 5. Convert to ODT/PDF (optional - uses template)
 ```bash
@@ -122,8 +122,10 @@ Copy and paste this prompt to generate job application materials:
 Læs AGENTS.md og job.md for kontekst. Brug dit brutto-CV som kilde.
 
 **VIGTIGT**: Sproget i ansøgning og CV skal matche jobopslagets sprog:
-- Hvis jobopslag er på dansk → alt på dansk
-- Hvis jobopslag er på engelsk → alt på engelsk
+- Hvis jobopslag er på dansk → ansøgning og CV på dansk
+- Hvis jobopslag er på engelsk → ansøgning og CV på engelsk
+
+Match og ICAN+ kan forblive på dansk, eller lav en version på hvert sprog.
 
 Generér derefter følgende filer:
 1. match.md: Match-analyse med score (0-100%) og gap-analyse
