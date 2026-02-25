@@ -104,12 +104,12 @@ cd {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}
 
 ### 5. Convert to ODT/PDF (optional - uses template)
 ```bash
-# Uses MINE_INITIALER_template_ansøgning.odt as base
-python3 create_odt.py {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md
+# Uses reference doc for font size 11 and A4 format
+pandoc --reference-doc={MINE_INITIALER}_ansøg_template.odt -o {MINE_INITIALER}_{FIRMA}_{JOB}_ansøgning.odt {MINE_INITIALER}_{FIRMA}_{JOB}_ansøgning.md
+pandoc --reference-doc={MINE_INITIALER}_cv_2026_bruto_dk.odt -o {MINE_INITIALER}_{FIRMA}_{JOB}_cv.odt {MINE_INITIALER}_{FIRMA}_{JOB}_cv.md
 
-# MANUAL STEP: Open ODT in LibreOffice Writer
-# Set font size 11 and A4 format in LibreOffice Writer
-soffice --headless --convert-to pdf {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.odt
+soffice --headless --convert-to pdf {MINE_INITIALER}_{FIRMA}_{JOB}_ansøgning.odt
+soffice --headless --convert-to pdf {MINE_INITIALER}_{FIRMA}_{JOB}_cv.odt
 ```
 
 ---
