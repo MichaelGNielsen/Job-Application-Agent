@@ -30,12 +30,12 @@ This is a template repository for generating targeted job applications and CVs. 
 
 ### Directory Name
 Format: `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}` (lowercase, underscores)
-- Example: `mgn_mitonord_automation_developer`
+- Example: `xxx_firma_automation_developer`
 
 ### File Names
 Format: `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_{TYPE}.md`
-- Example: `mgn_mitonord_automation_developer_ansøgning.md`
-- Example: `mgn_mitonord_automation_developer_cv.md`
+- Example: `xxx_firma_automation_developer_ansøgning.md`
+- Example: `xxx_firma_automation_developer_cv.md`
 
 Types: `ansøgning`, `cv`, `match`, `ICAN+`
 
@@ -100,7 +100,7 @@ cd {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}
 
 ### 5. Convert to ODT/PDF (optional - uses template)
 ```bash
-# Uses mgn_ansøg_template.odt as base
+# Uses MINE_INITIALER_template_ansøgning.odt as base
 python3 create_odt.py {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md
 soffice --headless --convert-to pdf {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.odt
 ```
@@ -112,7 +112,7 @@ soffice --headless --convert-to pdf {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_B
 Copy and paste this prompt to generate job application materials:
 
 ```
-Læs AGENTS.md og job.md for kontekst. Brug mit brutto-CV (mgn_cv_2026_bruto_dk.odt) som kilde ved at køre det vedlagte Python-script med 'odfpy' for at ekstrahere teksten.
+Læs AGENTS.md og job.md for kontekst. Brug dit brutto-CV (MINE_INITIALER_template_brutto_cv.odt) som kilde ved at køre det vedlagte Python-script med 'odfpy' for at ekstrahere teksten.
 
 Generér derefter følgende filer baseret på min 30-årige karriere:
 1. match.md: Lav en match-analyse med score (0-100%) og gap-analyse ud fra scorings-logikken i AGENTS.md.
@@ -194,7 +194,7 @@ pip install --user odfpy
 python3 -c "
 from odf import text, teletype
 from odf.opendocument import load
-doc = load('mgn_cv_2026_bruto_dk.odt')
+doc = load('MINE_INITIALER_template_brutto_cv.odt')
 for p in doc.getElementsByType(text.P):
     print(teletype.extractText(p))
 "
@@ -212,10 +212,10 @@ soffice --headless --convert-to pdf input.md
 
 | Directory | Company | Position | Status |
 |-----------|---------|----------|--------|
-| `mgn_mitonord_automation_developer/` | EXAMPLE: Mitonord | EXAMPLE: Automation Developer | Active |
+| `xxx_firma_jobbeskrivelse/` | EXAMPLE: Company | EXAMPLE: Position | Active |
 
 <!-- Add your own job applications here -->
 
 <!-- Example:
-| `mgn_mitonord_automation_developer/` | Mitonord | Automation Developer | Active |
+| `mgn_firma_automation_developer/` | Company | Position | Active |
 -->
