@@ -93,14 +93,16 @@ cd {MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}
 - If website offers "Save as PDF", use that instead of mhtml
 
 ### 4. Generate These Files (use MINE_INITIALER from .env)
-**Regel**: Sproget i ansøgning og CV skal matche jobopslagets sprog (detekteres fra job.md). Match og ICAN+ kan forblive på dansk, eller lav en på hvert sprog.
+**Regel**: Sproget i ansøgning og CV skal matche jobopslagets sprog. Hvis jobopslag er på engelsk, lav altid en dansk og engelsk version af match og ICAN+.
 
 | File | Description |
 |------|-------------|
 | `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_ansøgning.md` | Targeted application letter (max 1 page, matches job posting language) |
 | `{MINE_INITIALER}_{MIT_FIRMA_NAVN}_{MIN_JOB_BESKRIVELSE}_cv.md` | Targeted CV (max 2 pages) |
-| `match.md` | Match analysis with score (0-100%, Danish + optional English) |
-| `ICAN+.md` | ICAN+ process framework (Danish + optional English) |
+| `match_dk.md` | Match analysis (0-100%, Danish) |
+| `match_en.md` | Match analysis (0-100%, English, only if job posting is in English) |
+| `ICAN+_dk.md` | ICAN+ process framework (Danish) |
+| `ICAN+_en.md` | ICAN+ process framework (English, only if job posting is in English) |
 
 ### 5. Convert to ODT/PDF (optional - uses template)
 ```bash
@@ -125,13 +127,15 @@ Læs AGENTS.md og job.md for kontekst. Brug dit brutto-CV som kilde.
 - Hvis jobopslag er på dansk → ansøgning og CV på dansk
 - Hvis jobopslag er på engelsk → ansøgning og CV på engelsk
 
-Match og ICAN+ kan forblive på dansk, eller lav en version på hvert sprog.
+Hvis jobopslag er på engelsk, lav altid en dansk og engelsk version af match og ICAN+ (f.eks. match_dk.md, match_en.md).
 
 Generér derefter følgende filer:
-1. match.md: Match-analyse med score (0-100%) og gap-analyse
-2. ansøgning_[virksomhed].md: Målrettet ansøgning (max 1 side)
-3. cv_[virksomhed].md: Målrettet CV (max 2 sider)
-4. ICAN+.md: Samtalestøtte-guide med I, C, A, N og +
+1. match_dk.md: Match-analyse med score (0-100%) og gap-analyse (dansk)
+2. match_en.md: Match-analyse med score (0-100%) og gap-analyse (engelsk) - kun hvis jobopslag er på engelsk
+3. ansøgning_[virksomhed].md: Målrettet ansøgning (max 1 side)
+4. cv_[virksomhed].md: Målrettet CV (max 2 sider)
+5. ICAN+_dk.md: Samtalestøtte-guide med I, C, A, N og + (dansk)
+6. ICAN+_en.md: Samtalestøtte-guide med I, C, A, N og + (engelsk) - kun hvis jobopslag er på engelsk
 
 Konverter .md-filerne til .odt med 'pandoc', finpudse layout manuelt, og konverter til .pdf med 'soffice --headless'.
 ```
