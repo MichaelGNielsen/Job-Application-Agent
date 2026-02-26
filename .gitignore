@@ -1,15 +1,21 @@
 # Environment variables (private - contains personal info)
 .env
 
-# Personal CV files
-*_cv_*.odt
-*_cv_*.pdf
+# Personal CV files (template versions)
+*_template_*.odt
+*_template_*.pdf
 
-# Temporary files
+# Generated PDF files (can be regenerated from HTML)
+*.pdf
+
+# Temporary/debug files
 *.tmp
 *.swp
 *~
-*.html
+test_*
+*_v2.*
+*_nohf.*
+*_tight.*
 
 # OS files
 .DS_Store
