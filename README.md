@@ -8,12 +8,14 @@ Denne template er designet til at arbejde med [OpenCode](https://opencode.ai).
 
 Når du har sat projektet op, kan du bruge OpenCode til at:
 - Generere målrettede ansøgninger og CV'er
-- Konvertere MD til ODT og PDF
+- Konvertere MD/HTML til PDF
 - Analysere match mellem din profil og jobannoncen
 
 ```bash
 opencode .
 ```
+
+---
 
 ## Kom i gang
 
@@ -43,13 +45,54 @@ Kopier din jobannonse ind i roden som:
 
 ---
 
+## HTML Templates (Anbefalet)
+
+Projektet inkluderer HTML-skabeloner for professionel PDF-output:
+
+### Skabeloner
+- `TEMPLATE_ansøgning.html` - Ansøgningsskabelon
+- `TEMPLATE_cv.html` - CV-skabelon
+
+### Brug
+1. Åbn HTML-filen i en browser
+2. Verificer layoutet
+3. Print til PDF (Ctrl+P → Gem som PDF)
+
+---
+
+## Eksempel med Tintin
+
+Se eksempler på output i browser:
+
+### Ansøgning
+Åbn `tintin_template_ansøgning.html` i en browser for at se eksempel på ansøgning med Tintin som kandidat.
+
+### CV  
+Åbn `tintin_template_cv.html` i en browser for at se eksempel på CV med Tintins erfaringer.
+
+---
+
+## Layout Eksempler (Tintin Case Study)
+
+Herunder ses eksempler på de dokumenter, som agenten genererer. Dette eksempel viser en ansøgning fra Tintin til Professor Tournesol på Møllenborg Slot.
+
+| Ansøgning (Template) | CV (Template) |
+| :--- | :--- |
+| [Åbn ansøgning](tintin_template_ansøgning.html) | [Åbn CV](tintin_template_cv.html) |
+
+*Layoutet er optimeret til PDF-konvertering via Chromium med `--no-pdf-header-footer`.*
+
+---
+
 ## Filer i denne template
 
 ### Skabeloner (skal omdøbes)
 | Fil | Beskrivelse |
 |-----|-------------|
-| `MINE_INITIALER_template_ansøgning.odt` | ODT skabelon til ansøgning |
-| `MINE_INITIALER_template_brutto_cv.odt` | ODT skabelon til CV |
+| `TEMPLATE_ansøgning.html` | HTML skabelon til ansøgning (anbefalet) |
+| `TEMPLATE_cv.html` | HTML skabelon til CV (anbefalet) |
+| `MINE_INITIALER_template_ansøgning.odt` | Legacy ODT skabelon til ansøgning |
+| `MINE_INITIALER_template_brutto_cv.odt` | Legacy ODT skabelon til CV |
 
 ### Filer der skal tilføjes af brugeren
 | Fil | Beskrivelse |
