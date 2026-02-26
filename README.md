@@ -78,7 +78,7 @@ Herunder ses eksempler på de dokumenter, som agenten genererer. Dette eksempel 
 
 | Ansøgning (Template) | CV (Template) |
 | :--- | :--- |
-| [Åbn ansøgning](tintin_template_ansøgning.html) | [Åbn CV](tintin_template_cv.html) |
+| [Åbn PDF](tintin_template_ansøgning.pdf) | [Åbn PDF](tintin_template_cv.pdf) |
 
 *Layoutet er optimeret til PDF-konvertering via Chromium med `--no-pdf-header-footer`.*
 
