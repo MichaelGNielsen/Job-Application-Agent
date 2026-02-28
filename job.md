@@ -18,7 +18,7 @@ INTERPOL søger en erfaren Senior Efterforsker til vores General Secretariat i L
 - Minimum 10 års erfaring inden for kriminalefterforskning eller lignende område
 - Dokumenteret erfaring med internationale sager
 - Stærke analytiske evner og problemløsningskompetencer
-- Udmærket kommunikationsevner på engelsk (fransk er en fordel)
+- Udmærkede kommunikationsevner på engelsk (fransk er en fordel)
 - Evne til at arbejde under pres og bevare roen i krisestuationer
 
 ### Ønskeligt
@@ -30,14 +30,14 @@ INTERPOL søger en erfaren Senior Efterforsker til vores General Secretariat i L
 
 - En spændende karriere i en international organisation
 - Mulighed for at gøre en reel forskel i kampen mod global kriminalitet
-- Konkurrencedygtig løn og fordele
+- Konkurrencedygtige ansættelsesvilkår og personalegoder
 - Fleksible arbejdsforhold
 
 ## Ansøgning
 
 Send din ansøgning og CV til INTERPOL via vores karriereportal. Ansøgningsfrist: Løbende.
 
-INTERPOL er en lige muligheder arbejdsgiver og opfordrer alle kvalificerede kandidater til at søge.
+INTERPOL ønsker at fremme ligestilling og opfordrer alle kvalificerede kandidater til at søge.
 
 ---
 
