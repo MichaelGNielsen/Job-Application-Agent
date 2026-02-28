@@ -1,6 +1,11 @@
 # Job-Application-Agent
 
-> **#AI #Automation #Tintin #Elon**
+> **#AI #Automation #Tintin #Elon #Gromit**
+
+![Gromit laying tracks](pictures/grommit-train-tracks.gif)
+
+### 🚀 AI Acceleration (Gromit Style)
+Det går stærkt i AI-verdenen lige nu. At bygge denne agent føles præcis som scenen fra *The Wrong Trousers*, hvor Gromit lægger skinnerne, *mens* toget kører i fuld fart.
 
 Template til at generere målrettede jobansøgninger og CV'er.
 
