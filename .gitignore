@@ -3,10 +3,9 @@
 
 # Personal CV files (template versions)
 *_template_*.odt
-*_template_*.pdf
 
-# Generated PDF files (can be regenerated from HTML)
-*.pdf
+# Legacy ODT - not recommended
+*.odt
 
 # Temporary/debug files
 *.tmp

@@ -118,6 +118,7 @@ Tintin søger nu stilling som Senior Efterforsker hos INTERPOL i Lyon, Frankrig.
 | Fil | Beskrivelse |
 |-----|-------------|
 | `AGENTS.md` | Komplet dokumentation & workflow |
+| `GEMINI.md` | AI-prompt dokumentation (kan bruges til at dobbelt-tjekke output) |
 | `README.md` | Denne fil |
 
 ---
