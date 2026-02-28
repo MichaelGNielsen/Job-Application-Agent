@@ -1,13 +1,17 @@
 # Job-Application-Agent
 
+Template til at generere målrettede jobansøgninger og CV'er.
+
 > **#AI #Automation #Tintin #Elon #Gromit**
 
 ![Gromit laying tracks](pictures/grommit-train-tracks.gif)
 
 ### 🚀 AI Acceleration (Gromit Style)
-Det går stærkt i AI-verdenen lige nu. At bygge denne agent føles præcis som scenen fra *The Wrong Trousers*, hvor Gromit lægger skinnerne, *mens* toget kører i fuld fart.
 
-Template til at generere målrettede jobansøgninger og CV'er.
+Det går stærkt i AI-verdenen lige nu. At bygge denne agent føles præcis som scenen fra _The Wrong Trousers_, hvor Gromit lægger skinnerne, mens toget kører i fuld fart.
+
+Som en person, der er mere end almindeligt nysgerrig, ser jeg enorme muligheder i at bruge AI til at accelerere trivielle processer. Min lyst til at stille spørgsmål er kun blevet større med alderen, og interessen for at bygge nye løsninger er stærkere end nogensinde.
+
 
 ## Brug OpenCode
 
@@ -83,18 +87,12 @@ Se eksempler på output i browser:
 
 Herunder ses eksempler på de dokumenter, som agenten genererer. Dette eksempel viser en ansøgning fra Tintin til Interpol (søger stilling som Senior Efterforsker).
 
-### Tidligere: Ansøgning til Professor Tournesol
-
-| Ansøgning (Template) | CV (Template) |
-| :--- | :--- |
-| [Åbn PDF](tintin_template_ansøgning.pdf) | [Åbn PDF](tintin_template_cv.pdf) |
-
-### Ny: Ansøgning til INTERPOL (2026)
+### INTERPOL (2026)
 
 Tintin søger nu stilling som Senior Efterforsker hos INTERPOL i Lyon, Frankrig. Ansøgningen inkluderer:
 - Reference til samarbejdet med detektiverne Dupont og Dupond (som allerede arbejder for Interpol)
 - Professor Tournesols #elon-referencen om AI og rumfart
-- Kronologisk CV med album-erfaring (uddannelse 1985-1990 → album 2013-2024)
+- Kronologisk CV med album-erfaring (uddannelse 1985-1990 → album 2000-2020)
 
 | Sprog | Jobannonce | Ansøgning | CV | ICAN+ (Elevator Pitch) |
 | :--- | :--- | :--- | :--- | :--- |
