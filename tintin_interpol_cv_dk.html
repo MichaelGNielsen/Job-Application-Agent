@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>CV - Tintin</title>
+    <style>
+        @page { size: A4; margin: 2cm; }
+        @media print {
+            @page { margin: 2cm; }
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            font-size: 10pt;
+            line-height: 1.35; 
+            color: #333; 
+            max-width: 800px; 
+            margin: auto; 
+        }
+        header { 
+            border-bottom: 2px solid #444; 
+            padding-bottom: 10px; 
+            margin-bottom: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+        }
+        .contact-info h1 { margin: 0; font-size: 1.6em; color: #000; }
+        .date-location { text-align: right; color: #666; font-size: 0.85em; }
+        h1.section-title { 
+            color: #000; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 3px; 
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        h2 { font-size: 10.5pt; margin: 8px 0 3px 0; }
+        .job-title { font-weight: bold; }
+        .company { font-style: italic; }
+        .year { font-size: 9pt; color: #666; float: right; }
+        ul { margin-top: 2px; margin-bottom: 6px; padding-left: 15px; }
+        li { margin-bottom: 1px; }
+        .section { margin-bottom: 6px; }
+        
+        .adventure {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .album-cover {
+            width: 80px;
+            height: auto;
+            margin-right: 12px;
+            flex-shrink: 0;
+            border: 1px solid #ddd;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        .adventure-content {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="contact-info">
+        <h1>Tintin</h1>
+        Rue du Lot 15, 1200 Genève | +41 22 123 456 | tintin@example.com
+    </div>
+    <div class="date-location">
+        Opdateret: Februar 2026
+    </div>
+</header>
+
+<h1 class="section-title">Profil</h1>
+<p>
+    Erfaren eventyrreporter med over 30 års professionel erfaring i undersøgende journalistik og international efterforskning. Har dokumenteret begivenheder på tværs af kontinenter, afsløret kriminelle netværk og løst komplekse mysterier. Søger nu nye udfordringer i en international kontekst.
+</p>
+
+<h1 class="section-title">Kernekompetencer</h1>
+<ul>
+    <li><strong>Efterforskning:</strong> Grundig research, bevisindsamling, netværksanalyse</li>
+    <li><strong>Journalistik:</strong> Undersøgende journalistik, interviews, dokumentation, fotojournalistik</li>
+    <li><strong>Sprog:</strong> Fransk, engelsk, dansk, tysk, spansk, russisk, mandarin</li>
+    <li><strong>International erfaring:</strong> Global tilstedeværelse i 50+ lande</li>
+    <li><strong>Krisehåndtering:</strong> Ro under pres, hurtig problemløsning</li>
+</ul>
+
+<h1 class="section-title">Erhvervserfaring (Album)</h1>
+
+<div class="adventure">
+    <img src="pictures/tintin_714_sydney.jpg" alt="Rute 714 til Sydney" class="album-cover">
+    <div class="adventure-content">
+        <h2><span class="job-title">Eventyrreporter</span>, <span class="company">Rute 714 til Sydney</span> <span class="year">(2020)</span></h2>
+        <ul>
+            <li>Afslørede internationale kidnappingsplaner mod finansmagnaten Laszlo Carreidas</li>
+            <li>Navigerede sikkert gennem Indonesiske øhav under ekstreme forhold</li>
+            <li>Sikrede vigtig dokumentation til politiet</li>
+        </ul>
+    </div>
+</div>
+
+<div class="adventure">
+    <img src="pictures/tintin_moon_2.jpg" alt="Månen tur-retur del 2" class="album-cover">
+    <div class="adventure-content">
+        <h2><span class="job-title">Eventyrreporter</span>, <span class="company">Månen tur-retur II</span> <span class="year">(2015)</span></h2>
+        <ul>
+            <li>Reddede kaptajn Haddock fra rumgængere på Månen</li>
+            <li>Koordinerede redningsaktion med internationalt rumagentur</li>
+            <li>Vendte sikkert hjem efter kritisk mission</li>
+        </ul>
+    </div>
+</div>
+
+<div class="adventure">
+    <img src="pictures/tintin_moon_1.jpg" alt="Månen tur-retur del 1" class="album-cover">
+    <div class="adventure-content">
+        <h2><span class="job-title">Eventyrreporter</span>, <span class="company">Månen tur-retur I</span> <span class="year">(2011)</span></h2>
+        <ul>
+            <li>Deltog i historisk månelanding med rumraket</li>
+            <li>Undersøgte mineralressourcer</li>
+            på Månen <li>Arbejdede under ekstremt pres i rumskib</li>
+        </ul>
+    </div>
+</div>
+
+<div class="adventure">
+    <img src="pictures/tintin_rackham.jpg" alt="Rackham den Rødes skat" class="album-cover">
+    <div class="adventure-content">
+        <h2><span class="job-title">Eventyrreporter</span>, <span class="company">Rackham den Rødes skat</span> <span class="year">(2007)</span></h2>
+        <ul>
+            <li>Fundet og bjærget historisk piratskat</li>
+            <li>Konfronterede kriminelle arvetagere</li>
+            <li>Overleverede værdifulde artefakter til museer</li>
+        </ul>
+    </div>
+</div>
+
+<div class="adventure">
+    <img src="pictures/tintin_unicorn.jpg" alt="Enhjørningens hemmelighed" class="album-cover">
+    <div class="adventure-content">
+        <h2><span class="job-title">Eventyrreporter</span>, <span class="company">Enhjørningens hemmelighed</span> <span class="year">(2004)</span></h2>
+        <ul>
+            <li>Undersøgte historiske skibe og pirater</li>
+            <li>Opdagede hemmeligheden bag tre Enhjørninge-modeller</li>
+            <li>Afslørede international kunsttyveri-ring</li>
+        </ul>
+    </div>
+</div>
+
+<div class="adventure">
+    <img src="pictures/tintin_cargonium.jpg" alt="Koks i lasten" class="album-cover">
+    <div class="adventure-content">
+        <h2><span class="job-title">Eventyrreporter</span>, <span class="company">Koks i lasten</span> <span class="year">(2000)</span></h2>
+        <ul>
+            <li>Optrådte som undercover i filmindustrien</li>
+            <li>Afslørede fup og bedrag i underholdningsbranchen</li>
+            <li>Dokumenterede svindel for et globalt publikum</li>
+        </ul>
+    </div>
+</div>
+
+<h1 class="section-title">Sprog</h1>
+<ul>
+    <li>Fransk: Flydende (modersmål)</li>
+    <li>Engelsk: Flydende</li>
+    <li>Dansk: Basis</li>
+    <li>Tysk: God</li>
+    <li>Spansk: God</li>
+    <li>Russisk: Grundlæggende</li>
+    <li>Mandarin: Grundlæggende</li>
+</ul>
+
+<h1 class="section-title">Personligt</h1>
+<p>
+    Interesseret i arkitektur, musik, og vintagebiler. Aktiv i lokalsamfundet. 
+    Har egen hund (Terry) som altid er med på eventyr.
+</p>
+
+<h1 class="section-title">Uddannelse</h1>
+<p>
+    <strong>Journalistik & Kommunikation</strong><br>
+    Université Libre de Bruxelles (1985–1990)
+</p>
+
+</body>
+</html>

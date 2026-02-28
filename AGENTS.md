@@ -87,7 +87,8 @@ The repository includes HTML templates for professional PDF output:
 ### Method 2: HTML → PDF via Chromium
 ```bash
 # Alternative: Generate PDF with Chromium
-chromium-browser --headless --disable-gpu --print-to-pdf=output.pdf input.html
+# IMPORTANT: Use --no-pdf-header-footer to avoid date/URL headers in output
+chromium-browser --headless --disable-gpu --print-to-pdf=output.pdf input.html --no-pdf-header-footer
 ```
 
 ### Method 3: Markdown → ODT → PDF (Legacy)
@@ -111,6 +112,9 @@ soffice --headless --convert-to pdf input.odt
 ### 2. Generate Application Materials
 **Rule**: The language of the application and CV must match the job posting language. If the job posting is in English, always create both Danish and English versions of match and ICAN+.
 
+**IMPORTANT: Separation of Documents**
+- **NEVER** combine the application and CV into a single file. They must remain separate deliverables to ensure correct formatting and to stay within page limits (1 page for application, max 2 for CV).
+
 Use this prompt template:
 ```
 Read AGENTS.md and job.md. Use my brutto-CV as the source.
@@ -121,11 +125,11 @@ IMPORTANT: Language in application and CV must match job posting language:
 
 If job posting is in English, always make Danish and English versions of match and ICAN+.
 
-Files to generate:
+Files to generate (MUST BE SEPARATE FILES):
 - match_dk.md (score 0-100%, gap analysis, Danish)
 - match_en.md (score 0-100%, gap analysis, English) - only if job posting is in English
-- ansøgning_{firma}.md (max 1 page, matching job posting)
-- cv_{firma}.md (max 2 pages)
+- {INITIALER}_{FIRMA}_{JOB}_ansøgning.md (max 1 page, matching job posting)
+- {INITIALER}_{FIRMA}_{JOB}_cv.md (max 2 pages)
 - ICAN+_dk.md (interview guide: I-C-A-N-+ format, Danish)
 - ICAN+_en.md (interview guide: I-C-A-N-+ format, English) - only if job posting is in English
 ```

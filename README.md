@@ -74,11 +74,25 @@ Se eksempler på output i browser:
 
 ## Layout Eksempler (Tintin Case Study)
 
-Herunder ses eksempler på de dokumenter, som agenten genererer. Dette eksempel viser en ansøgning fra Tintin til Professor Tournesol på Møllenborg Slot.
+Herunder ses eksempler på de dokumenter, som agenten genererer. Dette eksempel viser en ansøgning fra Tintin til Interpol (søger stilling som Senior Efterforsker).
+
+### Tidligere: Ansøgning til Professor Tournesol
 
 | Ansøgning (Template) | CV (Template) |
 | :--- | :--- |
 | [Åbn PDF](tintin_template_ansøgning.pdf) | [Åbn PDF](tintin_template_cv.pdf) |
+
+### Ny: Ansøgning til INTERPOL (2026)
+
+Tintin søger nu stilling som Senior Efterforsker hos INTERPOL i Lyon, Frankrig. Ansøgningen inkluderer:
+- Reference til samarbejdet med detektiverne Dupont og Dupond (som allerede arbejder for Interpol)
+- Professor Tournesols #elon-referencen om AI og rumfart
+- Kronologisk CV med album-erfaring (uddannelse 1985-1990 → album 2013-2024)
+
+| Sprog | Ansøgning | CV |
+| :--- | :--- | :--- |
+| Dansk | [Åbn PDF](tintin_interpol_ansøgning_dk.pdf) | [Åbn PDF](tintin_interpol_cv_dk.pdf) |
+| Engelsk | [Åbn PDF](tintin_interpol_ansøgning_en.pdf) | [Åbn PDF](tintin_interpol_cv_en.pdf) |
 
 *Layoutet er optimeret til PDF-konvertering via Chromium med `--no-pdf-header-footer`.*
 
