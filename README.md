@@ -94,6 +94,16 @@ Tintin søger nu stilling som Senior Efterforsker hos INTERPOL i Lyon, Frankrig.
 | Dansk | [Åbn](job.md) | [Åbn PDF](tintin_interpol_ansøgning_dk.pdf) | [Åbn PDF](tintin_interpol_cv_dk.pdf) | [Åbn](ICAN+_dk.md) |
 | Engelsk | – | [Åbn PDF](tintin_interpol_ansøgning_en.pdf) | [Åbn PDF](tintin_interpol_cv_en.pdf) | [Åbn](ICAN+_en.md) |
 
+---
+
+**🚀 Case Study: Accelereret efterforskning med AI**
+
+I dette eksempel har vi kigget på, hvordan Tintin ville ansøge hos INTERPOL.
+
+Som en del af projektet har jeg inkluderet en vinkel om, at hvis Professor Tournesol havde haft adgang til denne AI-agent, da han mødte Tintin, så havde de ikke bare nået Månen, men også Mars allerede i det første album!
+
+Dette demonstrerer agentens evne til at flette personlig storytelling og teknisk acceleration ind i en formel ansøgning.
+
 *Layoutet er optimeret til PDF-konvertering via Chromium med `--no-pdf-header-footer`.*
 
 ---
