@@ -1,5 +1,7 @@
 # Job-Application-Agent
 
+> **#AI #Automation #Tintin #Elon**
+
 Template til at generere målrettede jobansøgninger og CV'er.
 
 ## Brug OpenCode
