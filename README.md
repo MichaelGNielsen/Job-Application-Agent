@@ -89,10 +89,10 @@ Tintin søger nu stilling som Senior Efterforsker hos INTERPOL i Lyon, Frankrig.
 - Professor Tournesols #elon-referencen om AI og rumfart
 - Kronologisk CV med album-erfaring (uddannelse 1985-1990 → album 2013-2024)
 
-| Sprog | Ansøgning | CV |
-| :--- | :--- | :--- |
-| Dansk | [Åbn PDF](tintin_interpol_ansøgning_dk.pdf) | [Åbn PDF](tintin_interpol_cv_dk.pdf) |
-| Engelsk | [Åbn PDF](tintin_interpol_ansøgning_en.pdf) | [Åbn PDF](tintin_interpol_cv_en.pdf) |
+| Sprog | Ansøgning | CV | ICAN+ (Elevator Pitch) |
+| :--- | :--- | :--- | :--- |
+| Dansk | [Åbn PDF](tintin_interpol_ansøgning_dk.pdf) | [Åbn PDF](tintin_interpol_cv_dk.pdf) | [Åbn](ICAN+_dk.md) |
+| Engelsk | [Åbn PDF](tintin_interpol_ansøgning_en.pdf) | [Åbn PDF](tintin_interpol_cv_en.pdf) | [Åbn](ICAN+_en.md) |
 
 *Layoutet er optimeret til PDF-konvertering via Chromium med `--no-pdf-header-footer`.*
 
