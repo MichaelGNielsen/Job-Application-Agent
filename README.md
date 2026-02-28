@@ -132,6 +132,7 @@ Dette demonstrerer agentens evne til at flette personlig storytelling og teknisk
 ### Dokumentation
 | Fil | Beskrivelse |
 |-----|-------------|
+| [BannerStudio](https://github.com/MichaelGNielsen/BannerStudio) | Værktøj til at lave LinkedIn bannere |
 | `AGENTS.md` | Komplet dokumentation & workflow |
 | `GEMINI.md` | AI-prompt dokumentation (kan bruges til at dobbelt-tjekke output) |
 | `README.md` | Denne fil |
