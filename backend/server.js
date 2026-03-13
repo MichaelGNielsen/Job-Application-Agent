@@ -39,7 +39,7 @@ const jobQueue = new Queue('job_queue', { connection: redisConnection });
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 
-app.use('/api/applications', express.static(rootDir, {
+app.use('/api/applications', express.static(path.join(rootDir, 'output'), {
     index: false,
     setHeaders: (res, path) => {
         if (path.endsWith('.pdf')) {
@@ -75,7 +75,7 @@ async function callLocalGemini(prompt) {
 
 app.get('/api/brutto', async (req, res) => {
   try {
-    const bruttoPath = path.join(rootDir, 'tintin_brutto_cv.md');
+    const bruttoPath = path.join(rootDir, 'data', 'brutto_cv.md');
     const content = fs.existsSync(bruttoPath) ? fs.readFileSync(bruttoPath, 'utf8') : "";
     res.json({ content });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -84,7 +84,7 @@ app.get('/api/brutto', async (req, res) => {
 app.post('/api/brutto', async (req, res) => {
   try {
     const { content } = req.body;
-    const bruttoPath = path.join(rootDir, 'tintin_brutto_cv.md');
+    const bruttoPath = path.join(rootDir, 'data', 'brutto_cv.md');
     fs.writeFileSync(bruttoPath, content);
     res.json({ success: true });
   } catch (err) { res.status(500).json({ error: err.message }); }

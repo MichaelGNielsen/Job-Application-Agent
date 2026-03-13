@@ -1,80 +1,75 @@
-# Systemarkitektur: Job Application Agent v2.0
+# Systemarkitektur: Job Application Agent (v2.4)
 
-Denne dokumentation beskriver overgangen fra en monolitisk synkron arkitektur til en asynkron, event-drevet arkitektur ved hjælp af en **Message Broker**.
+Dette dokument beskriver arkitekturen for den moderne web-baserede version af Job Application Agent, som findes i `demo/aka-torsdag` branchen.
 
-## 1. Designmål
-- **Responsiv UI**: Frontenden skal aldrig "fryse" eller vente på et HTTP-svar i mere end et par millisekunder.
-- **Real-tids Feedback**: Brugeren skal kunne se fremskridt (f.eks. "Analyserer jobopslag", "Genererer CV", "Færdig").
-- **Fejltolerance**: Hvis en opgave fejler, skal systemet kunne rapportere det uden at crashe hele forbindelsen.
-- **Adskillelse af bekymringer (SoC)**: API'en modtager ordrer, Brokeren styrer køen, og Workeren udfører det hårde arbejde.
+## 🏗 Overordnet Arkitektur
+Systemet er bygget som en moderne **Producer-Consumer** arkitektur, der sikrer en responsiv brugeroplevelse selv ved tunge AI-operationer.
 
-## 2. Komponenter
-
-### Frontend (React + Socket.io)
-Brugerfladen sender en "Job Request" via et WebSocket eller en hurtig REST-post og lytter derefter på en dedikeret kanal (`job_updates`) for statusmeddelelser.
-
-### API Gateway (Express)
-Modtager anmodningen, validerer den, genererer et unikt `jobId` og lægger en besked i køen (Message Broker). Den returnerer straks `jobId` til frontenden.
-
-### Message Broker (Redis / BullMQ)
-Fungerer som mellemmand. Den holder styr på opgaver, der venter, er i gang, eller er fejlet. I et lokalt miljø kan vi starte med en simpel **EventEmitter** eller **Redis** for maksimal stabilitet.
-
-### Worker (Node.js)
-En separat proces (eller tråd), der kun lytter på køen. Når den modtager en opgave, kalder den `gemini` CLI'en. Undervejs sender den statusopdateringer tilbage til Brokeren/Socket.io.
-
-## 3. Arkitektur Diagram (PlantUML)
-
-```puml
-@startuml architecture
-!theme cerulean-outline
-
-skinparam backgroundColor #0a192f
-skinparam defaultFontColor white
-skinparam ArrowColor white
-skinparam NoteFontColor white
-skinparam NoteBackgroundColor #112240
-skinparam componentStyle uml2
-
-actor User #cyan
-participant "Frontend (React)" as FE #white
-participant "API Gateway (Express)" as API #white
-queue "Message Broker (Redis/BullMQ)" as Broker #yellow
-participant "Worker (Gemini CLI Runner)" as Worker #white
-database "Filesystem" as FS #lightgray
-
-User -> FE : Indsæt jobtekst & klik 'Start'
-activate FE
-FE -> API : POST /api/generate (Async)
-activate API
-API -> API : Generer JobID
-API -> Broker : Push {jobId, jobText}
-API --> FE : 202 Accepted {jobId}
-deactivate API
-
-note right of FE : FE lytter nu på Socket.io\nkanal: "job_status:jobId"
-
-Broker -> Worker : Pop Task
-activate Worker
-Worker -> FE : [Socket.io] "Status: Analyserer..."
-Worker -> FS : Opret mappe & gem job.md
-Worker -> Worker : Kør 'gemini -p ...' (Extract Info)
-Worker -> FE : [Socket.io] "Status: Genererer dokumenter..."
-Worker -> Worker : Kør 'gemini -p ...' (Generate Docs)
-Worker -> FS : Gem .md og .html filer
-Worker -> FE : [Socket.io] "Status: Færdig!"
-Worker -> FE : [Socket.io] "Result: {links, folder}"
-deactivate Worker
-deactivate FE
-@enduml
+```mermaid
+graph TD
+    User((Bruger)) --> Frontend[Frontend: React/Vite/TS]
+    Frontend -- REST API --> Backend[Backend: Express.js]
+    Frontend -- Socket.io --> Backend
+    Backend -- Tilføj Job --> Queue[(Redis: BullMQ)]
+    Queue -- Hent Job --> Worker[Worker: Node.js]
+    Worker -- AI Prompt --> GeminiCLI[Gemini CLI]
+    GeminiCLI -- Resultat --> Worker
+    Worker -- MD til HTML --> Pandoc[Pandoc CLI]
+    Worker -- HTML til PDF --> Chromium[Chromium Headless]
+    Worker -- Status --> Backend
+    Backend -- Status --> Frontend
 ```
 
-## 4. Hvorfor denne tilgang?
+## 🔍 Architecture Overview
+1.  **Frontend (React/Vite):** En moderne, mørk-tema brugerflade, der styrer Master CV, job-input og viser resultater i realtid.
+2.  **Backend (Express):** Håndterer API-anmodninger, serverer genererede filer og administrerer BullMQ-jobkøen.
+3.  **Worker (Node.js):** Forbruger jobs fra køen, orkestrerer AI-kald til `gemini` CLI og håndterer filgenerering/konvertering.
+4.  **Redis:** Rygraden i jobkøen og kommunikationen mellem processer.
+5.  **Eksterne Værktøjer:** Systemet afhænger af `gemini` (AI), `pandoc` (Markdown til HTML) og `chromium` (HTML til PDF).
 
-1. **Stabilitet**: Hvis Gemini CLI tager 60 sekunder, vil en normal browser-forbindelse ofte timeout. Med en broker er forbindelsen "fire-and-forget", og resultatet kommer, når det er klar.
-2. **Skalering**: Du kan køre flere Workers på forskellige maskiner, hvis du vil, mens API'en stadig er den samme.
-3. **Læring**: Dette mønster (Producer-Consumer) er fundamentet for næsten alle moderne cloud-systemer.
+## 🧩 Komponenter
 
-## 5. Implementationsplan
-1. **Setup**: Installer `socket.io` og `bullmq` (hvis vi bruger Redis).
-2. **Refaktorering**: Flyt CLI-logikken fra `server.js` til en `worker.js`.
-3. **Bridge**: Opsæt Socket.io i `server.js` til at videresende beskeder fra Workeren til Frontenden.
+### 1. Frontend (React / Vite)
+*   **Formål:** WYSIWYG editor til Master CV og jobopslag.
+*   **Teknologier:** TypeScript, Tailwind CSS, Socket.io-client.
+*   **Nøglefunktioner:**
+    *   Live-editering af genereret Markdown.
+    *   Realtidsvisning af PDF-previews via iFrame.
+    *   Statusopdateringer fra Worker via Socket.io.
+
+### 2. Backend (Express.js)
+*   **Formål:** API Gateway og orkestrering.
+*   **Teknologier:** Node.js, Express, BullMQ, Socket.io.
+*   **Ansvarsområder:**
+    *   Håndtering af Master CV (Læs/Skriv).
+    *   Oprettelse af baggrundsjobs i BullMQ.
+    *   Servering af statiske filer (PDF/HTML/MD) fra de genererede job-mapper.
+
+### 3. Worker (Node.js)
+*   **Formål:** Tungt arbejde (Heavy Lifting).
+*   **Teknologier:** BullMQ, `child_process`, `dotenv`.
+*   **Workflow:**
+    1.  Modtager job-data (Jobtekst, URL, hints).
+    2.  Identificerer sprog (DK/EN).
+    3.  Udfører AI-prompter via `gemini` CLI.
+    4.  Opdeler AI-svar i sektioner (Ansøgning, CV, Match, ICAN+).
+    5.  Konverterer Markdown til HTML (Pandoc) og PDF (Chromium).
+    6.  Udgiver resultater til filsystemet og opdaterer status via Socket.io.
+
+### 4. Infrastruktur
+*   **Redis:** Bruges som besked-broker for BullMQ.
+*   **Docker Compose:** Orkestrerer 3 containere: `frontend`, `backend` og `redis`.
+*   **Delt Volumen:** Backend og Worker deler adgang til rodmappen for at kunne læse/skrive job-filer.
+
+## 🛠 Eksterne Værktøjer
+Systemet er afhængigt af følgende CLI-værktøjer installeret i miljøet:
+1.  **`gemini`**: Bruges til AI-generering og oversættelse.
+2.  **`pandoc`**: Konverterer Markdown til ren HTML.
+3.  **`chromium-browser`**: Genererer pixel-perfekte PDF'er fra HTML-skabeloner.
+
+## 📂 Filstruktur & Oprydning (Planlagt)
+For at holde projektet overskueligt flyttes skabeloner og demo-filer til dedikerede mapper:
+*   `/templates/`: HTML-layout og base CSS.
+*   `/resources/`: ICAN+ definitioner og reference-data.
+*   `/demo/`: Tintin-specifikke filer og eksempler.
+*   `/[timestamp]_.../`: Automatiske output-mapper for hver ansøgning.

@@ -65,11 +65,11 @@ const worker = new Worker('job_queue', async (job) => {
 
     // Indlæs Brutto-CV (AI kilden) og ICAN+ definition
     let bruttoCv = "";
-    const bruttoPath = path.join(rootDir, 'tintin_brutto_cv.md');
+    const bruttoPath = path.join(rootDir, 'data', 'brutto_cv.md');
     if (fs.existsSync(bruttoPath)) bruttoCv = fs.readFileSync(bruttoPath, 'utf8');
 
     let icanDef = "";
-    const icanDefPath = path.join(rootDir, 'ICAN+_DEF.md');
+    const icanDefPath = path.join(rootDir, 'resources', 'ICAN+_DEF.md');
     if (fs.existsSync(icanDefPath)) icanDef = fs.readFileSync(icanDefPath, 'utf8');
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 13).replace('T', '_');
@@ -81,8 +81,11 @@ const worker = new Worker('job_queue', async (job) => {
     const jobTitleRaw = jobTitleMatch ? jobTitleMatch[1].trim() : "stilling";
     const jobTitleSafe = jobTitleRaw.substring(0, 30).replace(/[^a-zæøå0-9]/gi, '_');
 
-    const folderName = `${timestamp}_demo_${companyName}_${jobTitleSafe}`;
-    const folderPath = path.join(rootDir, folderName);
+    const folderName = `${timestamp}_${companyName}_${jobTitleSafe}`;
+    const outputDir = path.join(rootDir, 'output');
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+    const folderPath = path.join(outputDir, folderName);
     if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
 
     fs.writeFileSync(path.join(folderPath, 'job.md'), jobText);

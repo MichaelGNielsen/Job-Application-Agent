@@ -1,42 +1,34 @@
-@startuml architecture
-!theme cerulean-outline
+@startuml
+!theme toy
 
-skinparam backgroundColor #0a192f
-skinparam defaultFontColor white
-skinparam ArrowColor white
-skinparam NoteFontColor white
-skinparam NoteBackgroundColor #112240
-skinparam componentStyle uml2
+package "Client Layer" {
+  [Frontend (React/Vite)] as FE
+}
 
-actor User #cyan
-participant "Frontend (React)" as FE #Blue
-participant "API Gateway (Express)" as API #DarkBlue
-queue "Message Broker (Redis/BullMQ)" as Broker #Green
-participant "Worker (Gemini CLI Runner)" as Worker #red
-database "Filesystem" as FS #lightgray
+package "API & Queue Layer" {
+  [Backend (Express)] as BE
+  database "Redis (BullMQ)" as REDIS
+  FE -right-> BE : REST / Socket.io
+  BE -down-> REDIS : Push Job
+}
 
-User -> FE : Indsæt jobtekst & klik 'Start'
-activate FE
-FE -> API : POST /api/generate (Async)
-activate API
-API -> API : Generer JobID
-API -> Broker : Push {jobId, jobText}
-API --> FE : 202 Accepted {jobId}
-deactivate API
+package "Worker & Engine Layer" {
+  [Worker (Node.js)] as WRK
+  [Gemini CLI] as GEMINI
+  [Pandoc] as PANDOC
+  [Chromium] as CHROMIUM
+  
+  REDIS -down-> WRK : Pull Job
+  WRK -right-> GEMINI : Prompt
+  WRK -down-> PANDOC : MD -> HTML
+  WRK -down-> CHROMIUM : HTML -> PDF
+}
 
-note right of FE : Frontend lytter nu på Socket.io\nkanal: "job_status:jobId"
+folder "Storage" {
+  [File System] as FS
+  WRK -down-> FS : Save Docs
+  BE -down-> FS : Read Docs
+}
 
-Broker -> Worker : Pop Task
-activate Worker
-Worker -> FE : [Socket.io] "Status: Analyserer..."
-Worker -> FS : Opret mappe & gem job.md
-Worker -> Worker : Kør 'gemini -p ...' (Extract Info)
-Worker -> FE : [Socket.io] "Status: Genererer dokumenter..."
-Worker -> Worker : Kør 'gemini -p ...' (Generate Docs)
-Worker -> FS : Gem .md og .html filer
-Worker -> FE : [Socket.io] "Status: Færdig!"
-Worker -> FE : [Socket.io] "Result: {links, folder}"
-deactivate Worker
-deactivate FE
-
+FE -[hidden]down- BE
 @enduml

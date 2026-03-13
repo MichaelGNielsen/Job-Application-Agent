@@ -1,6 +1,6 @@
 # Job Application Agent - Tintin Demo (v2.4)
 
-Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI kan transformere en personlig erfaringsbase (Master CV) til målrettede ansøgningsdokumenter på få sekunder.
+Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI kan transformere en personlig erfaringsbase (Master CV) til målrettede ansøgningsdokumenter på få sekunder. Læs mere om systemets opbygning i [Architecture Documentation](docs/architecture.md).
 
 ## 🚀 Kom i gang med Demoen
 1.  Åbn terminalen i denne mappe (`web_demo_tintin`).
