@@ -138,7 +138,7 @@ const worker = new Worker('job_queue', async (job) => {
 
     for (const s of sections) {
         const safeTitle = s.title.replace(/\s+/g, '_');
-        const fileName = `Tintin_${companyName}_${jobTitleSafe}_${safeTitle}`;
+        const fileName = `${safeTitle}_Tintin_${companyName}_${jobTitleSafe}`;
         const mdPath = path.join(folderPath, `${fileName}.md`);
         const htmlPath = path.join(folderPath, `${fileName}.html`);
         fs.writeFileSync(mdPath, s.md);

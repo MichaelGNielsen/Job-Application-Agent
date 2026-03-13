@@ -68,19 +68,28 @@ app.post('/api/refine', async (req, res) => {
   try {
     const { folder, type, markdown } = req.body; 
     const folderPath = path.join(rootDir, folder);
-    const mdPath = path.join(folderPath, `${type}.md`);
+    
+    // Find den eksisterende fil der matcher typen (f.eks. Ansøgning_*)
+    const files = fs.readdirSync(folderPath);
+    const typeLabel = type === 'ansøgning' ? 'Ansøgning' : type === 'cv' ? 'CV' : type === 'match' ? 'Match_Analyse' : 'ICAN+_Pitch';
+    const existingFile = files.find(f => f.startsWith(typeLabel) && f.endsWith('.md'));
+    
+    const baseName = existingFile ? existingFile.replace('.md', '') : type;
+    const mdPath = path.join(folderPath, `${baseName}.md`);
+    const htmlPath = path.join(folderPath, `${baseName}.html`);
+    const pdfPath = path.join(folderPath, `${baseName}.pdf`);
+
     fs.writeFileSync(mdPath, markdown);
 
-    const htmlBody = await mdToHtml(markdown, mdPath, `${type}_body.html`);
-    const companyName = folder.split('_')[3] || 'firma';
-    const htmlPath = path.join(folderPath, `${type}.html`);
-    const pdfName = `${process.env.MIT_NAVN.replace(/\s+/g, '_')}_${type}_${companyName}.pdf`;
-    const pdfPath = path.join(folderPath, pdfName);
+    const htmlBody = await mdToHtml(markdown, mdPath, `${baseName}_body.html`);
+    const companyName = folder.split('_')[2] || 'firma';
+    const jobTitle = folder.split('_').slice(3).join(' ') || 'stilling';
 
-    fs.writeFileSync(htmlPath, wrap(type.toUpperCase(), htmlBody, type, { company: companyName }));
+    const fullHtml = wrap(typeLabel.replace('_', ' '), htmlBody, type, { company: companyName, position: jobTitle });
+    fs.writeFileSync(htmlPath, fullHtml);
     await printToPdf(htmlPath, pdfPath);
 
-    res.json({ success: true, html: htmlBody });
+    res.json({ success: true, html: fullHtml });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
