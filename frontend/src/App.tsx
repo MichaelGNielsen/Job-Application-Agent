@@ -75,6 +75,11 @@ const App: React.FC = () => {
     buttonActive: THEME_COLOR === 'cyan' ? 'bg-cyan-500' : 'bg-rose-600'
   };
 
+  const getDocUrl = (path: string) => {
+    if (!path) return '#';
+    return `http://${window.location.hostname}:9001${path}`;
+  };
+
   return (
     <div className="min-h-screen bg-[#0a192f] text-gray-100 p-8 font-sans">
       <div className="max-w-6xl mx-auto">
@@ -127,7 +132,7 @@ const App: React.FC = () => {
                         <button onClick={() => toggleViewMode(doc.id)} className="bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">
                           {viewModes[doc.id] === 'html' ? 'Rediger Markdown' : 'Vis Preview'}
                         </button>
-                        <a href={results.links[doc.id]?.html} target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-500 text-white px-4 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Åben i ny tab (Print)</a>
+                        <a href={getDocUrl(results.links[doc.id]?.html)} target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-500 text-white px-4 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Åben i ny tab (Print)</a>
                       </div>
                     </div>
                     <div className="p-6">
