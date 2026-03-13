@@ -14,6 +14,11 @@ const rootDir = '/app/shared';
 dotenv.config({ path: path.join(rootDir, '.env_private') });
 dotenv.config({ path: path.join(rootDir, '.env_ai') });
 
+// Tving API nøgle til at være tilgængelig for gemini-cli
+if (process.env.GEMINI_API_KEY) {
+    process.env.GOOGLE_API_KEY = process.env.GEMINI_API_KEY;
+}
+
 const redisConnection = new IORedis({
   host: process.env.REDIS_HOST || 'redis',
   port: 6379,
@@ -24,9 +29,6 @@ const socket = io('http://localhost:3002');
 
 async function callLocalGemini(prompt) {
     try {
-        if (process.env.GEMINI_API_KEY) {
-            process.env.GOOGLE_API_KEY = process.env.GEMINI_API_KEY;
-        }
         const tempFile = path.join('/tmp', `prompt_${Date.now()}.txt`);
         fs.writeFileSync(tempFile, prompt);
         const { stdout } = await execPromise(`gemini < "${tempFile}"`);
