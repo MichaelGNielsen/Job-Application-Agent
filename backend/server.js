@@ -54,8 +54,48 @@ async function printToPdf(htmlPath, pdfPath) {
         return false;
     }
 }
+async function callLocalGemini(prompt) {
+    try {
+        const tempFile = path.join('/tmp', `prompt_${Date.now()}.txt`);
+        fs.writeFileSync(tempFile, prompt);
+        const { stdout } = await execPromise(`gemini < "${tempFile}"`);
+        if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
+        return stdout;
+    } catch (error) {
+        console.error("Fejl ved kald til Gemini CLI:", error);
+        throw error;
+    }
+}
+
+app.get('/api/brutto', async (req, res) => {
+  try {
+    const bruttoPath = path.join(rootDir, 'tintin_brutto_cv.md');
+    const content = fs.existsSync(bruttoPath) ? fs.readFileSync(bruttoPath, 'utf8') : "";
+    res.json({ content });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/brutto', async (req, res) => {
+  try {
+    const { content } = req.body;
+    const bruttoPath = path.join(rootDir, 'tintin_brutto_cv.md');
+    fs.writeFileSync(bruttoPath, content);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/brutto/translate', async (req, res) => {
+  try {
+    const { content } = req.body;
+    const prompt = `Oversæt dette CV til professionelt engelsk. Behold Markdown-formateringen:\n\n${content}`;
+    const translated = await callLocalGemini(prompt);
+    res.json({ translated });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
 
 app.post('/api/generate', async (req, res) => {
+...
+
   try {
     const { jobText, companyUrl, hint } = req.body;
     const jobId = "job_" + Date.now().toString();

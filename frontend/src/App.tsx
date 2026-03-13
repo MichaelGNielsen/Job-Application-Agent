@@ -4,13 +4,15 @@ import { io } from 'socket.io-client';
 
 const socket = io();
 
-const VERSION = "v2.3.0-wysiwyg";
+const VERSION = "v2.4.0-master-cv";
 const THEME_COLOR = "cyan";
 
 const App: React.FC = () => {
   const [jobText, setJobText] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [hint, setHint] = useState('');
+  const [bruttoCv, setBruttoCv] = useState('');
+  const [showBrutto, setShowBrutto] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [viewModes, setViewModes] = useState<{ [key: string]: 'markdown' | 'html' }>({
@@ -30,6 +32,33 @@ const App: React.FC = () => {
     setViewModes(prev => ({ ...prev, [id]: prev[id] === 'html' ? 'markdown' : 'html' }));
   };
 
+  const handleSaveBrutto = async () => {
+    setIsLoading(true); setStatusMessage('Gemmer Master CV...');
+    try {
+      await fetch('/api/brutto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: bruttoCv }),
+      });
+      setIsLoading(false); setStatusMessage('Gemt!');
+      setTimeout(() => setStatusMessage(''), 2000);
+    } catch (err: any) { setError(err.message); setIsLoading(false); }
+  };
+
+  const handleTranslateBrutto = async () => {
+    setIsLoading(true); setStatusMessage('Oversætter til Engelsk...');
+    try {
+      const res = await fetch('/api/brutto/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: bruttoCv }),
+      });
+      const data = await res.json();
+      setBruttoCv(data.translated);
+      setIsLoading(false); setStatusMessage('Oversat!');
+    } catch (err: any) { setError(err.message); setIsLoading(false); }
+  };
+
   const handleRefine = async (type: string) => {
     if (!results) return;
     setIsLoading(true); setStatusMessage(`Opdaterer ${type}...`);
@@ -47,6 +76,8 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    fetch('/api/brutto').then(res => res.json()).then(data => setBruttoCv(data.content));
+
     socket.on('job_status_update', (data) => {
       setStatusMessage(data.status);
       if (data.status === 'Færdig!') { setResults(data); setIsLoading(false); }
@@ -69,15 +100,15 @@ const App: React.FC = () => {
     } catch (err: any) { setError(err.message); setIsLoading(false); }
   };
 
+  const getDocUrl = (path: string) => {
+    if (!path) return '#';
+    return `http://${window.location.hostname}:9001${path}`;
+  };
+
   const themeClasses = {
     text: THEME_COLOR === 'cyan' ? 'text-cyan-400' : 'text-rose-500',
     button: THEME_COLOR === 'cyan' ? 'bg-cyan-500 hover:bg-cyan-400' : 'bg-rose-600 hover:bg-rose-500',
     buttonActive: THEME_COLOR === 'cyan' ? 'bg-cyan-500' : 'bg-rose-600'
-  };
-
-  const getDocUrl = (path: string) => {
-    if (!path) return '#';
-    return `http://${window.location.hostname}:9001${path}`;
   };
 
   return (
@@ -88,6 +119,31 @@ const App: React.FC = () => {
         </header>
 
         <main className="space-y-8">
+          {/* Master CV Sektion */}
+          <section className="bg-[#112240] p-6 rounded-xl border border-white/5 shadow-xl">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-gray-300 uppercase tracking-wider">Master CV (Kilde)</h2>
+              <button onClick={() => setShowBrutto(!showBrutto)} className="text-cyan-400 text-xs font-bold hover:underline">
+                {showBrutto ? 'SKJUL REDIGERING' : 'REDIGER MASTER CV'}
+              </button>
+            </div>
+            
+            {showBrutto && (
+              <div className="space-y-4">
+                <textarea 
+                  className="w-full h-64 bg-[#0a192f] border border-white/10 rounded p-4 font-mono text-sm text-gray-300"
+                  value={bruttoCv}
+                  onChange={(e) => setBruttoCv(e.target.value)}
+                />
+                <div className="flex gap-4">
+                  <button onClick={handleSaveBrutto} className="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded text-xs font-bold uppercase tracking-widest">💾 Gem Ændringer</button>
+                  <button onClick={handleTranslateBrutto} className="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded text-xs font-bold uppercase tracking-widest">🌐 Oversæt til Engelsk</button>
+                </div>
+              </div>
+            )}
+            {!showBrutto && <p className="text-gray-500 text-sm italic">Dette er fundamentet AI'en bruger til at skræddersy dine ansøgninger.</p>}
+          </section>
+
           <section className="bg-[#112240] p-6 rounded-xl shadow-xl border border-white/5">
             <div className="mb-4">
               <label className="block text-sm font-bold text-gray-400 mb-2">Firma URL</label>

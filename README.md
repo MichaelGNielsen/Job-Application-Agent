@@ -1,144 +1,31 @@
-# Job-Application-Agent
+# Job Application Agent - Tintin Demo (v2.4)
 
-Template til at generere målrettede jobansøgninger og CV'er.
+Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI kan transformere en personlig erfaringsbase (Master CV) til målrettede ansøgningsdokumenter på få sekunder.
 
-> **#AI #Automation #Tintin #Elon #Gromit**
+## 🚀 Kom i gang med Demoen
+1.  Åbn terminalen i denne mappe (`web_demo_tintin`).
+2.  Kør: `docker-compose up -d`.
+3.  Åbn: [http://localhost:3000](http://localhost:3000) i din browser.
 
-![Gromit laying tracks](pictures/grommit-train-tracks.gif)
+## 🛠 Web Workflow (WYSIWYG)
+Systemet er nu fuldt automatiseret via en web-grænseflade:
 
-### 🚀 AI Acceleration (Gromit Style)
+1.  **Master CV Management:** Rediger og opdater din kilde-data direkte i UI'et. Brug "Oversæt"-knappen til lynhurtigt at gøre dig klar til internationale jobs.
+2.  **Job Input:** Indsæt et jobopslag (f.eks. fra INTERPOL) og et personligt hint.
+3.  **Real-tids AI:** Se AI'en analysere jobbet og generere 4 skræddersyede dokumenter live.
+4.  **Live Edit:** Ret i Markdown-teksten og se det færdige print-layout (HTML/PDF) opdatere sig med det samme i preview-vinduet.
+5.  **Print:** Brug "Åben i ny tab"-knappen til at printe de færdige dokumenter direkte fra browseren.
 
-Det går stærkt i AI-verdenen lige nu. At bygge denne agent føles præcis som scenen fra _The Wrong Trousers_, hvor Gromit lægger skinnerne, mens toget kører i fuld fart.
+## 📂 Demo Filer (Kilder)
+- [Master CV (DK)](tintin_brutto_cv.md)
+- [ICAN+ Definition](ICAN+_DEF.md)
+- [Test Job (DK)](job_dk.md)
+- [Test Job (EN)](job_en.md)
 
-Som en person, der er mere end almindeligt nysgerrig, ser jeg enorme muligheder i at bruge AI til at accelerere trivielle processer. Min lyst til at stille spørgsmål er kun blevet større med alderen, og interessen for at bygge nye løsninger er stærkere end nogensinde.
-
-
-## Brug OpenCode
-
-Denne template er designet til at arbejde med [OpenCode](https://opencode.ai). 
-
-Når du har sat projektet op, kan du bruge OpenCode til at:
-- Generere målrettede ansøgninger og CV'er
-- Konvertere MD/HTML til PDF
-- Analysere match mellem din profil og jobannoncen
-
-```bash
-opencode .
-```
-
----
-
-## Kom i gang
-
-### 1. Klon projektet
-```bash
-git clone https://github.com/MichaelGNielsen/Job-Application-Agent.git
-cd Job-Application-Agent
-```
-
-### 2. Omdøb skabelon-filer (erstat MINE_INITIALER med dine initialer)
-```bash
-cp MINE_INITIALER_template_ansøgning.odt xxx_template_ansøgning.odt
-cp MINE_INITIALER_template_brutto_cv.odt xxx_template_brutto_cv.odt
-```
-
-### 3. Kopier .env_template til .env og udfyld
-```bash
-cp .env_template .env
-# Åbn .env og udfyld dine oplysninger
-```
-
-### 4. Gem jobannoncen
-Kopier din jobannonse ind i roden som:
-- `job.pdf` (PDF gemt fra browser)
-- `job.mhtml` (webarkiv)
-- `job.md` (kopieret tekst)
+## 🎯 Fokusområder til AKA Præsentationen
+*   **Match Analyse:** Vis hvordan AI'en giver en ærlig score og gap-analyse.
+*   **ICAN+ Pitch:** Vis hvordan man bliver klædt på til selve jobsamtalen.
+*   **Sprog:** Demonstrer hvordan systemet skifter mellem dansk og engelsk baseret på jobopslaget.
 
 ---
-
-## HTML Templates (Anbefalet)
-
-Projektet inkluderer HTML-skabeloner for professionel PDF-output:
-
-### Skabeloner
-- `TEMPLATE_ansøgning.html` - Ansøgningsskabelon
-- `TEMPLATE_cv.html` - CV-skabelon
-
-### Brug
-1. Åbn HTML-filen i en browser
-2. Verificer layoutet
-3. Print til PDF (Ctrl+P → Gem som PDF)
-
----
-
-## Eksempel med Tintin
-
-Se eksempler på output i browser:
-
-### Ansøgning
-Åbn `tintin_template_ansøgning.html` i en browser for at se eksempel på ansøgning med Tintin som kandidat.
-
-### CV  
-Åbn `tintin_template_cv.html` i en browser for at se eksempel på CV med Tintins erfaringer.
-
----
-
-## Layout Eksempler (Tintin Case Study)
-
-Herunder ses eksempler på de dokumenter, som agenten genererer. Dette eksempel viser en ansøgning fra Tintin til Interpol (søger stilling som Senior Efterforsker).
-
-### INTERPOL (2026)
-
-Tintin søger nu stilling som Senior Efterforsker hos INTERPOL i Lyon, Frankrig. Ansøgningen inkluderer:
-- Reference til samarbejdet med detektiverne Dupont og Dupond (som allerede arbejder for Interpol)
-- Professor Tournesols #elon-referencen om AI og rumfart
-- Kronologisk CV med album-erfaring (uddannelse 1985-1990 → album 2000-2020)
-
-| Sprog | Jobannonce | Ansøgning | CV | ICAN+ (Elevator Pitch) |
-| :--- | :--- | :--- | :--- | :--- |
-| Dansk | [Åbn](job.md) | [Åbn PDF](tintin_interpol_ansøgning_dk.pdf) | [Åbn PDF](tintin_interpol_cv_dk.pdf) | [Åbn](ICAN+_dk.md) |
-| Engelsk | – | [Åbn PDF](tintin_interpol_ansøgning_en.pdf) | [Åbn PDF](tintin_interpol_cv_en.pdf) | [Åbn](ICAN+_en.md) |
-
----
-
-**🚀 Case Study: Accelereret efterforskning med AI**
-
-I dette eksempel har vi kigget på, hvordan Tintin ville ansøge hos INTERPOL.
-
-Som en del af projektet har jeg inkluderet en vinkel om, at hvis Professor Tournesol havde haft adgang til denne AI-agent, da han mødte Tintin, så havde de ikke bare nået Månen, men også Mars allerede i det første album!
-
-Dette demonstrerer agentens evne til at flette personlig storytelling og teknisk acceleration ind i en formel ansøgning.
-
-*Layoutet er optimeret til PDF-konvertering via Chromium med `--no-pdf-header-footer`.*
-
----
-
-## Filer i denne template
-
-### Skabeloner (skal omdøbes)
-| Fil | Beskrivelse |
-|-----|-------------|
-| `TEMPLATE_ansøgning.html` | HTML skabelon til ansøgning (anbefalet) |
-| `TEMPLATE_cv.html` | HTML skabelon til CV (anbefalet) |
-| `MINE_INITIALER_template_ansøgning.odt` | Legacy ODT skabelon til ansøgning |
-| `MINE_INITIALER_template_brutto_cv.odt` | Legacy ODT skabelon til CV |
-
-### Filer der skal tilføjes af brugeren
-| Fil | Beskrivelse |
-|-----|-------------|
-| `.env` | Dine personlige oplysninger (kopier fra .env_template) |
-| `job.md` / `job.pdf` / `job.mhtml` | Jobannonse du søger |
-
-### Dokumentation
-| Fil | Beskrivelse |
-|-----|-------------|
-| [BannerStudio](https://github.com/MichaelGNielsen/BannerStudio) | Værktøj til at lave LinkedIn bannere |
-| `AGENTS.md` | Komplet dokumentation & workflow |
-| `GEMINI.md` | AI-prompt dokumentation (kan bruges til at dobbelt-tjekke output) |
-| `README.md` | Denne fil |
-
----
-
-## Workflow
-
-Se [AGENTS.md](./AGENTS.md) for detaljeret workflow.
+*Sidst opdateret: 13. marts 2026*
