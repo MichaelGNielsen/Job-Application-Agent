@@ -88,13 +88,14 @@ const worker = new Worker('job_queue', async (job) => {
 
     Generer 4 sektioner i Markdown:
     ---ANSØGNING---
-    (Skriv målrettet ansøgning her. Start direkte med modtager/tekst. Tintins kontaktinfo er i headeren.)
+    (Skriv målrettet ansøgning her. START DIREKTE med modtagers navn og derefter selve ansøgningen. Skriv IKKE Tintins kontaktinfo eller dato, og slut IKKE med underskrift/navn, da det automatisk bliver påført af systemet.)
     ---CV---
-    (Skriv skræddersyet CV her. Start med en stærk profiltekst.)
+    (Skriv skræddersyet CV her. Start med en stærk profiltekst. Inkluder IKKE personlig kontaktinfo i toppen, da den allerede findes i dokumentets header.)
     ---ICAN---
-    (Skriv interview pitch på dansk her. Følg ICAN+ guiden punkt for punkt: Intro, Credentials, Accomplishments, Next steps, +.)
+    (Skriv interview pitch på dansk her. Følg ICAN+ guiden punkt for punkt: Interesse, Kvalifikationer, Konkrete resultater, Næste skridt, +. Gør det letlæseligt med overskrifter.)
     ---MATCH---
-    (Skriv match analyse på dansk her. Inkluder altid linjen: [SCORE] XX% [/SCORE] øverst.)`;
+    (Skriv match analyse på dansk her. Inkluder altid linjen: [SCORE] XX% [/SCORE] øverst. Lav derefter en overskuelig analyse af match mellem job og profil.)`;
+
 
     let contentRaw = await callLocalGemini(generatePrompt);
     
