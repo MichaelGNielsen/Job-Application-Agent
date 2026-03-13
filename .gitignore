@@ -1,24 +1,10 @@
-# Environment variables (private - contains personal info)
+# Ignore lock files
+.~lock.*
+
+# Ignore personal env file
 .env
 
-# Personal CV files (template versions)
-*_template_*.odt
+# Ignore generated job directories
+2026*
 
-# Legacy ODT - not recommended
-*.odt
-
-# Temporary/debug files
-*.tmp
-*.swp
-*~
-test_*
-*_v2.*
-*_nohf.*
-*_tight.*
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# LibreOffice lock files
-.~lock.*
+# Ignore generated test/debug files
