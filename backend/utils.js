@@ -81,6 +81,7 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
         <div class="date-location">${new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
     </header>
     <div class="content ${type === 'cv' ? 'cv-header' : ''}">
+        ${type === 'cv' ? '<br><br>' : ''}
         ${c.replace(/\[SCORE\]\s*(.*?)\s*\[\/SCORE\]/gi, '<div class="match-score">Samlet Match Score: $1</div>')}
     </div>
     ${type === 'ansøgning' ? `

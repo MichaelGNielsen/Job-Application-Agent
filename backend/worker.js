@@ -68,8 +68,13 @@ const worker = new Worker('job_queue', async (job) => {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 13).replace('T', '_');
     let companyName = "firma";
     if (companyUrl) { try { companyName = new URL(companyUrl).hostname.split('.')[0]; } catch (e) {} }
-    
-    const folderName = `${timestamp}_demo_${companyName}`;
+
+    // Find stillingsbetegnelse fra jobText (f.eks. efter "Senior Efterforsker")
+    const jobTitleMatch = jobText.match(/^#+\s*(.*)/) || jobText.match(/(?:Stilling:|Job:|Som)\s*([A-Zæøåa-z0-9 ]+)/i);
+    const jobTitleRaw = jobTitleMatch ? jobTitleMatch[1].trim() : "stilling";
+    const jobTitleSafe = jobTitleRaw.substring(0, 30).replace(/[^a-zæøå0-9]/gi, '_');
+
+    const folderName = `${timestamp}_demo_${companyName}_${jobTitleSafe}`;
     const folderPath = path.join(rootDir, folderName);
     if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
 
@@ -132,20 +137,22 @@ const worker = new Worker('job_queue', async (job) => {
     ];
 
     for (const s of sections) {
-        const mdPath = path.join(folderPath, `${s.id}.md`);
-        const htmlPath = path.join(folderPath, `${s.id}.html`);
+        const safeTitle = s.title.replace(/\s+/g, '_');
+        const fileName = `Tintin_${companyName}_${jobTitleSafe}_${safeTitle}`;
+        const mdPath = path.join(folderPath, `${fileName}.md`);
+        const htmlPath = path.join(folderPath, `${fileName}.html`);
         fs.writeFileSync(mdPath, s.md);
         
-        const htmlBody = await mdToHtml(s.md, mdPath, `${s.id}_body.html`);
+        const htmlBody = await mdToHtml(s.md, mdPath, `${fileName}_body.html`);
         // Wrap den fulde HTML med header/footer
-        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName });
+        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw });
         fs.writeFileSync(htmlPath, fullHtml);
         
         results.markdown[s.id] = s.md;
-        results.html[s.id] = fullHtml; // Her sender vi den FULDE HTML med header/CSS til FE
+        results.html[s.id] = fullHtml;
         results.links[s.id] = {
-            md: `/api/applications/${folderName}/${s.id}.md`,
-            html: `/api/applications/${folderName}/${s.id}.html`
+            md: `/api/applications/${folderName}/${fileName}.md`,
+            html: `/api/applications/${folderName}/${fileName}.html`
         };
     }
 
