@@ -10,7 +10,6 @@ const dotenv = require('dotenv');
 const { exec } = require('child_process');
 const { promisify } = require('util');
 const { mdToHtml, wrap } = require('./utils');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const execPromise = promisify(exec);
 
@@ -59,21 +58,22 @@ async function printToPdf(htmlPath, pdfPath) {
 
 async function callLocalGemini(prompt) {
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
-        const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-        
-        if (!apiKey || apiKey === 'DIN_API_NØGLE_HER') {
-            throw new Error("Gemini API nøgle mangler! Tjek venligst din .env_ai fil.");
+        // Vi bruger CLI metoden igen som requested, da den virkede før.
+        // Vi sikrer os at API nøglen er sat i miljøet for CLI'en.
+        if (process.env.GEMINI_API_KEY) {
+            process.env.GOOGLE_API_KEY = process.env.GEMINI_API_KEY;
         }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: modelName });
-
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        return response.text();
+        const tempFile = path.join('/tmp', `prompt_${Date.now()}.txt`);
+        fs.writeFileSync(tempFile, prompt);
+        
+        // Kør CLI kommandoen (bruger den model der er sat i maskinen/miljøet)
+        const { stdout } = await execPromise(`gemini < "${tempFile}"`);
+        
+        if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
+        return stdout;
     } catch (error) {
-        console.error("Fejl ved kald til Gemini SDK:", error.message);
+        console.error("Fejl ved kald til Gemini CLI:", error.message);
         throw error;
     }
 }
@@ -146,7 +146,7 @@ io.on('connection', (socket) => {
   socket.on('job_status_update', (data) => { io.to(data.jobId).emit('job_status_update', data); });
 });
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`[SERVER v2.1] kører på port ${PORT}`);
 });
