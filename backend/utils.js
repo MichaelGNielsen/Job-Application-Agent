@@ -66,8 +66,9 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
         li { margin-bottom: 6px; }
         .signature { margin-top: 50px; }
         .signature p { margin: 0; line-height: 1.2; }
-        .match-score { font-size: 2em; font-weight: bold; color: #2ecc71; text-align: center; margin: 20px 0; border: 2px solid #2ecc71; padding: 10px; border-radius: 10px; background: #f9fffb; }
+        .match-score { font-size: 1.2em; font-weight: bold; color: #000; margin: 20px 0; border-bottom: 2px solid #000; padding-bottom: 5px; }
         .md-content { font-size: 1.05em; }
+        .cv-header { margin-bottom: 30px; }
     </style>
 </head>
 <body>
@@ -79,10 +80,13 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
         </div>
         <div class="date-location">${new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
     </header>
-    <div class="content">${c.replace(/\[SCORE\]\s*(.*?)\s*\[\/SCORE\]/gi, '<div class="match-score">$1 Match</div>')}</div>
+    <div class="content ${type === 'cv' ? 'cv-header' : ''}">
+        ${c.replace(/\[SCORE\]\s*(.*?)\s*\[\/SCORE\]/gi, '<div class="match-score">Samlet Match Score: $1</div>')}
+    </div>
     ${type === 'ansøgning' ? `
     <div class="signature">
         <p>Med venlig hilsen,</p>
+        <br>
         <p><strong>${process.env.MIT_NAVN}</strong></p>
     </div>
 ` : ''}
