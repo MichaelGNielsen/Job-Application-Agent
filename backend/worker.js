@@ -7,10 +7,13 @@ const path = require('path');
 const dotenv = require('dotenv');
 const { io } = require('socket.io-client');
 const { mdToHtml, wrap, wrapAll } = require('./utils');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const execPromise = promisify(exec);
 const rootDir = '/app/shared';
-dotenv.config({ path: path.join(rootDir, '.env') });
+// Indlæs begge .env filer
+dotenv.config({ path: path.join(rootDir, '.env_private') });
+dotenv.config({ path: path.join(rootDir, '.env_ai') });
 
 const redisConnection = new IORedis({
   host: process.env.REDIS_HOST || 'redis',
@@ -22,13 +25,21 @@ const socket = io('http://localhost:3002');
 
 async function callLocalGemini(prompt) {
     try {
-        const tempFile = path.join('/tmp', `prompt_${Date.now()}.txt`);
-        fs.writeFileSync(tempFile, prompt);
-        const { stdout } = await execPromise(`gemini < "${tempFile}"`);
-        if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
-        return stdout;
+        const apiKey = process.env.GEMINI_API_KEY;
+        const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+        
+        if (!apiKey || apiKey === 'DIN_API_NØGLE_HER') {
+            throw new Error("Gemini API nøgle mangler! Tjek venligst din .env_ai fil.");
+        }
+
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: modelName });
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        return response.text();
     } catch (error) {
-        console.error("Fejl ved kald til Gemini CLI:", error);
+        console.error("Fejl ved kald til Gemini SDK:", error.message);
         throw error;
     }
 }

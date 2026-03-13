@@ -15,7 +15,8 @@ services:
       - REDIS_HOST=redis
       - PORT=3002
     env_file:
-      - .env
+      - .env_private
+      - .env_ai
     volumes:
       - ./backend:/app
       - /app/node_modules

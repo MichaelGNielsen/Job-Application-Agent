@@ -10,12 +10,15 @@ const dotenv = require('dotenv');
 const { exec } = require('child_process');
 const { promisify } = require('util');
 const { mdToHtml, wrap } = require('./utils');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const execPromise = promisify(exec);
 
 // Konfigurer stier - Vi tvinger den til /app/shared
 const rootDir = '/app/shared';
-dotenv.config({ path: path.join(rootDir, '.env') });
+// Indlæs begge .env filer
+dotenv.config({ path: path.join(rootDir, '.env_private') });
+dotenv.config({ path: path.join(rootDir, '.env_ai') });
 
 const app = express();
 const server = http.createServer(app);
@@ -33,13 +36,12 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 
 // SERVER STATISKE FILER - Med rettet routing
-// express.static(rootDir) betyder at /api/applications/foo.pdf leder efter rootDir/foo.pdf
 app.use('/api/applications', express.static(rootDir, {
-    index: false, // Deaktiver directory listing
+    index: false,
     setHeaders: (res, path) => {
         if (path.endsWith('.pdf')) {
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'inline'); // Vis i browser
+            res.setHeader('Content-Disposition', 'inline');
         }
     }
 }));
@@ -54,15 +56,24 @@ async function printToPdf(htmlPath, pdfPath) {
         return false;
     }
 }
+
 async function callLocalGemini(prompt) {
     try {
-        const tempFile = path.join('/tmp', `prompt_${Date.now()}.txt`);
-        fs.writeFileSync(tempFile, prompt);
-        const { stdout } = await execPromise(`gemini < "${tempFile}"`);
-        if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
-        return stdout;
+        const apiKey = process.env.GEMINI_API_KEY;
+        const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+        
+        if (!apiKey || apiKey === 'DIN_API_NØGLE_HER') {
+            throw new Error("Gemini API nøgle mangler! Tjek venligst din .env_ai fil.");
+        }
+
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: modelName });
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        return response.text();
     } catch (error) {
-        console.error("Fejl ved kald til Gemini CLI:", error);
+        console.error("Fejl ved kald til Gemini SDK:", error.message);
         throw error;
     }
 }
@@ -94,8 +105,6 @@ app.post('/api/brutto/translate', async (req, res) => {
 });
 
 app.post('/api/generate', async (req, res) => {
-...
-
   try {
     const { jobText, companyUrl, hint } = req.body;
     const jobId = "job_" + Date.now().toString();
@@ -109,7 +118,6 @@ app.post('/api/refine', async (req, res) => {
     const { folder, type, markdown } = req.body; 
     const folderPath = path.join(rootDir, folder);
     
-    // Find den eksisterende fil der matcher typen (f.eks. Ansøgning_*)
     const files = fs.readdirSync(folderPath);
     const typeLabel = type === 'ansøgning' ? 'Ansøgning' : type === 'cv' ? 'CV' : type === 'match' ? 'Match_Analyse' : 'ICAN+_Pitch';
     const existingFile = files.find(f => f.startsWith(typeLabel) && f.endsWith('.md'));
