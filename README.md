@@ -1,31 +1,36 @@
-# Job Application Agent - Tintin Demo (v2.4)
+# Job Application Agent - Tintin Demo (v2.6.1)
 
-Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI kan transformere en personlig erfaringsbase (Master CV) til målrettede ansøgningsdokumenter på få sekunder. Læs mere om systemets opbygning i [Architecture Documentation](docs/architecture.md).
+![Gromit laying tracks](pictures/grommit-train-tracks.gif)
+
+*AI der lægger skinnerne i vildskab, mens jobansøgningen buldrer afsted!* 🚂🐶🛠️
+
+Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI transformerer en personlig erfaringsbase (Master CV) til 4 professionelle, målrettede dokumenter på få sekunder. 
+
+Dette er den **officielle præsentations-version (v2.6.1)**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data.
 
 ## 🚀 Kom i gang med Demoen
-1.  Åbn terminalen i denne mappe (`web_demo_tintin`).
+1.  Åbn terminalen i denne mappe.
 2.  Kør: `docker-compose up -d`.
 3.  Åbn: [http://localhost:3000](http://localhost:3000) i din browser.
 
-## 🛠 Web Workflow (WYSIWYG)
-Systemet er nu fuldt automatiseret via en web-grænseflade:
+## ⚙️ Den Nye Skabelon-Motor (v2.6.1)
+Systemet er nu 100% skabelon-styret via `templates/` mappen:
+- **`ai_instructions.md`**: Her ligger AI'ens "hjerne" og opskrift på de 4 dokumenter.
+- **`master_layout.html`**: Her styres det visuelle design (CSS) og de unikke "Tintin Highlights"-billeder.
+- **Pandoc GFM**: Den professionelle Markdown-motor (GitHub Flavored) sikrer perfekt formatering af bullets, fed skrift og lister.
 
-1.  **Master CV Management:** Rediger og opdater din kilde-data direkte i UI'et. Brug "Oversæt"-knappen til lynhurtigt at gøre dig klar til internationale jobs.
-2.  **Job Input:** Indsæt et jobopslag (f.eks. fra INTERPOL) og et personligt hint.
-3.  **Real-tids AI:** Se AI'en analysere jobbet og generere 4 skræddersyede dokumenter live.
-4.  **Live Edit:** Ret i Markdown-teksten og se det færdige print-layout (HTML/PDF) opdatere sig med det samme i preview-vinduet.
-5.  **Print:** Brug "Åben i ny tab"-knappen til at printe de færdige dokumenter direkte fra browseren.
+## 📄 De 4 Magiske Dokumenter
+Hver kørsel genererer automatisk en komplet pakke i `output/` mappen:
+1.  **Ansøgning (PDF)**: Målrettet, professionel og med automatisk signatur.
+2.  **CV (PDF)**: Skræddersyet profil med visuelle "Mission Highlights" (billeder).
+3.  **Match Analyse (PDF)**: En ærlig score og gap-analyse mellem job og profil.
+4.  **ICAN+ Pitch (PDF)**: Din færdige strategi til selve jobsamtalen.
 
-## 📂 Demo Filer (Kilder)
-- [Master CV (DK)](tintin_brutto_cv.md)
-- [ICAN+ Definition](ICAN+_DEF.md)
-- [Test Job (DK)](job_dk.md)
-- [Test Job (EN)](job_en.md)
-
-## 🎯 Fokusområder til AKA Præsentationen
-*   **Match Analyse:** Vis hvordan AI'en giver en ærlig score og gap-analyse.
-*   **ICAN+ Pitch:** Vis hvordan man bliver klædt på til selve jobsamtalen.
-*   **Sprog:** Demonstrer hvordan systemet skifter mellem dansk og engelsk baseret på jobopslaget.
+## 🛡️ Demo-Sikring (Backup)
+Hvis teknikken mod forventning driller til AKA-mødet, kan du altid vise de færdige eksempler i mappen:
+- `zzz_old/tintin_interpol_ansøgning_dk.pdf`
+- `zzz_old/tintin_interpol_cv_dk.pdf`
+- Eller tjek de seneste succesfulde kørsler i `output/` mappen.
 
 ---
-*Sidst opdateret: 13. marts 2026*
+*Sidst opdateret: 14. marts 2026 - Klar til AKA-præsentation!* 🏁🏆🎩
