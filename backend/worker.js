@@ -167,6 +167,7 @@ const worker = new Worker('job_queue', async (job) => {
     updateStatus('Færdig!', { folder: folderName, lang, aiNotes, ...results });
 
   } catch (error) {
+    console.error(`[Worker] KRITISK FEJL på job ${jobId}:`, error);
     updateStatus('Fejl', { error: error.message });
   }
 }, { connection: redisConnection });
