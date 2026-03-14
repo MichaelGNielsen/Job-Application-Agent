@@ -3,6 +3,8 @@ const { promisify } = require('util');
 const fs = require('fs');
 const path = require('path');
 
+const execPromise = promisify(exec);
+
 const cleanMarkdown = (md) => {
     if (!md) return "";
     // Fjern AI-signaturer (udvidet liste til både dansk og engelsk)
