@@ -20,8 +20,21 @@ For at systemet kan køre (især på nye enheder som **Raspberry Pi 5**), skal d
 
 ## 🚀 Kom i gang med Demoen (RPi5 / Docker)
 1.  **Opsæt .env:** Opret de to filer nævnt ovenfor.
-2.  **Start Systemet:** Kør `docker-compose up -d --build`.
+2.  **Start Systemet:** Kør `docker compose up -d --build`.
+    *(Bemærk: På ældre systemer bruges `docker-compose` med bindestreg).*
 3.  **Adgang:** Åbn browseren på `http://[RPi-IP-adresse]:3000`.
+
+## 🔍 Overvågning og Fejlfinding
+Hvis systemet driller (f.eks. på en **RPi5**), kan du se loggene live med disse kommandoer:
+
+1.  **Backend (Hjernen):**
+    `docker compose logs -f backend`
+2.  **Frontend (Brugerfladen):**
+    `docker compose logs -f frontend`
+3.  **Hele Systemet:**
+    `docker compose logs -f`
+
+*(Brug `Ctrl + C` for at stoppe med at følge loggen).*
 
 ## 🛠️ Den Nye Skabelon-Motor (v2.6.3)
 Systemet er nu 100% skabelon-styret via `templates/` mappen:
