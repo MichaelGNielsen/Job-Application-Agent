@@ -34,7 +34,6 @@ const mdToHtml = async (md, filePath, outputFileName) => {
 
         return fs.readFileSync(outputPath, 'utf8');
     } catch (e) {
-...
         console.error("Pandoc fejlede!", e.message);
         // Minimal fallback der bare laver linjeskift hvis alt andet fejler
         return `<div class="md-content"><p>${cleanedMd.replace(/\n/g, '<br>')}</p></div>`;
