@@ -44,7 +44,12 @@ const mdToHtml = async (md, filePath, outputFileName) => {
 
 
 const wrap = (t, c, type = 'ansøgning', meta = {}) => {
-    const templatePath = path.join(__dirname, '..', 'templates', 'master_layout.html');
+    // Brug /app/shared/templates hvis vi er i Docker, ellers brug relativ sti
+    const rootDir = process.env.NODE_ENV === 'production' ? '/app' : path.join(__dirname, '..');
+    const templatePath = fs.existsSync('/app/shared/templates') 
+        ? '/app/shared/templates/master_layout.html' 
+        : path.join(__dirname, '..', 'templates', 'master_layout.html');
+    
     let html = fs.readFileSync(templatePath, 'utf8');
 
     const company = meta.company || '';
