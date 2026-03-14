@@ -151,9 +151,10 @@ const worker = new Worker('job_queue', async (job) => {
         const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw });
         fs.writeFileSync(htmlPath, fullHtml);
         
-        // Generer PDF automatisk for hvert dokument
+        // Generer PDF automatisk for hvert dokument med absolut sti
         updateStatus(`Genererer PDF for ${s.title}...`);
-        await printToPdf(htmlPath, pdfPath);
+        const absoluteHtmlPath = `file://${path.resolve(htmlPath)}`;
+        await printToPdf(absoluteHtmlPath, pdfPath);
         
         results.markdown[s.id] = s.md;
         results.html[s.id] = fullHtml;
