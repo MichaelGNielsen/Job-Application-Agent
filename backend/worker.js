@@ -117,16 +117,16 @@ const worker = new Worker('job_queue', async (job) => {
     
     const extractSection = (text, tag, nextTags = []) => {
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const nextTagsPattern = nextTags.length > 0 ? `(?=${nextTags.join('|')}|$)` : '$';
-        const regex = new RegExp(`${escapedTag}[\\s\\S]*?([\\s\\S]*?)${nextTagsPattern}`, 'i');
+        // Mere robust regex der fanger indhold mellem tags uanset linjeskift
+        const regex = new RegExp(`${escapedTag}\\s*([\\s\\S]*?)(?:\\n---[A-ZÆØÅ]+---|$)`, 'i');
         const match = text.match(regex);
         return match ? match[1].trim() : "";
     };
 
-    const ansMd = extractSection(docsPart || optimizedRaw, '---ANSØGNING---', ['---CV---', '---ICAN---', '---MATCH---']);
-    const cvMd = extractSection(docsPart || optimizedRaw, '---CV---', ['---ANSØGNING---', '---ICAN---', '---MATCH---']);
-    const icanMd = extractSection(docsPart || optimizedRaw, '---ICAN---', ['---ANSØGNING---', '---CV---', '---MATCH---']);
-    const matchMd = extractSection(docsPart || optimizedRaw, '---MATCH---', ['---ANSØGNING---', '---CV---', '---ICAN---']);
+    const ansMd = extractSection(docsPart || optimizedRaw, '---ANSØGNING---');
+    const cvMd = extractSection(docsPart || optimizedRaw, '---CV---');
+    const icanMd = extractSection(docsPart || optimizedRaw, '---ICAN---');
+    const matchMd = extractSection(docsPart || optimizedRaw, '---MATCH---');
 
     const results = { markdown: {}, html: {}, links: {} };
     const sections = [
@@ -137,22 +137,30 @@ const worker = new Worker('job_queue', async (job) => {
     ];
 
     for (const s of sections) {
+        if (!s.md) continue; // Spring over hvis sektionen er tom
+
         const safeTitle = s.title.replace(/\s+/g, '_');
         const fileName = `${safeTitle}_Tintin_${companyName}_${jobTitleSafe}`;
         const mdPath = path.join(folderPath, `${fileName}.md`);
         const htmlPath = path.join(folderPath, `${fileName}.html`);
+        const pdfPath = path.join(folderPath, `${fileName}.pdf`);
+        
         fs.writeFileSync(mdPath, s.md);
         
         const htmlBody = await mdToHtml(s.md, mdPath, `${fileName}_body.html`);
-        // Wrap den fulde HTML med header/footer
         const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw });
         fs.writeFileSync(htmlPath, fullHtml);
+        
+        // Generer PDF automatisk for hvert dokument
+        updateStatus(`Genererer PDF for ${s.title}...`);
+        await printToPdf(htmlPath, pdfPath);
         
         results.markdown[s.id] = s.md;
         results.html[s.id] = fullHtml;
         results.links[s.id] = {
             md: `/api/applications/${folderName}/${fileName}.md`,
-            html: `/api/applications/${folderName}/${fileName}.html`
+            html: `/api/applications/${folderName}/${fileName}.html`,
+            pdf: `/api/applications/${folderName}/${fileName}.pdf`
         };
     }
 

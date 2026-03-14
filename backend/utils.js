@@ -3,28 +3,38 @@ const { promisify } = require('util');
 const fs = require('fs');
 const path = require('path');
 
-const execPromise = promisify(exec);
-
 const cleanMarkdown = (md) => {
     if (!md) return "";
-    // Fjern AI'ens forsøg på at skrive hilsen og navn til sidst (da skabelonen gør det)
-    return md.replace(/(?:Med venlig hilsen|Sincerely|Best regards|Venlig hilsen),?\s*(?:Tintin|Michael G\. Nielsen)\s*$/gi, '').trim();
+    // Fjern AI-signaturer (udvidet liste til både dansk og engelsk)
+    const signOffPatterns = [
+        /(?:Med venlig hilsen|Venlig hilsen|De bedste hilsner|Hilsen),?[\s\n\r]*(?:Tintin|Michael G\. Nielsen)[\s\n\r]*\.?$/gi,
+        /(?:Sincerely|Best regards|Kind regards|Regards|Yours faithfully|Yours sincerely),?[\s\n\r]*(?:Tintin|Michael G\. Nielsen)[\s\n\r]*\.?$/gi
+    ];
+
+    let cleaned = md;
+    signOffPatterns.forEach(pattern => {
+        cleaned = cleaned.replace(pattern, '');
+    });
+    return cleaned.trim();
 };
+
 const mdToHtml = async (md, filePath, outputFileName) => {
     if (!md) return "";
     const cleanedMd = cleanMarkdown(md);
 
     try {
         const outputPath = path.join(path.dirname(filePath), outputFileName);
-        // Tving sync skrivning af den rensede MD-fil
         fs.writeFileSync(filePath, cleanedMd);
 
-        // Brug 'markdown-gfm' (GitHub Flavored Markdown) da den er bedst til bullets og formatering
-        const cmd = `pandoc -f gfm -t html --wrap=none -o "${outputPath}" "${filePath}"`;
+        // Vi tilføjer '--smart' med minus foran for at DEAKTIVERE det i visse Pandoc versioner,
+        // eller vi bruger '-smart' (uden plus) for at sikre at vi får almindelige tegn.
+        // I Pandoc 3.x deaktiveres det med --no-highlight eller ved at undlade det.
+        const cmd = `pandoc -f gfm-smart -t html --wrap=none -o "${outputPath}" "${filePath}"`;
         await execPromise(cmd);
 
         return fs.readFileSync(outputPath, 'utf8');
     } catch (e) {
+...
         console.error("Pandoc fejlede!", e.message);
         // Minimal fallback der bare laver linjeskift hvis alt andet fejler
         return `<div class="md-content"><p>${cleanedMd.replace(/\n/g, '<br>')}</p></div>`;
