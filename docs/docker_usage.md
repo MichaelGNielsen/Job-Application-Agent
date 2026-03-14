@@ -8,21 +8,21 @@ Når du har lavet ændringer i koden eller Dockerfile, skal containerne genopbyg
 
 ```bash
 # Standard genopbygning (bruger cache hvis muligt)
-docker-compose up --build -d
+docker compose up --build -d
 
 # FORCE REBUILD (Hvis du vil ignorere cache og bygge alt forfra)
-docker-compose build --no-cache
-docker-compose up --force-recreate -d
+docker compose build --no-cache
+docker compose up --force-recreate -d
 
 # Stop og fjern alt (Rydder også netværk)
-docker-compose down
+docker compose down
 ```
 
 # Se logs fra backenden (hvis noget fejler)
-docker logs -f ja-backend
+docker compose logs -f backend
 
 # Se status på alle containere
-docker ps
+docker compose ps
 ```
 
 ## 🛠 WSL Fejlhåndtering (Kør disse i PowerShell på Windows)
