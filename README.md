@@ -26,11 +26,6 @@ Hver kørsel genererer automatisk en komplet pakke i `output/` mappen:
 3.  **Match Analyse (PDF)**: En ærlig score og gap-analyse mellem job og profil.
 4.  **ICAN+ Pitch (PDF)**: Din færdige strategi til selve jobsamtalen.
 
-## 🛡️ Demo-Sikring (Backup)
-Hvis teknikken mod forventning driller til AKA-mødet, kan du altid vise de færdige eksempler i mappen:
-- `zzz_old/tintin_interpol_ansøgning_dk.pdf`
-- `zzz_old/tintin_interpol_cv_dk.pdf`
-- Eller tjek de seneste succesfulde kørsler i `output/` mappen.
 
 ---
 *Sidst opdateret: 14. marts 2026 - Klar til AKA-præsentation!* 🏁🏆🎩

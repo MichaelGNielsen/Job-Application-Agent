@@ -69,3 +69,19 @@ En dag med enorme fremskridt! Vi er gået fra en statisk generator til et intera
 - [ ] **Gem Alle Knap:** Implementer bulk-print/save.
 - [ ] **Overflow Check:** Implementer teknisk tjek for overflow (A4 limit).
 
+
+## Status: 14. Marts 2026 - Demo-klar v2.6.2 🚀🏆
+Vi har i dag gennemført den store oprydning og tekniske fintuning før AKA-præsentationen.
+
+### Dagens vigtigste resultater:
+- **Template Engine**: Layout (HTML/CSS) og AI-instrukser (Prompts) er nu helt adskilt fra koden i `/templates`.
+- **Pandoc GFM Integration**: Vi bruger nu professionel Markdown-konvertering, hvilket sikrer perfekte bullets og formatering.
+- **Automatiseret PDF**: Systemet genererer nu automatisk 4 separate PDF-filer pr. kørsel med korrekt navngivning.
+- **Robust Sektions-opdeling**: AI'ens svar bliver nu præcist opdelt, så CV'et kun indeholder CV'et.
+- **Visuel Identitet**: Tintin "Mission Highlights" (billeder) er nu integreret i CV-layoutet.
+- **Clean Install**: Alle overflødige filer og test-mapper er fjernet. Projektet er 100% præsentationsklart.
+
+### Klar til demo:
+Systemet er testet med både dansk og engelsk (UK) jobopslag og håndterer nu sprog, hilsener og typografi fejlfrit.
+
+**God demo i morgen!** 🎩🚀🏁
