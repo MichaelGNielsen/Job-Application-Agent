@@ -91,25 +91,15 @@ const worker = new Worker('job_queue', async (job) => {
     fs.writeFileSync(path.join(folderPath, 'job.md'), jobText);
 
     updateStatus('Genererer udkast...');
-    const generatePrompt = `Du er en ekspert karriererådgiver for TINTIN. 
-    BRUG DISSE DATA OM TINTIN: """${bruttoCv}"""
-    JOB: """${jobText}"""
-    ${hint ? `HINT: "${hint}"` : ''}
-    SPROG-REGLER:
-    - Ansøgning og CV skal skrives på ${lang === 'dk' ? 'DANSK' : 'ENGELSK'}.
-    - Match Analyse og ICAN+ Pitch skal skrives på DANSK (uanset jobbet).
+    const aiInstructionsPath = path.join(rootDir, 'templates', 'ai_instructions.md');
+    let generatePromptTemplate = fs.readFileSync(aiInstructionsPath, 'utf8');
 
-    ICAN+ GUIDELINE: """${icanDef}"""
-
-    Generer 4 sektioner i Markdown:
-    ---ANSØGNING---
-    (Skriv målrettet ansøgning her. START DIREKTE med modtagers navn og derefter selve ansøgningen. Skriv IKKE Tintins kontaktinfo eller dato, og slut IKKE med underskrift/navn, da det automatisk bliver påført af systemet.)
-    ---CV---
-    (Skriv skræddersyet CV her. Start med en stærk profiltekst. Inkluder IKKE personlig kontaktinfo i toppen, da den allerede findes i dokumentets header.)
-    ---ICAN---
-    (Skriv interview pitch på dansk her. Følg ICAN+ guiden punkt for punkt: Interesse, Kvalifikationer, Konkrete resultater, Næste skridt, +. Gør det letlæseligt med overskrifter.)
-    ---MATCH---
-    (Skriv match analyse på dansk her. Inkluder altid linjen: [SCORE] XX% [/SCORE] øverst. Lav derefter en overskuelig analyse af match mellem job og profil.)`;
+    const generatePrompt = generatePromptTemplate
+        .replace(/{{BRUTTO_CV}}/g, bruttoCv)
+        .replace(/{{JOB_TEXT}}/g, jobText)
+        .replace(/{{HINT}}/g, hint || "Ingen specielle hints.")
+        .replace(/{{LANG_NAME}}/g, lang === 'dk' ? 'DANSK' : 'ENGELSK')
+        .replace(/{{ICAN_DEF}}/g, icanDef);
 
 
     let contentRaw = await callLocalGemini(generatePrompt);
