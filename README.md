@@ -8,12 +8,22 @@ Velkommen til den officielle demo af **Job Application Agent**. Dette projekt de
 
 Dette er den **officielle præsentations-version (v2.6.1)**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data.
 
-## 🚀 Kom i gang med Demoen
-1.  Åbn terminalen i denne mappe.
-2.  Kør: `docker-compose up -d`.
-3.  Åbn: [http://localhost:3000](http://localhost:3000) i din browser.
+## ⚙️ Miljø-konfiguration (.env)
+For at systemet kan køre (især på nye enheder som **Raspberry Pi 5**), skal du oprette to `.env` filer i projektets rodmappe. Brug de medfølgende skabeloner som udgangspunkt:
 
-## ⚙️ Den Nye Skabelon-Motor (v2.6.1)
+1.  **`.env_ai`**: Indeholder din Gemini API-nøgle og model-valg.
+    *   Kopier fra `.env_ai_template`.
+    *   Hent din nøgle her: [Google AI Studio](https://aistudio.google.com/app/apikey).
+2.  **`.env_private`**: Indeholder personlige data (Navn, Adresse, Email osv.), som flettes ind i dine dokumenter.
+    *   Kopier fra `.env_private_template`.
+    *   Her styres identiteten (f.eks. Tintin eller dit eget navn).
+
+## 🚀 Kom i gang med Demoen (RPi5 / Docker)
+1.  **Opsæt .env:** Opret de to filer nævnt ovenfor.
+2.  **Start Systemet:** Kør `docker-compose up -d --build`.
+3.  **Adgang:** Åbn browseren på `http://[RPi-IP-adresse]:3000`.
+
+## 🛠️ Den Nye Skabelon-Motor (v2.6.3)
 Systemet er nu 100% skabelon-styret via `templates/` mappen:
 - **`ai_instructions.md`**: Her ligger AI'ens "hjerne" og opskrift på de 4 dokumenter.
 - **`master_layout.html`**: Her styres det visuelle design (CSS) og de unikke "Tintin Highlights"-billeder.
