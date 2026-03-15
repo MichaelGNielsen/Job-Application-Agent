@@ -28,14 +28,17 @@ Generer 4 sektioner i Markdown:
 
 ---ANSØGNING---
 (Skriv målrettet ansøgning her. Følg denne struktur nøje:
-1. START med modtagerens navn og adresse (uden fed skrift).
-2. Skriv en emnelinje der starter med 'Vedrørende: ' (uden fed skrift).
-3. Skriv selve ansøgningen.
-4. STOP efter det sidste punktum i selve teksten. 
-5. Skriv ALDRIG 'Med venlig hilsen' eller 'Tintin' til sidst, da systemet automatisk indsætter din professionelle signatur.)
+1. START direkte med MODTAGERENS navn og adresse (f.eks. INTERPOL General Secretariat, Lyon).
+2. Skriv ALDRIG din egen adresse, dit navn eller datoen i toppen, da systemet automatisk indsætter din professionelle header (Møllenborg Slot).
+3. Skriv en emnelinje der starter med 'Vedrørende: ' (uden fed skrift).
+4. Skriv selve ansøgningen.
+5. STOP efter det sidste punktum i selve teksten. 
+6. Skriv ALDRIG 'Med venlig hilsen' eller 'Tintin' til sidst.)
 
 ---CV---
-(Skriv skræddersyet CV her. Start med en stærk profiltekst. Inkluder IKKE personlig kontaktinfo i toppen. Brug '##' til sektioner som Erfaring, Uddannelse og Kompetencer.)
+(Skriv skræddersyet CV her. Start med en stærk profiltekst. 
+1. Inkluder ABSOLUT INGEN personlig kontaktinfo, adresser eller navne i toppen. 
+2. Brug '##' til sektioner som Erfaring, Uddannelse og Kompetencer.)
 
 ---ICAN---
 (Skriv interview pitch på dansk her. Følg ICAN+ guiden punkt for punkt: Interesse, Kvalifikationer, Konkrete resultater, Næste skridt, +. Gør det letlæseligt med overskrifter.)
