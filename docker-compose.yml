@@ -31,6 +31,8 @@ services:
     container_name: jaa-frontend
     ports:
       - "3000:3000"
+    env_file:
+      - .env_ai
     volumes:
       - ./frontend:/app
       - /app/node_modules # Forhindrer at node_modules bliver overskrevet af den tomme lokale mappe
