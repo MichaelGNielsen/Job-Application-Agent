@@ -13,14 +13,20 @@ Dette er planen for at gøre systemet 100% skabelon-styret og klar til både Tin
 
 ### 🎨 HTML & Design (CSS)
 
+### 🎨 HTML & Design (CSS)
+
 - [x] **Opret `templates/master_layout.html`**: Flyt CSS og HTML-skelet (Header/Footer) ud af `backend/utils.js`.
+- [ ] **Centreret Layout:** Genskab den centrerede "body" i browseren, så indholdet følger med skærmstørrelsen og altid er i midten af vinduet.
 - [ ] **Implementér Layout-skift**: Gør det muligt at bruge forskellige layouts (f.eks. "Moderne", "Klassisk").
 - [ ] **Billed-support**: Sikre at profilbilleder og logoer fra `pictures/` mappen kan inkluderes dynamisk.
 
 ### 🤖 AI & Prompter (Markdown)
 
 - [x] **Opret `templates/ai_instructions.md`**: Flyt AI'ens "opskrift" på de 4 dokumenter (Ansøgning, CV, Match, ICAN+) ud af `backend/worker.js`.
-- [ ] **Sektions-styring**: Gøre det nemt at tilføje eller fjerne sektioner (f.eks. hvis man kun vil have CV og Match).
+- [ ] **Sektions-styring**: Gøre det nemt at tilføje eller fjerne sektioner.
+- [ ] **Markdown Regler (v2.7.0):**
+    - [ ] Sikre at der kun er én top-level overskrift (#) per dokument.
+    - [ ] Sikre at der kun er ét mellemrum efter liste-markører (- eller *).
 
 ### ⚙️ Engine Opdatering (Backend)
 
