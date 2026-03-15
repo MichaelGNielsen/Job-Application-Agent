@@ -66,29 +66,6 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
         </div>`;
     }
 
-    // Portfolio sektion (kun til CV)
-    let portfolioSection = "";
-    if (type === 'cv') {
-        portfolioSection = `
-        <div class="portfolio">
-            <div class="portfolio-title">Udvalgte Missioner & Højdepunkter</div>
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="../../pictures/tintin_moon_1.jpg" alt="Månen">
-                    <p>Første mand på månen</p>
-                </div>
-                <div class="gallery-item">
-                    <img src="../../pictures/tintin_unicorn.jpg" alt="Enhjørningen">
-                    <p>Enhjørningens hemmelighed</p>
-                </div>
-                <div class="gallery-item">
-                    <img src="../../pictures/tintin_rackham.jpg" alt="Rackham">
-                    <p>Rackham den Rødes skat</p>
-                </div>
-            </div>
-        </div>`;
-    }
-
     // Erstat placeholders
     // Vi fjerner den komplekse split-logik der ødelagde layoutet og lader Pandoc output stå som det er
     html = html
@@ -99,8 +76,7 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
         .replace(/{{EMAIL}}/g, process.env.MIN_EMAIL || "")
         .replace(/{{DATE}}/g, new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' }))
         .replace(/{{CONTENT}}/g, c.replace(/\[SCORE\]\s*(.*?)\s*\[\/SCORE\]/gi, '<div class="match-score">Samlet Match Score: $1</div>'))
-        .replace(/{{SIGNATURE_SECTION}}/g, signatureSection)
-        .replace(/{{PORTFOLIO_SECTION}}/g, portfolioSection);
+        .replace(/{{SIGNATURE_SECTION}}/g, signatureSection);
 
     return html;
 };

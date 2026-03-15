@@ -85,3 +85,19 @@ Vi har i dag gennemført den store oprydning og tekniske fintuning før AKA-præ
 Systemet er testet med både dansk og engelsk (UK) jobopslag og håndterer nu sprog, hilsener og typografi fejlfrit.
 
 **God demo i morgen!** 🎩🚀🏁
+
+### ⚠️ Observation: Forskel på UE1 og RPi5 (v2.6.12)
+Under 'crash test' på Raspberry Pi 5 blev følgende observeret:
+1.  **Auto-Save**: På RPi5 genereres alle 4 PDF-filer nu automatisk i baggrunden (v2.6.11 feature). På UE1 (hvis ikke opdateret) kræver det manuel handling.
+2.  **UI Interaktion**: Der er rapporteret problemer med at starte en 'ny' generering fra web-interfacet på RPi5 efter den første kørsel. Det skal undersøges om det skyldes Redis-køen eller Socket.io forbindelsen på ARM64.
+3.  **Filstruktur**: RPi5 setup'et er nu fuldt funktionelt med 'docker compose' og absolutte 'file://' stier til PDF-generering.
+
+**Status:** Systemet er nu 'Multi-Arch' kompatibelt! 🌍🥧
+
+### 🖼️ Note: Billed-sti & Browser-print (v2.6.12)
+- **Problem**: Billeder i CV vises i PDF'er genereret af backenden, men mangler ved manuelt print fra browseren.
+- **Årsag**: Relativ sti (../../pictures/) virker for Chromium på disk, men ikke for browseren via URL.
+- **Handling i morgen**: Backend skal 'serve' /pictures mappen statisk via Express, og stierne i utils.js skal opdateres til at matche.
+
+### 📄 Note: Download Filnavn
+- **Handling i morgen**: Sikre 'Content-Disposition' header i API'et, så PDF'er downloades med deres rigtige navne i stedet for standardnavne.
