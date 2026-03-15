@@ -104,7 +104,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a192f] text-gray-100 p-8 font-sans">
+    <div className="min-h-screen w-full bg-[#0a192f] text-gray-100 p-8 font-sans scroll-smooth">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 text-center">
           <h1 className="text-3xl font-light tracking-widest uppercase text-cyan-400 border-b border-cyan-500/30 pb-4 inline-block">Job Application Agent | {VERSION}</h1>

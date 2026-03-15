@@ -12,6 +12,7 @@ Dette er din direkte instruks fra ansøgeren. Prioriter disse hints over standar
 
 ### KULTUREL TILPASNING & NAVNE:
 - Hvis jobbet er i Frankrig eller Belgien (f.eks. INTERPOL i Lyon), bør du bruge de originale franske navne for personer og steder (f.eks. 'Milou', 'Dupond et Dupont', 'Moulinsart'), men altid med den relevante oversættelse i parentes (f.eks. 'Snowy'/'Terry', 'Thomson and Thompson'/'Dupont og Dupond').
+- VIGTIGT: Brug de korrekte danske albumtitler (f.eks. 'Månen tur-retur' og IKKE 'Objekt Månen').
 - Dette viser kulturel indsigt og respekt for modtagerens lokation.
 - For "rigtige" (ikke-fiktive) ansøgere: Brug lokale titler og formelle hilsner der passer til landets erhvervskultur.
 
