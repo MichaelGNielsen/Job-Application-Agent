@@ -137,5 +137,5 @@ io.on('connection', (socket) => {
 
 const PORT = 3002;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`[SERVER v2.1] kører på port ${PORT}`);
+  console.log(`[SERVER ${process.env.VITE_APP_VERSION || 'v2.6'}] kører på port ${PORT}`);
 });

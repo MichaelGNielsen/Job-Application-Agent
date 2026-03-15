@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 
 const socket = io();
 
-const VERSION = "v2.4.0-master-cv";
+const VERSION = import.meta.env.VITE_APP_VERSION || "v2.6.x-dev";
 const THEME_COLOR = "cyan";
 
 const App: React.FC = () => {
