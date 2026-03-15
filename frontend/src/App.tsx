@@ -4,10 +4,10 @@ import { io } from 'socket.io-client';
 
 const socket = io();
 
-const VERSION = import.meta.env.VITE_APP_VERSION || "v2.6.x-dev";
 const THEME_COLOR = "cyan";
 
 const App: React.FC = () => {
+  const [version, setVersion] = useState('v2.6.x-dev');
   const [jobText, setJobText] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [hint, setHint] = useState('');
@@ -76,6 +76,11 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    fetch('/api/version')
+      .then(res => res.json())
+      .then(data => setVersion(`v${data.version}`))
+      .catch(e => console.error("Kunne ikke hente version"));
+
     fetch('/api/brutto').then(res => res.json()).then(data => setBruttoCv(data.content));
 
     socket.on('job_status_update', (data) => {
@@ -115,7 +120,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-[#0a192f] text-gray-100 p-8 font-sans">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 text-center">
-          <h1 className="text-3xl font-light tracking-widest uppercase text-cyan-400 border-b border-cyan-500/30 pb-4 inline-block">Job Application Agent</h1>
+          <h1 className="text-3xl font-light tracking-widest uppercase text-cyan-400 border-b border-cyan-500/30 pb-4 inline-block">Job Application Agent | {version}</h1>
         </header>
 
         <main className="space-y-8">
