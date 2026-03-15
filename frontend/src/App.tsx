@@ -179,7 +179,7 @@ const App: React.FC = () => {
                 <p className="text-sm text-gray-300 leading-relaxed italic">"{results.aiNotes}"</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-8">
                 {['ansøgning', 'cv', 'match', 'ican'].map((id) => {
                   const title = id === 'ansøgning' ? 'Ansøgning' : id === 'cv' ? 'CV' : id === 'match' ? 'Match Analyse' : 'ICAN+ Pitch';
                   return (
