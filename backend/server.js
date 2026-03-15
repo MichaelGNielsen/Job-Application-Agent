@@ -28,12 +28,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-// Dynamisk version fra rod-filen (trackes i Git)
 const versionFilePath = path.join(rootDir, 'VERSION');
-const APP_VERSION = fs.existsSync(versionFilePath) ? fs.readFileSync(versionFilePath, 'utf8').trim() : "2.6.x-dev";
 
 app.get('/api/version', (req, res) => {
-    res.json({ version: APP_VERSION });
+    try {
+        const currentVersion = fs.existsSync(versionFilePath) ? fs.readFileSync(versionFilePath, 'utf8').trim() : "2.6.x-dev";
+        res.json({ version: currentVersion });
+    } catch (e) {
+        res.status(500).json({ version: "error" });
+    }
 });
 
 const redisConnection = new IORedis({
@@ -145,5 +148,6 @@ io.on('connection', (socket) => {
 
 const PORT = 3002;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`[SERVER v${APP_VERSION}] kører på port ${PORT}`);
+  const startVersion = fs.existsSync(versionFilePath) ? fs.readFileSync(versionFilePath, 'utf8').trim() : "2.6.x-dev";
+  console.log(`[SERVER v${startVersion}] kører på port ${PORT}`);
 });
