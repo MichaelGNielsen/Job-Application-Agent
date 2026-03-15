@@ -7,7 +7,7 @@ Eventyrreporter med 15+ års erfaring fra alle verdenshjørner. Kombinerer dyb t
 ## Kernekompetencer
 
 * **International efterforskning:** Erfaring med komplekse sager i over 50 lande, herunder Tibet, Sydamerika og Månen.
-* **Kryptografi & Analyse:** Ekspert i at knække koder og gennemskue skjulte plot (ref. Unicorn-sagen).
+* **Kryptografi & Analyse:** Ekspert i at knække koder og gennemskue skjulte plot (ref. Enhjørningens hemmelighed).
 * **Teknisk snilde:** Hurtig til at mestre nyt udstyr, fra avanceret radioudstyr til mini-ubåde.
 * **Krisestyring:** Dokumenteret evne til at bevare roen i livsfarlige situationer.
 * **Sprog:** Flydende i Fransk, Engelsk og Syldavisk. Forstår Bordurisk.
