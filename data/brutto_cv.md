@@ -17,11 +17,13 @@ Eventyrreporter med 15+ års erfaring fra alle verdenshjørner. Kombinerer dyb t
 ## Erfaring
 
 ### Chef-efterforsker & Reporter | Le Petit Vingtième (1929 – nu)
+
 * Lidt af hvert: Opklaret adskillige internationale narkosmugler-ringe, fundet forsvundne videnskabsmænd og stoppet militærkup.
 * Ansvarlig for planlægning og logistik af ekspeditioner under ekstreme forhold.
 * Koordinering med lokale myndigheder og Interpol i grænseoverskridende kriminalitet.
 
 ### Specialkonsulent | Det Syldaviske Rumprogram
+
 * Deltog i den første bemandede månelanding som sikkerhedsansvarlig.
 * Håndterede sabotageforsøg under kritiske faser af missionen.
 

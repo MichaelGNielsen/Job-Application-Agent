@@ -19,6 +19,7 @@ Her er, hvordan du kan bruge ICAN+ som en **overordnet struktur** og "rette snor
 - **A – Accomplishments / Konkrete resultater**  
   Det stærkeste kort! Brug det til **alle adfærdsspørgsmål** ("fortæl om en gang du...", "hvordan håndterer du konflikter?" osv.).  
   Strukturér svar med mini-historier:  
+
   - Situation kort  
   - Handling (hvad gjorde **du**?)  
   - Resultat (med tal hvis muligt: +35 %, sparede 120.000 kr., reducerede tid med 40 % osv.)  
@@ -31,11 +32,13 @@ Her er, hvordan du kan bruge ICAN+ som en **overordnet struktur** og "rette snor
 
 - **+ (det ekstra)**  
   Tilføj personlighed, energi eller et unikt match:  
+
   - En kort personlig vinkel ("Jeg brænder for [emne], fordi...")  
   - Et spørgsmål tilbage ("Hvordan måler I succes i den her rolle?")  
   - Positiv afslutning ("Jeg ser virkelig frem til at bidrage med...")
 
 ### Praktisk brug som "rette snor" under samtalen
+
 1. **Før samtalen**: Skriv 3–4 mini-ICAN+ sætninger til de vigtigste emner (f.eks. projektledelse, kundehåndtering, dataanalyse osv.).
 2. **Under samtalen**: Når du hører et spørgsmål → tænk hurtigt: Hvilken del af ICAN+ passer bedst her? → Svar struktureret.
 3. **Hvis du begynder at ramle**: Vend tilbage til **I** eller **N** – "Det bringer mig tilbage til hvorfor jeg søgte her..." eller "Derfor tror jeg, jeg kan bidrage med...".

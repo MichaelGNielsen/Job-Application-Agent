@@ -1,14 +1,17 @@
 # Image Prompt: Gromit Laying Train Tracks
 
 ## Main Prompt (English)
+
 A cinematic, high-detail 3D claymation scene in the style of Wallace and Gromit. Gromit the dog is sitting on top of a small wooden train cart, frantically laying down brass railway tracks on a plain floor just inches before the wheels hit the ground. The composition is a wide panoramic shot (aspect ratio 3:1). Action is centered on the right side to leave space for a profile picture on the left. Warm, indoor studio lighting, soft shadows, 4k resolution.
 
 ## Composition (left to right)
+
 1. **Tracks** - A single line of brass railway tracks extending leftward (already laid)
 2. **Train engine** - Small wooden steam engine at the LEFT, pushing towards the RIGHT, with smoke trailing to the LEFT (opposite to direction of travel)
 3. **Car** - Passenger car with Gromit sitting on top (being pushed by the engine)
 
 ## Details
+
 - **CRITICAL:** Gromit sits on the car that is IN FRONT OF the train engine
 - The train engine pushes the car (and Gromit) towards the RIGHT
 - Gromit sits on the roof of the car, facing RIGHT (towards the direction of travel)

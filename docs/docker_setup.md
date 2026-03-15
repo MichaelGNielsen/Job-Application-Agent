@@ -11,6 +11,7 @@ Dette dokument beskriver, hvordan vi containeriserer applikationen for at gøre 
 | **Redis** | Redis (Alpine) | Fungerer som Message Broker for BullMQ køen. |
 
 ## Netværksflow (Guldstandarden)
+
 1. **Frontend** sender opgave til **Backend** via Socket.io/REST.
 2. **Backend** tilføjer opgave til **Redis** køen.
 3. **Worker** (inde i Backend containeren) snupper opgaven fra **Redis**.
@@ -18,6 +19,7 @@ Dette dokument beskriver, hvordan vi containeriserer applikationen for at gøre 
 5. **Worker** sender status "Færdig" tilbage til **Frontend**.
 
 ## Docker Compose Struktur
+
 ```yaml
 services:
   redis:
@@ -44,6 +46,7 @@ services:
 ```
 
 ## GitHub Overvejelser
+
 - Vi inkluderer en `.env.example`.
 - Vi bruger `.dockerignore` for at undgå at sende `node_modules` ind i containerne.
 - Dokumentationen i `docs/` gør det nemt for nye brugere at forstå flowet.
