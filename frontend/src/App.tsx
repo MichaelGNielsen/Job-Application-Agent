@@ -1,13 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
 const socket = io();
-
+const VERSION = "v2.6.15";
 const THEME_COLOR = "cyan";
 
 const App: React.FC = () => {
-  const [version, setVersion] = useState('v2.6.x-dev');
   const [jobText, setJobText] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [hint, setHint] = useState('');
@@ -24,7 +22,7 @@ const App: React.FC = () => {
     aiNotes?: string,
     markdown: { [key: string]: string },
     html: { [key: string]: string },
-    links: { [key: string]: { md: string, html: string } }
+    links: { [key: string]: { md: string, html: string, pdf: string } }
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,11 +74,6 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch('/api/version')
-      .then(res => res.json())
-      .then(data => setVersion(`v${data.version}`))
-      .catch(e => console.error("Kunne ikke hente version"));
-
     fetch('/api/brutto').then(res => res.json()).then(data => setBruttoCv(data.content));
 
     socket.on('job_status_update', (data) => {
@@ -107,20 +100,14 @@ const App: React.FC = () => {
 
   const getDocUrl = (path: string) => {
     if (!path) return '#';
-    return `http://${window.location.hostname}:9001${path}`;
-  };
-
-  const themeClasses = {
-    text: THEME_COLOR === 'cyan' ? 'text-cyan-400' : 'text-rose-500',
-    button: THEME_COLOR === 'cyan' ? 'bg-cyan-500 hover:bg-cyan-400' : 'bg-rose-600 hover:bg-rose-500',
-    buttonActive: THEME_COLOR === 'cyan' ? 'bg-cyan-500' : 'bg-rose-600'
+    return path;
   };
 
   return (
     <div className="min-h-screen bg-[#0a192f] text-gray-100 p-8 font-sans">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 text-center">
-          <h1 className="text-3xl font-light tracking-widest uppercase text-cyan-400 border-b border-cyan-500/30 pb-4 inline-block">Job Application Agent | {version}</h1>
+          <h1 className="text-3xl font-light tracking-widest uppercase text-cyan-400 border-b border-cyan-500/30 pb-4 inline-block">Job Application Agent | {VERSION}</h1>
         </header>
 
         <main className="space-y-8">
@@ -155,70 +142,78 @@ const App: React.FC = () => {
               <input type="text" placeholder="https://firma.dk/job" className="w-full bg-[#0a192f] border border-white/10 rounded p-3 text-gray-300" value={companyUrl} onChange={(e) => setCompanyUrl(e.target.value)} />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-bold text-gray-400 mb-2">Jobopslag</label>
-              <textarea placeholder="Indsæt selve teksten fra jobopslaget her..." className="w-full h-48 bg-[#0a192f] border border-white/10 rounded p-4 text-gray-300" value={jobText} onChange={(e) => setJobText(e.target.value)} />
+              <label className="block text-sm font-bold text-gray-400 mb-2">Personligt Hint (Valgfrit)</label>
+              <input type="text" placeholder="F.eks. Husk at nævne min erfaring med Tibet..." className="w-full bg-[#0a192f] border border-white/10 rounded p-3 text-gray-300" value={hint} onChange={(e) => setHint(e.target.value)} />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-bold text-gray-400 mb-2">Personligt Hint (Valgfrit)</label>
-              <textarea placeholder="F.eks. 'Husk at nævne min erfaring med Python' eller 'Skriv den i en uformel tone'" className="w-full h-20 bg-[#0a192f] border border-white/10 rounded p-4 text-gray-300 text-sm" value={hint} onChange={(e) => setHint(e.target.value)} />
+              <label className="block text-sm font-bold text-gray-400 mb-2">Jobopslag (Indsæt tekst her)</label>
+              <textarea 
+                className="w-full h-48 bg-[#0a192f] border border-white/10 rounded p-3 text-gray-300"
+                value={jobText}
+                onChange={(e) => setJobText(e.target.value)}
+              />
             </div>
-            <button onClick={handleGenerate} disabled={isLoading} className={`w-full py-4 rounded font-bold uppercase tracking-widest transition-all ${isLoading ? 'bg-gray-700' : `${themeClasses.button} text-[#0a192f]`}`}>
-              {isLoading ? (statusMessage || 'Arbejder...') : 'Start Automatisering'}
+            <button 
+              onClick={handleGenerate}
+              disabled={isLoading}
+              className={`w-full py-4 rounded-lg font-bold uppercase tracking-widest transition-all ${isLoading ? 'bg-gray-700 cursor-not-allowed' : 'bg-cyan-600 hover:bg-cyan-500 shadow-lg shadow-cyan-500/20'}`}
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="animate-spin">🌀</span> {statusMessage}
+                </span>
+              ) : '🚀 Start Automatisering'}
             </button>
           </section>
 
-          {results && (
-            <div className="space-y-8">
-              {results.aiNotes && (
-                <section className="bg-cyan-900/20 border border-cyan-500/30 p-4 rounded text-sm italic text-cyan-100">
-                  <span className="font-bold text-cyan-400 block mb-1">AI Ræsonnement:</span> "{results.aiNotes}"
-                </section>
-              )}
+          {error && (
+            <div className="bg-red-900/30 border border-red-500/50 p-4 rounded text-red-400 text-sm">
+              ⚠️ {error}
+            </div>
+          )}
 
-              <div className="flex justify-between items-center bg-[#112240] p-4 rounded border border-white/5">
-                <span className="text-green-400 font-medium">✓ Dokumenter klar i mappen: {results.folder}</span>
+          {results && (
+            <div className="space-y-8 animate-in fade-in duration-700">
+              <div className="bg-cyan-900/20 border border-cyan-500/30 p-6 rounded-xl">
+                <h3 className="text-cyan-400 font-bold mb-2 flex items-center gap-2">🧠 AI Ræsonnement (Redaktørens noter)</h3>
+                <p className="text-sm text-gray-300 leading-relaxed italic">"{results.aiNotes}"</p>
               </div>
 
-              <div className="grid grid-cols-1 gap-12">
-                {[
-                  { id: 'ansøgning', title: 'Ansøgning' },
-                  { id: 'cv', title: 'CV' },
-                  { id: 'match', title: 'Match Analyse' },
-                  { id: 'ican', title: 'ICAN+ Pitch' }
-                ].map((doc) => (
-                  <div key={doc.id} className="bg-[#112240] rounded-xl overflow-hidden border border-white/5 shadow-2xl">
-                    <div className="bg-black/20 p-4 border-b border-white/5 flex justify-between items-center">
-                      <h3 className="font-bold uppercase tracking-widest text-gray-300">{doc.title}</h3>
-                      <div className="flex gap-3">
-                        <button onClick={() => toggleViewMode(doc.id)} className="bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">
-                          {viewModes[doc.id] === 'html' ? 'Rediger Markdown' : 'Vis Preview'}
-                        </button>
-                        <a href={getDocUrl(results.links[doc.id]?.html)} target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-500 text-white px-4 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Åben i ny tab (Print)</a>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {['ansøgning', 'cv', 'match', 'ican'].map((id) => {
+                  const title = id === 'ansøgning' ? 'Ansøgning' : id === 'cv' ? 'CV' : id === 'match' ? 'Match Analyse' : 'ICAN+ Pitch';
+                  return (
+                    <div key={id} className="bg-[#112240] rounded-xl border border-white/5 overflow-hidden flex flex-col">
+                      <div className="bg-white/5 px-4 py-3 flex justify-between items-center border-b border-white/5">
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-tighter">{title}</span>
+                        <div className="flex gap-2">
+                          <button onClick={() => toggleViewMode(id)} className="text-[10px] text-cyan-400 hover:underline">
+                            {viewModes[id] === 'html' ? 'VIS MARKDOWN' : 'VIS PREVIEW'}
+                          </button>
+                          <a href={getDocUrl(results.links[id]?.pdf)} target="_blank" rel="noreferrer" className="text-[10px] text-green-400 hover:underline">ÅBEN HTML</a>
+                        </div>
+                      </div>
+                      <div className="p-4 flex-1">
+                        {viewModes[id] === 'html' ? (
+                          <div className="prose prose-invert prose-sm max-w-none bg-white p-6 rounded shadow-inner text-gray-900 overflow-auto max-h-[400px]" dangerouslySetInnerHTML={{ __html: results.html[id] }} />
+                        ) : (
+                          <textarea 
+                            className="w-full h-[400px] bg-[#0a192f] text-cyan-50 font-mono text-xs p-4 rounded"
+                            value={results.markdown[id]}
+                            onChange={(e) => setResults({...results, markdown: {...results.markdown, [id]: e.target.value}})}
+                          />
+                        )}
+                      </div>
+                      <div className="p-4 pt-0">
+                        <button onClick={() => handleRefine(id)} className="w-full py-2 bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase tracking-widest rounded transition-colors">Opdater {title}</button>
                       </div>
                     </div>
-                    <div className="p-6">
-                      {viewModes[doc.id] === 'markdown' ? (
-                        <div className="space-y-4">
-                          <textarea className="w-full h-[600px] bg-black/30 border border-white/10 rounded p-6 font-mono text-sm text-gray-300" value={results.markdown[doc.id]} onChange={(e) => setResults({...results, markdown: {...results.markdown, [doc.id]: e.target.value}})} />
-                          <button onClick={() => handleRefine(doc.id)} className={`w-full py-3 rounded text-xs font-bold uppercase tracking-widest ${themeClasses.buttonActive} text-[#0a192f]`}>💾 Gem og opdater preview</button>
-                        </div>
-                      ) : (
-                        <div className="bg-white rounded overflow-hidden shadow-inner h-[800px]">
-                           <iframe 
-                             title={doc.title}
-                             srcDoc={results.html[doc.id]} 
-                             className="w-full h-full border-none"
-                           />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
         </main>
-        <footer className="mt-20 text-center text-gray-600 text-xs tracking-widest uppercase pb-10">Job-Application-Agent | {VERSION}</footer>
       </div>
     </div>
   );
