@@ -161,22 +161,30 @@ const worker = new Worker('job_queue', async (job) => {
         docsPart = await callLocalGemini(generatePrompt);
     }
     
+    console.log(`[Worker] Rå AI-output modtaget (${docsPart.length} tegn). Start: ${docsPart.substring(0, 200).replace(/\n/g, ' ')}`);
+    
     const extractSection = (text, tag) => {
-        const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Robust regex: Find tagget, spring over alt på samme linje, fald ind i indholdet indtil næste mærkat
-        const regex = new RegExp(`${escapedTag}.*?\\n([\\s\\S]*?)(?=\\n---[A-ZÆØÅ_]+---|$)`, 'i');
+        // Fjern bindestreger fra tag for at matche mere fleksibelt
+        const tagName = tag.replace(/-/g, '');
+        // Match mønstre som ---TAG---, --TAG--, TAG:, osv.
+        const regex = new RegExp(`(?:-+|\\b)${tagName}(?:-+|:)?\\s*\\n?([\\s\\S]*?)(?=\\n-+[A-ZÆØÅ_]+-+|=|$)`, 'i');
         const match = text.match(regex);
         
         if (!match) {
-            console.log(`[Worker] Advarsel: Kunne ikke finde sektionen ${tag} via regex.`);
+            // Sidste forsøg: Prøv at finde tag-teksten direkte
+            const simpleIndex = text.toUpperCase().indexOf(tagName.toUpperCase());
+            if (simpleIndex !== -1) {
+                const afterTag = text.substring(simpleIndex + tagName.length);
+                const endMatch = afterTag.match(/\\n-+[A-ZÆØÅ_]+-+/);
+                return (endMatch ? afterTag.substring(0, endMatch.index) : afterTag).replace(/^[:\s-]+/, '').trim();
+            }
             return "";
         }
         return match[1].trim();
     };
 
-    console.log(`[Worker] Rå AI-output modtaget (${docsPart.length} tegn)`);
-    aiNotes = extractSection(docsPart, '---REDAKTØRENS_LOGBOG---') || "AI'en har optimeret dokumenterne.";
-    const metadataRaw = extractSection(docsPart, '---LAYOUT_METADATA---');
+    aiNotes = extractSection(docsPart, 'REDAKTØRENS_LOGBOG') || "AI'en har optimeret dokumenterne.";
+    const metadataRaw = extractSection(docsPart, 'LAYOUT_METADATA');
     
     const layoutMeta = {
         signOff: metadataRaw.match(/Sign-off:\s*(.*)/i)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
