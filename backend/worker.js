@@ -130,35 +130,25 @@ const worker = new Worker('job_queue', async (job) => {
         const refinePrompt = `Du er en præcis redaktør. Her er de nuværende dokumenter for Tintin og en ny instruks fra brugeren.
         
         REGLER FOR OPDATERING:
-        1. Forklar kort (2-3 linjer) hvad du har ændret baseret på instruksen.
-        2. Skriv derefter "---START_DOCS---".
+        1. Opdater din logbog i ---REDAKTØRENS_LOGBOG---. Vær detaljeret omkring hvad du har ændret.
+        2. Bevar ---LAYOUT_METADATA--- og opdater dem hvis instruksen kræver det (f.eks. nyt sprog).
         3. Lav KUN ændringer der er direkte forespurgt i instruksen.
         4. Bevar ordlyd, struktur og indhold i alle andre sektioner 100% uændret.
-        5. Returner ALLE 4 dokumenter med de korrekte mærkater.
+        5. Returner ALLE sektioner med de korrekte mærkater.
         
         INSTRUKS: "${hint}"
         
         NUVÆRENDE DOKUMENTER:
         ${existingMarkdown}
         
-        Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].`;
+        Returner dokumenterne med mærkater: ---REDAKTØRENS_LOGBOG---, ---LAYOUT_METADATA---, ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].`;
         
-        const optimizedRaw = await callLocalGemini(refinePrompt);
-        if (optimizedRaw.includes('---START_DOCS---')) {
-            const parts = optimizedRaw.split('---START_DOCS---');
-            aiNotes = parts[0].trim();
-            docsPart = parts[1].trim();
-        } else {
-            aiNotes = "Jeg har udført de ønskede rettelser kirurgisk.";
-            docsPart = optimizedRaw;
-        }
+        docsPart = await callLocalGemini(refinePrompt);
     } else {
         updateStatus('Genererer udkast...');
         const aiInstructionsPath = path.join(rootDir, 'templates', 'ai_instructions.md');
         let generatePromptTemplate = fs.readFileSync(aiInstructionsPath, 'utf8');
         
-        const lang = (await callLocalGemini(`Besvar KUN med 'dk' eller 'en': """${jobText.substring(0, 500)}"""`)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
-
         const generatePrompt = generatePromptTemplate
             .replace(/{{BRUTTO_CV}}/g, bruttoCv)
             .replace(/{{JOB_TEXT}}/g, jobText)
@@ -166,38 +156,23 @@ const worker = new Worker('job_queue', async (job) => {
             .replace(/{{LANG_NAME}}/g, lang === 'dk' ? 'DANSK' : 'ENGELSK')
             .replace(/{{ICAN_DEF}}/g, icanDef);
 
-        let contentRaw = await callLocalGemini(generatePrompt);
-        
-        updateStatus('Kvalitetssikrer indhold...');
-        const selfCorrectionPrompt = `Du er en kritisk og snakkesalig redaktør for Tintin. Optimer disse 4 dokumenter.
-
-        OPGAVE:
-        1. Forklar i detaljer hvad du har gjort (4-6 linjer). Nævn specifikt hvilke regler du har overholdt (f.eks. sprogvalg, adresse-formatering, kulturel tilpasning af navne, eller specifikke fokuspunkter fra CV'et).
-        2. Derefter skriv "---START_DOCS---".
-        3. Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---.
-        4. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].
-
-        DOKUMENTER: ${contentRaw}`;
-        const optimizedRaw = await callLocalGemini(selfCorrectionPrompt);
-        
-        // Robust ekstraktion af noter og dokumenter
-        if (optimizedRaw.includes('---START_DOCS---')) {
-            const parts = optimizedRaw.split('---START_DOCS---');
-            aiNotes = parts[0].trim();
-            docsPart = parts[1].trim();
-        } else {
-            // Fallback hvis AI'en glemmer tagget
-            aiNotes = "Dokumenterne er blevet optimeret.";
-            docsPart = optimizedRaw;
-        }
+        docsPart = await callLocalGemini(generatePrompt);
     }
     
     const extractSection = (text, tag) => {
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Regex der fanger alt indtil næste tag eller slutning af fil
-        const regex = new RegExp(`${escapedTag}[\\s\\S]*?\\n([\\s\\S]*?)(?=\\n---[A-ZÆØÅ]+---|$)`, 'i');
+        const regex = new RegExp(`${escapedTag}[\\s\\S]*?\\n([\\s\\S]*?)(?=\\n---[A-ZÆØÅ_]+---|$)`, 'i');
         const match = text.match(regex);
         return match ? match[1].trim() : "";
+    };
+
+    aiNotes = extractSection(docsPart, '---REDAKTØRENS_LOGBOG---') || "AI'en har optimeret dokumenterne.";
+    const metadataRaw = extractSection(docsPart, '---LAYOUT_METADATA---');
+    
+    const layoutMeta = {
+        signOff: metadataRaw.match(/Sign-off:\s*(.*)/i)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
+        location: metadataRaw.match(/Location:\s*(.*)/i)?.[1]?.trim() || "",
+        datePrefix: metadataRaw.match(/Date-Prefix:\s*(.*)/i)?.[1]?.trim() || (lang === 'en' ? "" : "den")
     };
 
     const ansMd = extractSection(docsPart, '---ANSØGNING---');
@@ -225,7 +200,8 @@ const worker = new Worker('job_queue', async (job) => {
         fs.writeFileSync(mdPath, s.md);
         
         const htmlBody = await mdToHtml(s.md, mdPath, `${fileName}_body.html`);
-        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw }, candidate, lang);
+        // Brug layoutMeta i stedet for hårdkodede regler
+        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw }, candidate, lang, layoutMeta);
         fs.writeFileSync(htmlPath, fullHtml);
         
         updateStatus(`Genererer PDF for ${s.title}...`);

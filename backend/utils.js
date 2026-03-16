@@ -43,7 +43,7 @@ const mdToHtml = async (md, filePath, outputFileName) => {
 };
 
 
-const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk') => {
+const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk', layoutMeta = {}) => {
     // Brug /app/shared/templates hvis vi er i Docker, ellers brug relativ sti
     const rootDir = process.env.NODE_ENV === 'production' ? '/app' : path.join(__dirname, '..');
     const templatePath = fs.existsSync('/app/shared/templates') 
@@ -60,7 +60,7 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk')
     // Signatur sektion (kun til ansøgning)
     let signatureSection = "";
     if (type === 'ansøgning') {
-        const signOff = lang === 'en' ? "Sincerely," : "Med venlig hilsen,";
+        const signOff = layoutMeta.signOff || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,");
         signatureSection = `
         <div class="signature">
             <p>${signOff}</p>
@@ -76,11 +76,10 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk')
             ? dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
             : dateObj.toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
         
-        // Find bynavnet (fjern postnummer hvis muligt)
-        let location = candidate.address ? candidate.address.split(',')[1]?.trim() : "";
-        location = location.replace(/^[0-9 ]+/, ''); // Fjern førende tal (postnummer)
+        const location = layoutMeta.location || (candidate.address ? candidate.address.split(',')[1]?.trim().replace(/^[0-9 ]+/, '') : "");
+        const prefix = layoutMeta.datePrefix !== undefined ? layoutMeta.datePrefix : (lang === 'en' ? "" : "den");
         
-        dateDisplay = lang === 'en' ? `${location}, ${formattedDate}` : `${location}, den ${formattedDate}`;
+        dateDisplay = prefix ? `${location}, ${prefix} ${formattedDate}` : `${location}, ${formattedDate}`;
     }
 
     // Erstat placeholders

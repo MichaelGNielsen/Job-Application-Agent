@@ -35,11 +35,23 @@ Dette er din direkte instruks fra ansøgeren. Prioriter disse hints over standar
 
 Generer 4 sektioner i Markdown:
 
+Generer 5 sektioner i Markdown:
+
+---REDAKTØRENS_LOGBOG---
+(Her skal du være meget snakkesalig. Forklar dine strategiske valg for alle 4 dokumenter. Nævn specifikt hvordan du har brugt Tintins baggrund, hvordan du har matchet jobopslagets nøgleord, dine valg omkring sprog og kulturel tilpasning, og hvordan du har sikret at layout-reglerne er overholdt. Skriv mindst 6-10 linjer.)
+
+---LAYOUT_METADATA---
+(Udfyld disse felter på det sprog, der passer til jobopslaget:
+Sign-off: [F.eks. "Med venlig hilsen" eller "Sincerely"]
+Location: [Byen hvor jobbet er, f.eks. "Lyon"]
+Date-Prefix: [F.eks. "den" eller tomt "" for engelsk]
+)
+
 ---ANSØGNING---
 (Skriv målrettet ansøgning her. Følg denne struktur nøje:
 
-1. START direkte med MODTAGERENS navn og adresse. Del det op så firma/adresse er øverst, og 'Att.: [Navn]' er på sin egen linje lige under (f.eks. 'INTERPOL General Secretariat \n Att.: Stephen Kavanagh').
-2. Skriv ALDRIG din egen adresse, dit navn eller DATOEN nogen steder i din tekst, da systemet automatisk indsætter din professionelle header (Møllenborg Slot) og den aktuelle dato øverst til højre.
+1. START direkte med MODTAGERENS navn og adresse. Del det op så firma/adresse er øverst, og 'Att.: [Navn]' er på sin egen linje lige under.
+2. Skriv ALDRIG din egen adresse, dit navn eller DATOEN nogen steder i din tekst, da systemet automatisk indsætter din professionelle header og den aktuelle dato øverst til højre via metadata.
 3. Skriv en emnelinje der starter med 'Vedrørende: ' (uden fed skrift).
 4. Skriv selve ansøgningen.
 5. STOP efter det sidste punktum i selve teksten.
