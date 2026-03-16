@@ -38,7 +38,7 @@ Generer 4 sektioner i Markdown:
 ---ANSØGNING---
 (Skriv målrettet ansøgning her. Følg denne struktur nøje:
 
-1. START direkte med MODTAGERENS navn og adresse (f.eks. INTERPOL General Secretariat, Lyon).
+1. START direkte med MODTAGERENS navn og adresse. Del det op så firma/adresse er øverst, og 'Att.: [Navn]' er på sin egen linje lige under (f.eks. 'INTERPOL General Secretariat \n Att.: Stephen Kavanagh').
 2. Skriv ALDRIG din egen adresse, dit navn eller DATOEN nogen steder i din tekst, da systemet automatisk indsætter din professionelle header (Møllenborg Slot) og den aktuelle dato øverst til højre.
 3. Skriv en emnelinje der starter med 'Vedrørende: ' (uden fed skrift).
 4. Skriv selve ansøgningen.
