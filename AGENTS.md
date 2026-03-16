@@ -1,264 +1,38 @@
-# AGENTS.md - Job Application Template
+# AGENTS.md - Job Application Agent (v2.7.0)
 
-## Purpose
+Dette dokument beskriver rollen for Job Application Agent og hvordan du bruger den nye web-baserede motor.
 
-This is a template repository for generating targeted job applications and CVs. Each job application should be in its own subdirectory.
+## 🤖 Formål
 
----
+Agenten er designet til at transformere din personlige erfaringsbase (Master CV) til skræddersyede, professionelle dokumenter på få sekunder.
 
-## Quick Start
+## 🚀 Moderne Workflow (Web)
 
-### 1. Copy .env_template to .env and fill in your details
+Glem manuelle mapper og scripts. Alt styres nu fra browseren:
 
-1. Copy `.env_ai_template` to `.env_ai` and `.env_private_template` to `.env_private`.
-2. Fill in your details as described in the Configuration section.
+1. **Konfiguration**
+  * Opret `.env_ai` med din Gemini API-nøgle.
+2. **Master CV**
+  * Rediger `data/brutto_cv.md` direkte i browseren. Husk at inkludere dine personlige stamdata øverst.
+3. **Generering**
+  * Indsæt jobopslaget og tryk på "🚀 Start Automatisering".
+4. **Refinement**
+  * Ret manuelt i Markdown eller brug "✨ Forfin med AI" til at opdatere alle dokumenter kirurgisk.
 
-### 2. Create a new job directory
+## 📂 Filstruktur
 
-1. Run: `mkdir -p mgn_firma_jobbeskrivelse`
+Systemet organiserer automatisk alt output i `output/` mappen:
 
-### 3. Copy job posting to job.md in the new directory
+* `[timestamp]_[firma]_[stilling]/`
+  * `Ansøgning_...pdf`: Den færdige ansøgning.
+  * `CV_...pdf`: Dit målrettede CV.
+  * `Match_...pdf`: En ærlig score og analyse.
+  * `ICAN+_...pdf`: Din interview-strategi.
 
-1. Copy the text of the job advertisement into the `job.md` file.
+## 🛠 Værktøjer
 
----
+Agenten bruger følgende motorer bag kulissen:
 
-## Configuration
-
-### Required .env Variables
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `MINE_INITIALER` | Your initials | `mgn` |
-| `MIT_NAVN` | Full name | `Michael G. Nielsen` |
-| `MIN_ADRESSE` | Address | `Vej 123, 8000 Aarhus` |
-| `MIN_EMAIL` | Email | `michael@example.com` |
-| `MIN_TELEFON` | Phone (with country code) | `+45 12 34 56 78` |
-| `MIT_FIRMA_NAVN` | Target company (lowercase) | `nordlys` |
-| `MIN_JOB_BESKRIVELSE` | Job title (lowercase, underscores) | `automation_developer` |
-
-> **Note**: If company address is missing in job posting, search Google Maps for the nearest office.
-
----
-
-## File Naming Conventions
-
-### Directory
-
-`{MINE_INITIALER}_{FIRMA}_{JOB}` (lowercase, underscores)
-
-1. Example: `mgn_nordlys_automation_developer`
-
-### Files in Job Directory
-
-| File | Description |
-|------|-------------|
-| `job.md` | Job posting text |
-| `job.pdf` | Job posting PDF (optional) |
-| `{INITIALER}_{FIRMA}_{JOB}_ansøgning.md` | Application letter (matches job posting language) |
-| `{INITIALER}_{FIRMA}_{JOB}_cv.md` | Targeted CV |
-| `match_dk.md` | Match analysis (Danish) |
-| `match_en.md` | Match analysis (English, only if job posting is in English) |
-| `ICAN+_dk.md` | Interview elevator pitch (Danish) |
-| `ICAN+_en.md` | Interview elevator pitch (English, only if job posting is in English) |
-
----
-
-## HTML Templates (Recommended)
-
-The repository includes HTML templates for professional PDF output:
-
-### Templates (in root directory)
-
-1. `TEMPLATE_ansøgning.html` - Application letter template
-2. `TEMPLATE_cv.html` - CV template
-
-### Placeholders
-
-| Placeholder | Description |
-|-------------|-------------|
-| `{{NAVN}}` | Full name |
-| `{{ADRESSE}}` | Address |
-| `{{TELEFON}}` | Phone number |
-| `{{EMAIL}}` | Email address |
-| `{{DATO}}` | Date (DD. MMMM YYYY) |
-| `{{KONTAKT}}` | Contact person |
-| `{{FIRMA}}` | Company name |
-| `{{BY}}` | City |
-| `{{EMNE}}` | Subject line |
-| `{{INDHOLD}}` | Main content |
-| `{{AFSLUTNING}}` | Closing (e.g., "Best regards") |
-| `{{POSITION}}` | Job position |
-
----
-
-## Convert Documents
-
-### Method 1: HTML → PDF via Browser (Recommended)
-
-```bash
-## Open HTML in browser and print to PDF
-## This gives the best layout control
-```
-
-### Method 2: HTML → PDF via Chromium
-
-```bash
-## Alternative: Generate PDF with Chromium
-## IMPORTANT: Use --no-pdf-header-footer to avoid date/URL headers in output
-chromium-browser --headless --disable-gpu --print-to-pdf=output.pdf input.html --no-pdf-header-footer
-```
-
-### Method 3: Markdown → ODT → PDF (Legacy)
-
-```bash
-## Markdown → ODT
-pandoc -o output.odt input.md
-
-## ODT → PDF
-soffice --headless --convert-to pdf input.odt
-```
-
----
-
-## Workflow
-
-### 1. Prepare Job Posting
-
-1. Save job posting as PDF from browser OR
-2. Copy text to `job.md` in job directory.
-3. If .mhtml format: `soffice --headless --convert-to pdf job.mhtml`
-
-### 2. Generate Application Materials
-
-**Rule**: The language of the application and CV must match the job posting language. If the job posting is in English, always create both Danish and English versions of match and ICAN+.
-
-### Separation of Documents
-
-1. **NEVER** combine the application and CV into a single file. They must remain separate deliverables to ensure correct formatting and to stay within page limits (1 page for application, max 2 for CV).
-
-Use this prompt template:
-
-```
-Read AGENTS.md and job.md. Use my brutto-CV as the source.
-
-IMPORTANT: Language in application and CV must match job posting language:
-- If job posting is in Danish → application and CV in Danish
-- If job posting is in English → application and CV in English
-
-If job posting is in English, always make Danish and English versions of match and ICAN+.
-
-Files to generate (MUST BE SEPARATE FILES):
-- match_dk.md (score 0-100%, gap analysis, Danish)
-- match_en.md (score 0-100%, gap analysis, English) - only if job posting is in English
-- {INITIALER}_{FIRMA}_{JOB}_ansøgning.md (max 1 page, matching job posting)
-- {INITIALER}_{FIRMA}_{JOB}_cv.md (max 2 pages)
-- ICAN+_dk.md (interview guide: I-C-A-N-+ format, Danish)
-- ICAN+_en.md (interview guide: I-C-A-N-+ format, English) - only if job posting is in English
-```
-
-### 3. Generate HTML Files
-
-Create HTML files using the templates:
-
-1. `MGN_firma_job_ansøgning.html` - Application letter
-2. `MGN_firma_job_cv.html` - CV
-
-### 4. Convert to PDF
-
-Open the HTML files in a browser and print to PDF (recommended), or use:
-
-```bash
-chromium-browser --headless --disable-gpu --print-to-pdf=output.pdf input.html
-```
-
----
-
-## Generated File Formats
-
-### ansøgning_{firma}.md
-
-1. Max 1 page
-2. Language matches job posting
-3. Structure: Header → Recipient → Subject → Intro → Why company → Competencies → Examples → CTA
-
-### cv_{firma}.md
-
-1. Max 2 pages, reverse chronological
-2. Sections: Contact + Summary → Competencies → Experience → Education → Projects → Languages → Personal
-
-### match.md
-
-1. First line: Score (0-100%)
-2. Strengths (bullets)
-3. Gaps / Transferable skills (bullets)
-4. Recommendations (bullets)
-
-### ICAN+.md
-
-1. I: Who are you
-2. C: What can you do
-3. A: What have you achieved
-4. N: Why are you here
-5. +: Personal touch
-
----
-
-## Best Practices
-
-1. **Match keywords** - Use exact terms from job posting
-2. **Show, don't tell** - Concrete examples with numbers
-3. **Be specific** - Mention relevant tech stack
-4. **Tailor each application** - Never send generic applications
-5. **Manual review** - Always check formatting before sending
-6. **Company address** - If missing in job posting, ask user or search Google Maps
-
----
-
-## Tools Setup
-
-1. **LibreOffice** (PDF conversion)
-  * `sudo apt-get install -y libreoffice-writer`
-2. **Pandoc** (Markdown → ODT)
-  * `sudo apt-get install -y pandoc`
-3. **Python ODT library** (optional, for reading ODT)
-  * `pip install --user odfpy`
-4. **Chromium** (HTML → PDF)
-  * Usually pre-installed on Linux systems
-
----
-
-## Directory Structure
-
-```
-Job-Application-Agent/
-├── AGENTS.md                    # This file
-├── .env                         # Your personal config
-├── TEMPLATE_ansøgning.html      # Application HTML template
-├── TEMPLATE_cv.html             # CV HTML template
-├── {MINE_INITIALER}_template_brutto_cv.odt   # Master CV template
-│
-└── {MINE_INITIALER}_{firma}_{job}/           # One directory per application
-    ├── job.md
-    ├── job.pdf
-    ├── match_dk.md
-    ├── match_en.md
-    ├── ICAN+_dk.md
-    ├── ICAN+_en.md
-    ├── {MINE_INITIALER}_{firma}_{job}_ansøgning.md
-    ├── {MINE_INITIALER}_{firma}_{job}_cv.md
-    ├── {MINE_INITIALER}_{firma}_{job}_ansøgning.html
-    ├── {MINE_INITIALER}_{firma}_{job}_cv.html
-    ├── {MINE_INITIALER}_{firma}_{job}_ansøgning.pdf
-    └── {MINE_INITIALER}_{firma}_{job}_cv.pdf
-```
-
----
-
-## Current Applications
-
-| Directory | Company | Position | Status |
-|-----------|---------|----------|--------|
-| | | | |
-
-<!-- Add your job applications here -->
+* **Gemini 1.5**: Hjernen der skriver og forfiner.
+* **Pandoc**: Motoren der sikrer perfekt Markdown-til-HTML konvertering.
+* **Chromium**: Genererer pixel-perfekte PDF-filer.

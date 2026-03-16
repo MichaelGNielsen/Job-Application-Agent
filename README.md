@@ -6,30 +6,26 @@
 
 Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI transformerer en personlig erfaringsbase (Master CV) til 4 professionelle, målrettede dokumenter på få sekunder.
 
-Dette er den **officielle præsentations-version (v2.6.1)**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data.
+Dette er den **officielle præsentations-version (v2.7.0)**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data.
 
 ## ⚙️ Miljø-konfiguration (.env)
 
-For at systemet kan køre (især på nye enheder som **Raspberry Pi 5**), skal du oprette to `.env` filer i projektets rodmappe. Brug de medfølgende skabeloner som udgangspunkt:
+For at systemet kan køre (især på nye enheder som **Raspberry Pi 5**), skal du oprette én `.env` fil i projektets rodmappe:
 
-1. **`.env_ai`**
-  * Indeholder din Gemini API-nøgle og model-valg.
+1. **`.env_ai`**: Indeholder din Gemini API-nøgle og model-valg.
+
   * Kopier fra `.env_ai_template`.
   * Hent din nøgle her: [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. **`.env_private`**
-  * Indeholder personlige data (Navn, Adresse, Email osv.), som flettes ind i dine dokumenter.
-  * Kopier fra `.env_private_template`.
-  * Her styres identiteten (f.eks. Tintin eller dit eget navn).
 
 ## 🚀 Kom i gang med Demoen (RPi5 / Docker)
 
-1. **Opsæt .env**
-  * Opret de to filer nævnt ovenfor.
-2. **Start Systemet**
-  * Kør `docker compose up -d --build`.
-  * *(Bemærk: På ældre systemer bruges `docker-compose` med bindestreg).*
-3. **Adgang**
-  * Åbn browseren på `http://[RPi-IP-adresse]:3000`.
+1. **Opsæt .env:** Opret `.env_ai` filen nævnt ovenfor.
+2. **Master CV:** Dine personlige data og din erhvervserfaring styres nu direkte i `data/brutto_cv.md` (eller via web-interfacet).
+3. **Start Systemet:** Kør `docker compose up -d --build`.
+    *(Bemærk: På ældre systemer bruges `docker-compose` med bindestreg).*
+
+4. **Adgang:** Åbn browseren på `http://[RPi-IP-adresse]:3000`.
+
 
 ## 🔍 Overvågning og Fejlfinding
 

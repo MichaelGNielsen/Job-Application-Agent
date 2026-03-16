@@ -1,10 +1,10 @@
-# Systemarkitektur: Job Application Agent (v2.4)
+# Systemarkitektur: Job Application Agent (v2.7.0)
 
-Dette dokument beskriver arkitekturen for den moderne web-baserede version af Job Application Agent, som findes i `demo/aka-torsdag` branchen.
+Dette dokument beskriver arkitekturen for den moderne web-baserede version af Job Application Agent.
 
 ## 🏗 Overordnet Arkitektur
 
-Systemet er bygget som en moderne **Producer-Consumer** arkitektur, der sikrer en responsiv brugeroplevelse selv ved tunge AI-operationer.
+Systemet er bygget som en moderne **Producer-Consumer** arkitektur, der sikrer en responsiv brugeroplevelse selv ved tunge AI-operationer. Alle personlige data og erhvervserfaringer er nu samlet i én fil for at sikre enkelhed og sikkerhed.
 
 ```mermaid
 graph TD
