@@ -67,6 +67,10 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}) => {
         </div>`;
     }
 
+    const formattedDate = new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
+    const location = candidate.address ? candidate.address.split(',')[1]?.trim() : "";
+    const dateDisplay = location ? `${location}, den ${formattedDate}` : formattedDate;
+
     // Erstat placeholders
     html = html
         .replace(/{{DOC_TITLE}}/g, docTitle)
@@ -74,7 +78,7 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}) => {
         .replace(/{{ADDRESS}}/g, candidate.address || process.env.MIN_ADRESSE || "")
         .replace(/{{PHONE}}/g, candidate.phone || process.env.MIN_TELEFON || "")
         .replace(/{{EMAIL}}/g, candidate.email || process.env.MIN_EMAIL || "")
-        .replace(/{{DATE}}/g, new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' }))
+        .replace(/{{DATE}}/g, dateDisplay)
         .replace(/{{CONTENT}}/g, c.replace(/\[SCORE\]\s*(.*?)\s*\[\/SCORE\]/gi, '<div class="match-score">Samlet Match Score: $1</div>'))
         .replace(/{{SIGNATURE_SECTION}}/g, signatureSection);
 
