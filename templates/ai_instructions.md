@@ -24,7 +24,7 @@ Dette er din direkte instruks fra ansøgeren. Prioriter disse hints over standar
 
 ### SPROG-REGLER
 
-* Ansøgning og CV skal skrives på {{LANG_NAME}}.
+* Ansøgning og CV skal skrives på det samme sprog som jobopslaget (f.eks. Tysk, Fransk, Engelsk eller Dansk).
 * Match Analyse og ICAN+ Pitch skal skrives på DANSK (uanset jobbet).
 
 ### ICAN+ GUIDELINE

@@ -104,8 +104,11 @@ const worker = new Worker('job_queue', async (job) => {
         lang = existingMarkdown.toLowerCase().includes('dear') || existingMarkdown.toLowerCase().includes('sincerely') ? 'en' : 'dk';
     } else {
         updateStatus('Analyserer jobopslag...');
-        const langPrompt = `Besvar KUN med 'dk' eller 'en': """${jobText.substring(0, 500)}"""`;
-        lang = (await callLocalGemini(langPrompt)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
+        const langPrompt = `Hvilket sprog er dette jobopslag skrevet på? Svar KUN med ISO-kode på to bogstaver (f.eks. 'da', 'en', 'de', 'fr', 'es'): """${jobText.substring(0, 500)}"""`;
+        lang = (await callLocalGemini(langPrompt)).trim().toLowerCase().substring(0, 2);
+        
+        // Sikre at vi har en gyldig 2-bogstavs kode, ellers fallback til da
+        if (!/^[a-z]{2}$/.test(lang)) lang = 'da';
 
         const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 13).replace('T', '_');
         companyName = "firma";
@@ -153,7 +156,6 @@ const worker = new Worker('job_queue', async (job) => {
             .replace(/{{BRUTTO_CV}}/g, bruttoCv)
             .replace(/{{JOB_TEXT}}/g, jobText)
             .replace(/{{HINT}}/g, hint || "Ingen specielle hints.")
-            .replace(/{{LANG_NAME}}/g, lang === 'dk' ? 'DANSK' : 'ENGELSK')
             .replace(/{{ICAN_DEF}}/g, icanDef);
 
         docsPart = await callLocalGemini(generatePrompt);

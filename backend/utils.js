@@ -72,12 +72,10 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk',
     let dateDisplay = "";
     if (type === 'ansøgning') {
         const dateObj = new Date();
-        const formattedDate = lang === 'en' 
-            ? dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-            : dateObj.toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
+        const formattedDate = dateObj.toLocaleDateString(lang === 'en' ? 'en-GB' : lang, { day: 'numeric', month: 'long', year: 'numeric' });
         
         const location = layoutMeta.location || (candidate.address ? candidate.address.split(',')[1]?.trim().replace(/^[0-9 ]+/, '') : "");
-        const prefix = layoutMeta.datePrefix !== undefined ? layoutMeta.datePrefix : (lang === 'en' ? "" : "den");
+        const prefix = layoutMeta.datePrefix !== undefined ? layoutMeta.datePrefix : (lang === 'da' ? "den" : "");
         
         dateDisplay = prefix ? `${location}, ${prefix} ${formattedDate}` : `${location}, ${formattedDate}`;
     }
