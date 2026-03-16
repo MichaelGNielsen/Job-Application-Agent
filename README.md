@@ -1,10 +1,10 @@
-# Job Application Agent - Tintin Demo (v2.6.1)
+# Job Application Agent - Tintin Demo (v2.7.0)
 
 ![Gromit laying tracks](pictures/grommit-train-tracks.gif)
 
-## AI der lægger skinnerne i vildskab, mens jobansøgningen buldrer afsted 🚂🐶🛠️
+## Det går stærkt i AI-verdenen lige nu 🚂🐶🛠️
 
-Velkommen til den officielle demo af **Job Application Agent**. Dette projekt demonstrerer, hvordan AI transformerer en personlig erfaringsbase (Master CV) til 4 professionelle, målrettede dokumenter på få sekunder.
+At bygge denne agent føles præcis som scenen fra *The Wrong Trousers*, hvor Gromit lægger skinnerne, mens toget kører i fuld fart. Projektet demonstrerer, hvordan AI transformerer en personlig erfaringsbase (Master CV) til 4 professionelle, målrettede dokumenter på få sekunder.
 
 Dette er den **officielle præsentations-version (v2.7.0)**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data.
 
@@ -26,31 +26,6 @@ For at systemet kan køre (især på nye enheder som **Raspberry Pi 5**), skal d
 
 4. **Adgang:** Åbn browseren på `http://[RPi-IP-adresse]:3000`.
 
-
-## 🔍 Overvågning og Fejlfinding
-
-Hvis systemet driller (f.eks. på en **RPi5**), kan du se loggene live med disse kommandoer:
-
-1. **Backend (Hjernen)**
-  * `docker compose logs -f backend`
-2. **Frontend (Brugerfladen)**
-  * `docker compose logs -f frontend`
-3. **Hele Systemet**
-  * `docker compose logs -f`
-
-*(Brug `Ctrl + C` for at stoppe med at følge loggen).*
-
-## 🛠 Den Nye Skabelon-Motor (v2.6.3)
-
-Systemet er nu 100% skabelon-styret via `templates/` mappen:
-
-1. **`ai_instructions.md`**
-  * Her ligger AI'ens "hjerne" og opskrift på de 4 dokumenter.
-2. **`master_layout.html`**
-  * Her styres det visuelle design (CSS) og de unikke "Tintin Highlights"-billeder.
-3. **Pandoc GFM**
-  * Den professionelle Markdown-motor (GitHub Flavored) sikrer perfekt formatering af bullets, fed skrift og lister.
-
 ## 📄 De 4 Magiske Dokumenter
 
 Hver kørsel genererer automatisk en komplet pakke i `output/` mappen:
@@ -66,4 +41,6 @@ Hver kørsel genererer automatisk en komplet pakke i `output/` mappen:
 
 ---
 
-*Sidst opdateret: 14. marts 2026 - Klar til AKA-præsentation!* 🏁🏆🎩
+For tekniske detaljer om systemets opbygning og skabelon-motor, se [Systemarkitektur](docs/architecture.md).
+
+*Sidst opdateret: 16. marts 2026* 🎩🚀🏁

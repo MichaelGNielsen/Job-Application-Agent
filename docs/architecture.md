@@ -92,6 +92,17 @@ Systemet er afhængigt af følgende CLI-værktøjer installeret i miljøet:
 3. **`chromium-browser`**
   * Genererer pixel-perfekte PDF'er fra HTML-skabeloner.
 
+## 🛠 Den Nye Skabelon-Motor (v2.7.0)
+
+Systemet er nu 100% skabelon-styret via `templates/` mappen:
+
+1. **`ai_instructions.md`**
+  * Her ligger AI'ens "hjerne" og opskrift på de 4 dokumenter.
+2. **`master_layout.html`**
+  * Her styres det visuelle design (CSS) og de unikke "Tintin Highlights"-billeder.
+3. **Pandoc GFM**
+  * Den professionelle Markdown-motor (GitHub Flavored) sikrer perfekt formatering af bullets, fed skrift og lister.
+
 ## 🔄 Det Logiske Workflow
 
 Dette afsnit beskriver brugerrejsen og systemets logik fra start til slut.
