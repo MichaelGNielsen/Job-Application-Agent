@@ -80,11 +80,13 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk',
         dateDisplay = prefix ? `${location}, ${prefix} ${formattedDate}` : `${location}, ${formattedDate}`;
     }
 
+    const displayAddress = layoutMeta.address || candidate.address || process.env.MIN_ADRESSE || "";
+
     // Erstat placeholders
     html = html
         .replace(/{{DOC_TITLE}}/g, docTitle)
         .replace(/{{NAME}}/g, name)
-        .replace(/{{ADDRESS}}/g, candidate.address || process.env.MIN_ADRESSE || "")
+        .replace(/{{ADDRESS}}/g, displayAddress)
         .replace(/{{PHONE}}/g, candidate.phone || process.env.MIN_TELEFON || "")
         .replace(/{{EMAIL}}/g, candidate.email || process.env.MIN_EMAIL || "")
         .replace(/{{DATE}}/g, dateDisplay)

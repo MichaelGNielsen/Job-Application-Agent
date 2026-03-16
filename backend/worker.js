@@ -181,7 +181,8 @@ const worker = new Worker('job_queue', async (job) => {
     const layoutMeta = {
         signOff: metadataRaw.match(/Sign-off:\s*(.*)/i)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
         location: metadataRaw.match(/Location:\s*(.*)/i)?.[1]?.trim() || "",
-        datePrefix: metadataRaw.match(/Date-Prefix:\s*(.*)/i)?.[1]?.trim() || (lang === 'en' ? "" : "den")
+        datePrefix: metadataRaw.match(/Date-Prefix:\s*(.*)/i)?.[1]?.trim() || (lang === 'da' ? "den" : ""),
+        address: metadataRaw.match(/Address:\s*(.*)/i)?.[1]?.trim() || ""
     };
 
     const ansMd = extractSection(docsPart, '---ANSØGNING---');

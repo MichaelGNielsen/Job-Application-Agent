@@ -49,6 +49,7 @@ Generer 5 sektioner i Markdown:
 Sign-off: [F.eks. "Med venlig hilsen" eller "Sincerely"]
 Location: [Byen hvor jobbet er, f.eks. "Lyon"]
 Date-Prefix: [F.eks. "den" eller tomt "" for engelsk]
+Address: [Lokaliseret udgave af din adresse, f.eks. "Château de Moulinsart, 1480 Labadoux" hvis jobbet er i Frankrig/Belgien]
 )
 
 ---ANSØGNING---
