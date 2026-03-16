@@ -41,6 +41,14 @@ Hver kørsel genererer automatisk en komplet pakke i `output/` mappen:
 
 ---
 
-For tekniske detaljer om systemets opbygning og skabelon-motor, se [Systemarkitektur](docs/architecture.md).
+## 📚 Dokumentation & Ressourcer
+
+Her finder du dybere indsigt i systemets opbygning og brug:
+
+* [Systemarkitektur](docs/architecture.md): Teknisk overblik og skabelon-motor.
+* [Docker Setup](docs/docker_setup.md): Trin-for-trin guide til installation.
+* [Docker Brug](docs/docker_usage.md): Kommandoer til daglig drift og logning.
+* [Projekt Journal](docs/journal.md): Udviklingshistorik og fremtidige overvejelser.
+* [Debug Guide](docs/curl_debug.md): Værktøjer til teknisk fejlfinding.
 
 *Sidst opdateret: 16. marts 2026* 🎩🚀🏁
