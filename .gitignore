@@ -10,3 +10,4 @@
 # Ignore generated test/debug files
 .env_private
 .env_ai
+output/*
