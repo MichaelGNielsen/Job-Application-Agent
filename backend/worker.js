@@ -155,12 +155,23 @@ const worker = new Worker('job_queue', async (job) => {
         DOKUMENTER: ${contentRaw}`;
 
         const optimizedRaw = await callLocalGemini(selfCorrectionPrompt);
-        docsPart = optimizedRaw.split('---START_DOCS---')[1] || optimizedRaw;
+        
+        // Robust ekstraktion af noter og dokumenter
+        if (optimizedRaw.includes('---START_DOCS---')) {
+            const parts = optimizedRaw.split('---START_DOCS---');
+            aiNotes = parts[0].trim();
+            docsPart = parts[1].trim();
+        } else {
+            // Fallback hvis AI'en glemmer tagget
+            aiNotes = "Dokumenterne er blevet optimeret.";
+            docsPart = optimizedRaw;
+        }
     }
     
     const extractSection = (text, tag) => {
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`${escapedTag}\\s*([\\s\\S]*?)(?:\\n---[A-ZÆØÅ]+---|$)`, 'i');
+        // Regex der fanger alt indtil næste tag eller slutning af fil
+        const regex = new RegExp(`${escapedTag}[\\s\\S]*?\\n([\\s\\S]*?)(?=\\n---[A-ZÆØÅ]+---|$)`, 'i');
         const match = text.match(regex);
         return match ? match[1].trim() : "";
     };

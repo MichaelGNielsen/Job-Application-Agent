@@ -172,7 +172,7 @@ const App: React.FC = () => {
               />
             </div>
             <button 
-              onClick={handleGenerate}
+              onClick={results ? () => handleRefine('all', true) : handleGenerate}
               disabled={isLoading}
               className={`w-full py-4 rounded-lg font-bold uppercase tracking-widest transition-all ${isLoading ? 'bg-gray-700 cursor-not-allowed' : 'bg-cyan-600 hover:bg-cyan-500 shadow-lg shadow-cyan-500/20'}`}
             >
@@ -180,7 +180,7 @@ const App: React.FC = () => {
                 <span className="flex items-center justify-center gap-2">
                   <span className="animate-spin">🌀</span> {statusMessage}
                 </span>
-              ) : '🚀 Start Automatisering'}
+              ) : (results ? '✨ Forfin alle dokumenter med AI (Brug hint)' : '🚀 Start Automatisering')}
             </button>
           </section>
 
@@ -194,7 +194,7 @@ const App: React.FC = () => {
             <div className="space-y-8 animate-in fade-in duration-700">
               <div className="bg-cyan-900/20 border border-cyan-500/30 p-6 rounded-xl">
                 <h3 className="text-cyan-400 font-bold mb-2 flex items-center gap-2">🧠 AI Ræsonnement (Redaktørens noter)</h3>
-                <p className="text-sm text-gray-300 leading-relaxed italic">"{results.aiNotes}"</p>
+                <p className="text-sm text-gray-300 leading-relaxed italic">{results.aiNotes ? `"${results.aiNotes}"` : "AI'en har optimeret dokumenterne baseret på din profil og jobopslaget."}</p>
               </div>
 
               <div className="flex flex-col gap-8">
@@ -222,9 +222,8 @@ const App: React.FC = () => {
                           />
                         )}
                       </div>
-                      <div className="p-4 pt-0 space-y-2">
+                      <div className="p-4 pt-0">
                         <button onClick={() => handleRefine(id, false)} className="w-full py-2 bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase tracking-widest rounded transition-colors border border-white/5">💾 Gem mine rettelser</button>
-                        <button onClick={() => handleRefine(id, true)} className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/40 text-[10px] font-bold uppercase tracking-widest rounded transition-colors border border-cyan-500/30 text-cyan-400">🤖 Spørg AI igen (Brug hint)</button>
                       </div>
                     </div>
                   );
