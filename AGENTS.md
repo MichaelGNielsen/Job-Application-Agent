@@ -1,4 +1,4 @@
-# AGENTS.md - Job Application Agent (v2.7.0)
+# AGENTS.md - Job Application Agent (v2.7.3)
 
 Dette dokument beskriver rollen for Job Application Agent og hvordan du bruger den nye web-baserede motor.
 

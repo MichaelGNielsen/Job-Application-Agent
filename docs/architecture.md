@@ -1,4 +1,4 @@
-# Systemarkitektur: Job Application Agent (v2.7.0)
+# Systemarkitektur: Job Application Agent (v2.7.3)
 
 Dette dokument beskriver arkitekturen for den moderne web-baserede version af Job Application Agent.
 
@@ -92,7 +92,7 @@ Systemet er afhængigt af følgende CLI-værktøjer installeret i miljøet:
 3. **`chromium-browser`**
   * Genererer pixel-perfekte PDF'er fra HTML-skabeloner.
 
-## 🛠 Den Nye Skabelon-Motor (v2.7.0)
+## 🛠 Den Nye Skabelon-Motor (v2.7.3)
 
 Systemet er nu 100% skabelon-styret via `templates/` mappen:
 
