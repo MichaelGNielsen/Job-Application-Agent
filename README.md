@@ -48,6 +48,7 @@ Her finder du dybere indsigt i systemets opbygning og brug:
 * [Docker Setup](docs/docker_setup.md): Trin-for-trin guide til installation.
 * [Docker Brug](docs/docker_usage.md): Kommandoer til daglig drift og logning.
 * [Projekt Journal](docs/journal.md): Udviklingshistorik og fremtidige overvejelser.
+* [GDPR Ready](docs/GDPR_next_step.md): Vejen til brug med rigtige person-data.
 * [Debug Guide](docs/curl_debug.md): Værktøjer til teknisk fejlfinding.
 
 *Sidst opdateret: 16. marts 2026* 🎩🚀🏁
