@@ -164,13 +164,15 @@ const worker = new Worker('job_queue', async (job) => {
         let contentRaw = await callLocalGemini(generatePrompt);
         
         updateStatus('Kvalitetssikrer indhold...');
-        const selfCorrectionPrompt = `Du er en kritisk redaktør. Optimer disse 4 dokumenter for Tintin.
-        1. Forklar hvad du har forbedret (max 3 linjer).
-        2. Derefter skriv "---START_DOCS---"
+        const selfCorrectionPrompt = `Du er en kritisk og snakkesalig redaktør for Tintin. Optimer disse 4 dokumenter.
+
+        OPGAVE:
+        1. Forklar i detaljer hvad du har gjort (4-6 linjer). Nævn specifikt hvilke regler du har overholdt (f.eks. sprogvalg, adresse-formatering, kulturel tilpasning af navne, eller specifikke fokuspunkter fra CV'et).
+        2. Derefter skriv "---START_DOCS---".
         3. Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---.
         4. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].
-        DOKUMENTER: ${contentRaw}`;
 
+        DOKUMENTER: ${contentRaw}`;
         const optimizedRaw = await callLocalGemini(selfCorrectionPrompt);
         
         // Robust ekstraktion af noter og dokumenter
