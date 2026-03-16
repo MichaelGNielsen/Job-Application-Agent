@@ -123,10 +123,19 @@ const worker = new Worker('job_queue', async (job) => {
 
     let docsPart;
     if (jobType === 'refine_with_ai') {
-        const refinePrompt = `Du er en ekspert karriererådgiver. Her er de nuværende dokumenter for Tintin og et nyt hint fra brugeren.
-        OPGAVE: Opdater dokumenterne baseret på hintet.
-        HINT: "${hint}"
-        DOKUMENTER: ${existingMarkdown}
+        const refinePrompt = `Du er en præcis redaktør. Her er de nuværende dokumenter for Tintin og en ny instruks fra brugeren.
+        
+        REGLER FOR OPDATERING:
+        1. Lav KUN ændringer der er direkte forespurgt i instruksen.
+        2. Bevar ordlyd, struktur og indhold i alle andre sektioner 100% uændret.
+        3. Hvis instruksen kun nævner "ansøgningen", må du IKKE røre CV, Match eller ICAN.
+        4. Returner ALLE 4 dokumenter (også de uændrede) med de korrekte mærkater.
+        
+        INSTRUKS: "${hint}"
+        
+        NUVÆRENDE DOKUMENTER:
+        ${existingMarkdown}
+        
         Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].`;
         
         docsPart = await callLocalGemini(refinePrompt);
