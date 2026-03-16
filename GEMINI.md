@@ -1,4 +1,4 @@
-# GEMINI.md - Tintin Demo Version (v2.2.0)
+# GEMINI.md - Tintin Demo Version (v2.7.0)
 
 ## 🎯 Status for Præsentations-version
 
@@ -44,4 +44,4 @@ For at sikre korrekt visning i alle editorer, skal disse regler altid følges:
 12. **Nummererede lister (MD030):** Brug altid præcis ét mellemrum efter punktummet i en nummereret liste (f.eks. `1. ` i stedet for `1.  `).
 13. **Indrykkede lister (MD007):** Brug 2 mellemrum til indrykning. For bedste kompatibilitet: Brug nummerering (`1.`) til det yderste niveau og asterisk (`*`) til det indrykkede niveau.
 
-**Sidst opdateret:** 16. marts 2026 (v2.6.17)
+**Sidst opdateret:** 16. marts 2026 (v2.7.0)

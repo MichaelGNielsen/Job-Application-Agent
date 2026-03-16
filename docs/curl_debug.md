@@ -62,4 +62,4 @@ ls -td output/*/ | tail -n +6 | xargs rm -rf
 
 ---
 
-*Sidst opdateret: 15. marts 2026 (v2.6.17)*
+*Sidst opdateret: 15. marts 2026 (2.7.0)*

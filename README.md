@@ -23,7 +23,6 @@ For at systemet kan køre (især på nye enheder som **Raspberry Pi 5**), skal d
 2. **Master CV:** Dine personlige data og din erhvervserfaring styres nu direkte i `data/brutto_cv.md` (eller via web-interfacet).
 3. **Start Systemet:** Kør `docker compose up -d --build`.
     *(Bemærk: På ældre systemer bruges `docker-compose` med bindestreg).*
-
 4. **Adgang:** Åbn browseren på `http://[RPi-IP-adresse]:3000`.
 
 ## 📄 De 4 Magiske Dokumenter

@@ -22,7 +22,7 @@ Dette er planen for at gøre systemet 100% skabelon-styret og klar til både Tin
 
 * [x] **Opret `templates/ai_instructions.md`**: Flyt AI'ens "opskrift" på de 4 dokumenter (Ansøgning, CV, Match, ICAN+) ud af `backend/worker.js`.
 * [ ] **Sektions-styring**: Gøre det nemt at tilføje eller fjerne sektioner.
-* [ ] **Markdown Regler (v2.7.0):**
+* [ ] **Markdown Regler (2.7.0):**
 
   * [ ] Sikre at der kun er én top-level overskrift (#) per dokument.
   * [ ] Sikre at der kun er ét mellemrum efter liste-markører (- eller *).
@@ -39,4 +39,4 @@ Dette er planen for at gøre systemet 100% skabelon-styret og klar til både Tin
 
 ---
 
-*Sidst opdateret: 15. marts 2026 (v2.6.17)*
+*Sidst opdateret: 15. marts 2026 (2.7.0)*

@@ -63,7 +63,7 @@ Fyraften! 🍻✨
 
 En dag med enorme fremskridt! Vi er gået fra en statisk generator til et interaktivt værktøj med live-redigering.
 
-### Dagens bedrifter (v1.4.3)
+### Dagens bedrifter (2.7.0)
 
 1. **Docker Power**
   * `pandoc` og `chromium` kører nu fejlfrit i containeren.
@@ -136,7 +136,7 @@ Systemet er testet med både dansk og engelsk (UK) jobopslag og håndterer nu sp
 
 God demo i morgen! 🎩🚀🏁
 
-### ⚠️ Observation Forskel på UE1 og RPi5 (v2.6.12)
+### ⚠️ Observation Forskel på UE1 og RPi5 (2.7.0)
 
 Under 'crash test' på Raspberry Pi 5 blev følgende observeret:
 
@@ -147,7 +147,7 @@ Under 'crash test' på Raspberry Pi 5 blev følgende observeret:
 3. **Filstruktur**
   * RPi5 setup'et er nu fuldt funktionelt med 'docker compose' og absolutte 'file://' stier til PDF-generering.
 
-### 🖼️ Note Billed-sti & Browser-print (v2.6.12)
+### 🖼️ Note Billed-sti & Browser-print (2.7.0)
 
 1. **Problem**
   * Billeder i CV vises i PDF'er genereret af backenden, men mangler ved manuelt print fra browseren.
