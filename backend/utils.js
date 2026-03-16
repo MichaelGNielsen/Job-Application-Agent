@@ -43,7 +43,7 @@ const mdToHtml = async (md, filePath, outputFileName) => {
 };
 
 
-const wrap = (t, c, type = 'ansøgning', meta = {}) => {
+const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}) => {
     // Brug /app/shared/templates hvis vi er i Docker, ellers brug relativ sti
     const rootDir = process.env.NODE_ENV === 'production' ? '/app' : path.join(__dirname, '..');
     const templatePath = fs.existsSync('/app/shared/templates') 
@@ -54,7 +54,8 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
 
     const company = meta.company || '';
     const position = meta.position || '';
-    const docTitle = `${t} - ${process.env.MIT_NAVN} - ${company} - ${position}`.replace(/\s+/g, ' ').trim();
+    const name = candidate.name || process.env.MIT_NAVN || "Tintin";
+    const docTitle = `${t} - ${name} - ${company} - ${position}`.replace(/\s+/g, ' ').trim();
 
     // Signatur sektion (kun til ansøgning)
     let signatureSection = "";
@@ -62,18 +63,17 @@ const wrap = (t, c, type = 'ansøgning', meta = {}) => {
         signatureSection = `
         <div class="signature">
             <p>Med venlig hilsen,</p>
-            <p><strong>${process.env.MIT_NAVN}</strong></p>
+            <p><strong>${name}</strong></p>
         </div>`;
     }
 
     // Erstat placeholders
-    // Vi fjerner den komplekse split-logik der ødelagde layoutet og lader Pandoc output stå som det er
     html = html
         .replace(/{{DOC_TITLE}}/g, docTitle)
-        .replace(/{{NAME}}/g, process.env.MIT_NAVN || "Tintin")
-        .replace(/{{ADDRESS}}/g, process.env.MIN_ADRESSE || "")
-        .replace(/{{PHONE}}/g, process.env.MIN_TELEFON || "")
-        .replace(/{{EMAIL}}/g, process.env.MIN_EMAIL || "")
+        .replace(/{{NAME}}/g, name)
+        .replace(/{{ADDRESS}}/g, candidate.address || process.env.MIN_ADRESSE || "")
+        .replace(/{{PHONE}}/g, candidate.phone || process.env.MIN_TELEFON || "")
+        .replace(/{{EMAIL}}/g, candidate.email || process.env.MIN_EMAIL || "")
         .replace(/{{DATE}}/g, new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' }))
         .replace(/{{CONTENT}}/g, c.replace(/\[SCORE\]\s*(.*?)\s*\[\/SCORE\]/gi, '<div class="match-score">Samlet Match Score: $1</div>'))
         .replace(/{{SIGNATURE_SECTION}}/g, signatureSection);

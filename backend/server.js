@@ -47,6 +47,25 @@ const redisConnection = new IORedis({
 
 const jobQueue = new Queue('job_queue', { connection: redisConnection });
 
+function parseCandidateInfo(bruttoCv) {
+    const info = {
+        name: "",
+        address: "",
+        email: "",
+        phone: ""
+    };
+
+    const lines = bruttoCv.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line.includes('**Navn:**')) info.name = line.split('**Navn:**')[1].trim();
+        if (line.includes('**Adresse:**')) info.address = line.split('**Adresse:**')[1].trim();
+        if (line.includes('**Email:**')) info.email = line.split('**Email:**')[1].trim();
+        if (line.includes('**Telefon:**')) info.phone = line.split('**Telefon:**')[1].trim();
+    }
+    return info;
+}
+
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 
@@ -114,15 +133,39 @@ app.post('/api/generate', async (req, res) => {
   try {
     const { jobText, companyUrl, hint } = req.body;
     const jobId = "job_" + Date.now().toString();
-    await jobQueue.add('generate_application', { jobId, jobText, companyUrl, hint }, { jobId });
+    await jobQueue.add('generate_application', { jobId, jobText, companyUrl, hint, type: 'initial' }, { jobId });
     res.status(202).json({ jobId });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 app.post('/api/refine', async (req, res) => {
   try {
-    const { folder, type, markdown } = req.body; 
-    const folderPath = path.join(rootDir, folder);
+    const { folder, type, markdown, useAi, hint } = req.body; 
+
+    if (useAi) {
+        const jobId = "refine_" + Date.now().toString();
+        // Saml alle nuværende MD filer i mappen for at give AI'en kontekst
+        const folderPath = path.join(rootDir, 'output', folder);
+        const files = fs.readdirSync(folderPath).filter(f => f.endsWith('.md') && !f.includes('job.md'));
+        let combinedMarkdown = "";
+        files.forEach(f => {
+            const content = fs.readFileSync(path.join(folderPath, f), 'utf8');
+            combinedMarkdown += `\n---${f}---\n${content}\n`;
+        });
+
+        await jobQueue.add('generate_application', { 
+            jobId, 
+            folder, 
+            hint, 
+            markdown: combinedMarkdown, 
+            type: 'refine_with_ai' 
+        }, { jobId });
+        
+        return res.status(202).json({ jobId });
+    }
+
+    // Manuel refinement (eksisterende logik)
+    const folderPath = path.join(rootDir, 'output', folder);
     const files = fs.readdirSync(folderPath);
     const typeLabel = type === 'ansøgning' ? 'Ansøgning' : type === 'cv' ? 'CV' : type === 'match' ? 'Match_Analyse' : 'ICAN+_Pitch';
     const existingFile = files.find(f => f.startsWith(typeLabel) && f.endsWith('.md'));
@@ -130,13 +173,21 @@ app.post('/api/refine', async (req, res) => {
     const mdPath = path.join(folderPath, `${baseName}.md`);
     const htmlPath = path.join(folderPath, `${baseName}.html`);
     const pdfPath = path.join(folderPath, `${baseName}.pdf`);
+    
     fs.writeFileSync(mdPath, markdown);
+
+    const bruttoPath = path.join(rootDir, 'data', 'brutto_cv.md');
+    const bruttoCv = fs.existsSync(bruttoPath) ? fs.readFileSync(bruttoPath, 'utf8') : "";
+    const candidate = parseCandidateInfo(bruttoCv);
+
     const htmlBody = await mdToHtml(markdown, mdPath, `${baseName}_body.html`);
     const companyName = folder.split('_')[2] || 'firma';
     const jobTitle = folder.split('_').slice(3).join(' ') || 'stilling';
-    const fullHtml = wrap(typeLabel.replace('_', ' '), htmlBody, type, { company: companyName, position: jobTitle });
+    const fullHtml = wrap(typeLabel.replace('_', ' '), htmlBody, type, { company: companyName, position: jobTitle }, candidate);
+    
     fs.writeFileSync(htmlPath, fullHtml);
     await printToPdf(htmlPath, pdfPath);
+    
     res.json({ success: true, html: fullHtml });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });

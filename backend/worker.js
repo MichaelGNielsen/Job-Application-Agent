@@ -27,6 +27,25 @@ const redisConnection = new IORedis({
 
 const socket = io('http://localhost:3002');
 
+function parseCandidateInfo(bruttoCv) {
+    const info = {
+        name: "",
+        address: "",
+        email: "",
+        phone: ""
+    };
+
+    const lines = bruttoCv.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line.includes('**Navn:**')) info.name = line.split('**Navn:**')[1].trim();
+        if (line.includes('**Adresse:**')) info.address = line.split('**Adresse:**')[1].trim();
+        if (line.includes('**Email:**')) info.email = line.split('**Email:**')[1].trim();
+        if (line.includes('**Telefon:**')) info.phone = line.split('**Telefon:**')[1].trim();
+    }
+    return info;
+}
+
 async function callLocalGemini(prompt) {
     try {
         const tempFile = path.join('/tmp', `prompt_${Date.now()}.txt`);
@@ -51,7 +70,7 @@ async function printToPdf(htmlPath, pdfPath) {
 }
 
 const worker = new Worker('job_queue', async (job) => {
-  const { jobId, jobText, companyUrl, hint } = job.data;
+  const { jobId, jobText, companyUrl, hint, type: jobType, folder: existingFolder, markdown: existingMarkdown } = job.data;
   
   const updateStatus = (status, data = {}) => {
     socket.emit('job_status_update', { jobId, status, ...data });
@@ -59,74 +78,97 @@ const worker = new Worker('job_queue', async (job) => {
   };
 
   try {
-    updateStatus('Analyserer jobopslag...');
-    const langPrompt = `Besvar KUN med 'dk' eller 'en': """${jobText.substring(0, 500)}"""`;
-    const lang = (await callLocalGemini(langPrompt)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
-
-    // Indlæs Brutto-CV (AI kilden) og ICAN+ definition
+    // Indlæs Brutto-CV og ICAN+ definition
     let bruttoCv = "";
     const bruttoPath = path.join(rootDir, 'data', 'brutto_cv.md');
     if (fs.existsSync(bruttoPath)) bruttoCv = fs.readFileSync(bruttoPath, 'utf8');
+
+    const candidate = parseCandidateInfo(bruttoCv);
 
     let icanDef = "";
     const icanDefPath = path.join(rootDir, 'resources', 'ICAN+_DEF.md');
     if (fs.existsSync(icanDefPath)) icanDef = fs.readFileSync(icanDefPath, 'utf8');
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 13).replace('T', '_');
-    let companyName = "firma";
-    if (companyUrl) { try { companyName = new URL(companyUrl).hostname.split('.')[0]; } catch (e) {} }
+    let folderName, folderPath, companyName, jobTitleRaw, jobTitleSafe;
 
-    // Find stillingsbetegnelse fra jobText (f.eks. efter "Senior Efterforsker")
-    const jobTitleMatch = jobText.match(/^#+\s*(.*)/) || jobText.match(/(?:Stilling:|Job:|Som)\s*([A-Zæøåa-z0-9 ]+)/i);
-    const jobTitleRaw = jobTitleMatch ? jobTitleMatch[1].trim() : "stilling";
-    const jobTitleSafe = jobTitleRaw.substring(0, 30).replace(/[^a-zæøå0-9]/gi, '_');
+    if (jobType === 'refine_with_ai') {
+        updateStatus('Forfiner dokumenter med AI...');
+        folderName = existingFolder;
+        folderPath = path.join(rootDir, 'output', folderName);
+        companyName = folderName.split('_')[2] || 'firma';
+        jobTitleSafe = folderName.split('_').slice(3).join('_') || 'stilling';
+        jobTitleRaw = jobTitleSafe.replace(/_/g, ' ');
+    } else {
+        updateStatus('Analyserer jobopslag...');
+        const langPrompt = `Besvar KUN med 'dk' eller 'en': """${jobText.substring(0, 500)}"""`;
+        const lang = (await callLocalGemini(langPrompt)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
 
-    const folderName = `${timestamp}_${companyName}_${jobTitleSafe}`;
-    const outputDir = path.join(rootDir, 'output');
-    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 13).replace('T', '_');
+        companyName = "firma";
+        if (companyUrl) { try { companyName = new URL(companyUrl).hostname.split('.')[0]; } catch (e) {} }
 
-    const folderPath = path.join(outputDir, folderName);
-    if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
+        const jobTitleMatch = jobText.match(/^#+\s*(.*)/) || jobText.match(/(?:Stilling:|Job:|Som)\s*([A-Zæøåa-z0-9 ]+)/i);
+        jobTitleRaw = jobTitleMatch ? jobTitleMatch[1].trim() : "stilling";
+        jobTitleSafe = jobTitleRaw.substring(0, 30).replace(/[^a-zæøå0-9]/gi, '_');
 
-    fs.writeFileSync(path.join(folderPath, 'job.md'), jobText);
+        folderName = `${timestamp}_${companyName}_${jobTitleSafe}`;
+        const outputDir = path.join(rootDir, 'output');
+        if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
-    updateStatus('Genererer udkast...');
-    const aiInstructionsPath = path.join(rootDir, 'templates', 'ai_instructions.md');
-    let generatePromptTemplate = fs.readFileSync(aiInstructionsPath, 'utf8');
+        folderPath = path.join(outputDir, folderName);
+        if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
 
-    const generatePrompt = generatePromptTemplate
-        .replace(/{{BRUTTO_CV}}/g, bruttoCv)
-        .replace(/{{JOB_TEXT}}/g, jobText)
-        .replace(/{{HINT}}/g, hint || "Ingen specielle hints.")
-        .replace(/{{LANG_NAME}}/g, lang === 'dk' ? 'DANSK' : 'ENGELSK')
-        .replace(/{{ICAN_DEF}}/g, icanDef);
+        fs.writeFileSync(path.join(folderPath, 'job.md'), jobText);
+    }
 
+    let docsPart;
+    if (jobType === 'refine_with_ai') {
+        const refinePrompt = `Du er en ekspert karriererådgiver. Her er de nuværende dokumenter for Tintin og et nyt hint fra brugeren.
+        OPGAVE: Opdater dokumenterne baseret på hintet.
+        HINT: "${hint}"
+        DOKUMENTER: ${existingMarkdown}
+        Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].`;
+        
+        docsPart = await callLocalGemini(refinePrompt);
+    } else {
+        updateStatus('Genererer udkast...');
+        const aiInstructionsPath = path.join(rootDir, 'templates', 'ai_instructions.md');
+        let generatePromptTemplate = fs.readFileSync(aiInstructionsPath, 'utf8');
+        
+        const lang = (await callLocalGemini(`Besvar KUN med 'dk' eller 'en': """${jobText.substring(0, 500)}"""`)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
 
-    let contentRaw = await callLocalGemini(generatePrompt);
+        const generatePrompt = generatePromptTemplate
+            .replace(/{{BRUTTO_CV}}/g, bruttoCv)
+            .replace(/{{JOB_TEXT}}/g, jobText)
+            .replace(/{{HINT}}/g, hint || "Ingen specielle hints.")
+            .replace(/{{LANG_NAME}}/g, lang === 'dk' ? 'DANSK' : 'ENGELSK')
+            .replace(/{{ICAN_DEF}}/g, icanDef);
+
+        let contentRaw = await callLocalGemini(generatePrompt);
+        
+        updateStatus('Kvalitetssikrer indhold...');
+        const selfCorrectionPrompt = `Du er en kritisk redaktør. Optimer disse 4 dokumenter for Tintin.
+        1. Forklar hvad du har forbedret (max 3 linjer).
+        2. Derefter skriv "---START_DOCS---"
+        3. Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---.
+        4. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].
+        DOKUMENTER: ${contentRaw}`;
+
+        const optimizedRaw = await callLocalGemini(selfCorrectionPrompt);
+        docsPart = optimizedRaw.split('---START_DOCS---')[1] || optimizedRaw;
+    }
     
-    updateStatus('Kvalitetssikrer indhold...');
-    const selfCorrectionPrompt = `Du er en kritisk redaktør. Optimer disse 4 dokumenter for Tintin.
-    1. Forklar hvad du har forbedret (max 3 linjer).
-    2. Derefter skriv "---START_DOCS---"
-    3. Returner dokumenterne med mærkater: ---ANSØGNING---, ---CV---, ---ICAN--- og ---MATCH---.
-    4. Sørg for at MATCH altid har linjen: [SCORE] XX% [/SCORE].
-    DOKUMENTER: ${contentRaw}`;
-
-    const optimizedRaw = await callLocalGemini(selfCorrectionPrompt);
-    const [aiNotes, docsPart] = optimizedRaw.split('---START_DOCS---').map(s => s.trim());
-    
-    const extractSection = (text, tag, nextTags = []) => {
+    const extractSection = (text, tag) => {
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Mere robust regex der fanger indhold mellem tags uanset linjeskift
         const regex = new RegExp(`${escapedTag}\\s*([\\s\\S]*?)(?:\\n---[A-ZÆØÅ]+---|$)`, 'i');
         const match = text.match(regex);
         return match ? match[1].trim() : "";
     };
 
-    const ansMd = extractSection(docsPart || optimizedRaw, '---ANSØGNING---');
-    const cvMd = extractSection(docsPart || optimizedRaw, '---CV---');
-    const icanMd = extractSection(docsPart || optimizedRaw, '---ICAN---');
-    const matchMd = extractSection(docsPart || optimizedRaw, '---MATCH---');
+    const ansMd = extractSection(docsPart, '---ANSØGNING---');
+    const cvMd = extractSection(docsPart, '---CV---');
+    const icanMd = extractSection(docsPart, '---ICAN---');
+    const matchMd = extractSection(docsPart, '---MATCH---');
 
     const results = { markdown: {}, html: {}, links: {} };
     const sections = [
@@ -137,7 +179,7 @@ const worker = new Worker('job_queue', async (job) => {
     ];
 
     for (const s of sections) {
-        if (!s.md) continue; // Spring over hvis sektionen er tom
+        if (!s.md) continue;
 
         const safeTitle = s.title.replace(/\s+/g, '_');
         const fileName = `${safeTitle}_Tintin_${companyName}_${jobTitleSafe}`;
@@ -148,10 +190,9 @@ const worker = new Worker('job_queue', async (job) => {
         fs.writeFileSync(mdPath, s.md);
         
         const htmlBody = await mdToHtml(s.md, mdPath, `${fileName}_body.html`);
-        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw });
+        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw }, candidate);
         fs.writeFileSync(htmlPath, fullHtml);
         
-        // Generer PDF automatisk for hvert dokument med absolut sti
         updateStatus(`Genererer PDF for ${s.title}...`);
         const absoluteHtmlPath = `file://${path.resolve(htmlPath)}`;
         await printToPdf(absoluteHtmlPath, pdfPath);
@@ -165,7 +206,7 @@ const worker = new Worker('job_queue', async (job) => {
         };
     }
 
-    updateStatus('Færdig!', { folder: folderName, lang, aiNotes, ...results });
+    updateStatus('Færdig!', { folder: folderName, lang: jobType === 'refine_with_ai' ? 'refine' : 'initial', ...results });
 
   } catch (error) {
     console.error(`[Worker] KRITISK FEJL på job ${jobId}:`, error);

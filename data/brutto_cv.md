@@ -1,5 +1,15 @@
 # Brutto-CV - Tintin
 
+## Personlige oplysninger
+
+* **Navn:** Tintin
+* **Initialer:** TT
+* **Adresse:** Møllenborg Slot, 1480 Labadoux
+* **Email:** tintin@eventyrreporter.dk
+* **Telefon:** +32 123 45 67 89
+
+---
+
 ## Profil
 
 Eventyrreporter med 15+ års erfaring fra alle verdenshjørner. Kombinerer dyb teknisk ekspertise med hurtig problemløsning under pres. Søger en rolle hvor jeg kan tage ejerskab over komplekse efterforskninger.

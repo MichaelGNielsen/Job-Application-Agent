@@ -57,19 +57,32 @@ const App: React.FC = () => {
     } catch (err: any) { setError(err.message); setIsLoading(false); }
   };
 
-  const handleRefine = async (type: string) => {
+  const handleRefine = async (type: string, useAi: boolean = false) => {
     if (!results) return;
-    setIsLoading(true); setStatusMessage(`Opdaterer ${type}...`);
+    setIsLoading(true); setStatusMessage(useAi ? 'AI forfiner dokumenterne...' : `Opdaterer ${type}...`);
     try {
       const response = await fetch('/api/refine', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ folder: results.folder, type, markdown: results.markdown[type] }),
+        body: JSON.stringify({ 
+          folder: results.folder, 
+          type, 
+          markdown: results.markdown[type],
+          useAi,
+          hint // Brug det globale hint-felt til AI refinement
+        }),
       });
-      const data = await response.json();
-      setResults({ ...results, html: { ...results.html, [type]: data.html } });
-      setIsLoading(false); setStatusMessage('Opdateret!');
-      setTimeout(() => setStatusMessage(''), 2000);
+      
+      if (useAi) {
+        const { jobId } = await response.json();
+        socket.emit('join_job', jobId);
+        // Worker vil sende statusopdateringer via socket
+      } else {
+        const data = await response.json();
+        setResults({ ...results, html: { ...results.html, [type]: data.html } });
+        setIsLoading(false); setStatusMessage('Opdateret!');
+        setTimeout(() => setStatusMessage(''), 2000);
+      }
     } catch (err: any) { setError(err.message); setIsLoading(false); }
   };
 
@@ -209,8 +222,9 @@ const App: React.FC = () => {
                           />
                         )}
                       </div>
-                      <div className="p-4 pt-0">
-                        <button onClick={() => handleRefine(id)} className="w-full py-2 bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase tracking-widest rounded transition-colors">Opdater {title}</button>
+                      <div className="p-4 pt-0 space-y-2">
+                        <button onClick={() => handleRefine(id, false)} className="w-full py-2 bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase tracking-widest rounded transition-colors border border-white/5">💾 Gem mine rettelser</button>
+                        <button onClick={() => handleRefine(id, true)} className="w-full py-2 bg-cyan-600/20 hover:bg-cyan-600/40 text-[10px] font-bold uppercase tracking-widest rounded transition-colors border border-cyan-500/30 text-cyan-400">🤖 Spørg AI igen (Brug hint)</button>
                       </div>
                     </div>
                   );
