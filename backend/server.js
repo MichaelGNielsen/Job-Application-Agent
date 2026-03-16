@@ -15,8 +15,7 @@ const execPromise = promisify(exec);
 
 // Konfigurer stier
 const rootDir = '/app/shared';
-// Indlæs begge .env filer
-dotenv.config({ path: path.join(rootDir, '.env_private') });
+// Indlæs .env_ai filen
 dotenv.config({ path: path.join(rootDir, '.env_ai') });
 
 // Tving API nøgle til at være tilgængelig for gemini-cli
