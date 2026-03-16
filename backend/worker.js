@@ -163,11 +163,18 @@ const worker = new Worker('job_queue', async (job) => {
     
     const extractSection = (text, tag) => {
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`${escapedTag}[\\s\\S]*?\\n([\\s\\S]*?)(?=\\n---[A-ZÆØÅ_]+---|$)`, 'i');
+        // Robust regex: Find tagget, spring over alt på samme linje, fald ind i indholdet indtil næste mærkat
+        const regex = new RegExp(`${escapedTag}.*?\\n([\\s\\S]*?)(?=\\n---[A-ZÆØÅ_]+---|$)`, 'i');
         const match = text.match(regex);
-        return match ? match[1].trim() : "";
+        
+        if (!match) {
+            console.log(`[Worker] Advarsel: Kunne ikke finde sektionen ${tag} via regex.`);
+            return "";
+        }
+        return match[1].trim();
     };
 
+    console.log(`[Worker] Rå AI-output modtaget (${docsPart.length} tegn)`);
     aiNotes = extractSection(docsPart, '---REDAKTØRENS_LOGBOG---') || "AI'en har optimeret dokumenterne.";
     const metadataRaw = extractSection(docsPart, '---LAYOUT_METADATA---');
     

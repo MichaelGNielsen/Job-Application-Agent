@@ -35,6 +35,10 @@ Dette er din direkte instruks fra ansøgeren. Prioriter disse hints over standar
 
 Generer 4 sektioner i Markdown:
 
+### VIGTIGT: MÆRKATER (TAGS)
+
+Du SKAL bruge de nøjagtige mærkater herunder til at adskille dine sektioner. Selvom du skriver selve indholdet på fransk, tysk eller engelsk, må mærkaterne (f.eks. ---REDAKTØRENS_LOGBOG---) ALDRIG oversættes eller ændres.
+
 Generer 5 sektioner i Markdown:
 
 ---REDAKTØRENS_LOGBOG---
