@@ -12,14 +12,15 @@ A cinematic, high-detail 3D claymation scene in the style of Wallace and Gromit.
 
 ## Details
 
-- **CRITICAL:** Gromit sits on the car that is IN FRONT OF the train engine
-- The train engine pushes the car (and Gromit) towards the RIGHT
-- Gromit sits on the roof of the car, facing RIGHT (towards the direction of travel)
-- Gromit has a TRACK BOX in his LEFT hand
-- He takes a track from the box and lays it down in front of the car he's sitting on
-- As the entire train set moves towards the right, Gromit continuously lays new tracks just ahead of the wheels
-- There are NO tracks ahead of Gromit - only the ones he just laid in that moment
-- Smoke from the engine stretches to the LEFT (opposite to direction of travel)
-- The car is a simple passenger car with a rounded roof
-- Warm, indoor studio lighting, soft shadows
-- 4k resolution, cinematic wide panoramic shot (3:1 aspect ratio)
+* **CRITICAL:** Gromit sits on the car that is IN FRONT OF the train engine
+* The train engine pushes the car (and Gromit) towards the RIGHT
+* Gromit sits on the roof of the car, facing RIGHT (towards the direction of travel)
+* Gromit has a TRACK BOX in his LEFT hand
+* He takes a track from the box and lays it down in front of the car he's sitting on
+* As the entire train set moves towards the right, Gromit continuously lays new tracks just ahead of the wheels
+* There are NO tracks ahead of Gromit - only the ones he just laid in that moment
+* Smoke from the engine stretches to the LEFT (opposite to direction of travel)
+* The car is a simple passenger car with a rounded roof
+* Warm, indoor studio lighting, soft shadows
+* 4k resolution, cinematic wide panoramic shot (3:1 aspect ratio)
+

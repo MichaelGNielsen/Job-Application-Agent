@@ -43,10 +43,11 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+
 ```
 
 ## GitHub Overvejelser
 
-- Vi inkluderer en `.env.example`.
-- Vi bruger `.dockerignore` for at undgå at sende `node_modules` ind i containerne.
-- Dokumentationen i `docs/` gør det nemt for nye brugere at forstå flowet.
+* Vi inkluderer en `.env.example`.
+* Vi bruger `.dockerignore` for at undgå at sende `node_modules` ind i containerne.
+* Dokumentationen i `docs/` gør det nemt for nye brugere at forstå flowet.

@@ -1,3 +1,5 @@
+# Brutto-CV - Tintin
+
 ## Profil
 
 Eventyrreporter med 15+ års erfaring fra alle verdenshjørner. Kombinerer dyb teknisk ekspertise med hurtig problemløsning under pres. Søger en rolle hvor jeg kan tage ejerskab over komplekse efterforskninger.
