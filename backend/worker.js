@@ -90,6 +90,8 @@ const worker = new Worker('job_queue', async (job) => {
 
     let folderName, folderPath, companyName, jobTitleRaw, jobTitleSafe;
 
+    let lang = 'dk'; // Standard
+
     if (jobType === 'refine_with_ai') {
         updateStatus('Forfiner dokumenter med AI...');
         folderName = existingFolder;
@@ -97,10 +99,13 @@ const worker = new Worker('job_queue', async (job) => {
         companyName = folderName.split('_')[2] || 'firma';
         jobTitleSafe = folderName.split('_').slice(3).join('_') || 'stilling';
         jobTitleRaw = jobTitleSafe.replace(/_/g, ' ');
+        
+        // Detekter sprog fra eksisterende markdown hvis muligt
+        lang = existingMarkdown.toLowerCase().includes('dear') || existingMarkdown.toLowerCase().includes('sincerely') ? 'en' : 'dk';
     } else {
         updateStatus('Analyserer jobopslag...');
         const langPrompt = `Besvar KUN med 'dk' eller 'en': """${jobText.substring(0, 500)}"""`;
-        const lang = (await callLocalGemini(langPrompt)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
+        lang = (await callLocalGemini(langPrompt)).trim().toLowerCase().includes('dk') ? 'dk' : 'en';
 
         const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 13).replace('T', '_');
         companyName = "firma";
@@ -220,7 +225,7 @@ const worker = new Worker('job_queue', async (job) => {
         fs.writeFileSync(mdPath, s.md);
         
         const htmlBody = await mdToHtml(s.md, mdPath, `${fileName}_body.html`);
-        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw }, candidate);
+        const fullHtml = wrap(s.title, htmlBody, s.id, { company: companyName, position: jobTitleRaw }, candidate, lang);
         fs.writeFileSync(htmlPath, fullHtml);
         
         updateStatus(`Genererer PDF for ${s.title}...`);

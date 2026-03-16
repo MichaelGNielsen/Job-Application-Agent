@@ -43,7 +43,7 @@ const mdToHtml = async (md, filePath, outputFileName) => {
 };
 
 
-const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}) => {
+const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}, lang = 'dk') => {
     // Brug /app/shared/templates hvis vi er i Docker, ellers brug relativ sti
     const rootDir = process.env.NODE_ENV === 'production' ? '/app' : path.join(__dirname, '..');
     const templatePath = fs.existsSync('/app/shared/templates') 
@@ -60,16 +60,28 @@ const wrap = (t, c, type = 'ansøgning', meta = {}, candidate = {}) => {
     // Signatur sektion (kun til ansøgning)
     let signatureSection = "";
     if (type === 'ansøgning') {
+        const signOff = lang === 'en' ? "Sincerely," : "Med venlig hilsen,";
         signatureSection = `
         <div class="signature">
-            <p>Med venlig hilsen,</p>
+            <p>${signOff}</p>
             <p><strong>${name}</strong></p>
         </div>`;
     }
 
-    const formattedDate = new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
-    const location = candidate.address ? candidate.address.split(',')[1]?.trim() : "";
-    const dateDisplay = location ? `${location}, den ${formattedDate}` : formattedDate;
+    // Dato og Lokation (KUN til ansøgning)
+    let dateDisplay = "";
+    if (type === 'ansøgning') {
+        const dateObj = new Date();
+        const formattedDate = lang === 'en' 
+            ? dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+            : dateObj.toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
+        
+        // Find bynavnet (fjern postnummer hvis muligt)
+        let location = candidate.address ? candidate.address.split(',')[1]?.trim() : "";
+        location = location.replace(/^[0-9 ]+/, ''); // Fjern førende tal (postnummer)
+        
+        dateDisplay = lang === 'en' ? `${location}, ${formattedDate}` : `${location}, den ${formattedDate}`;
+    }
 
     // Erstat placeholders
     html = html

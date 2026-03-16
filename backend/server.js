@@ -179,10 +179,13 @@ app.post('/api/refine', async (req, res) => {
     const bruttoCv = fs.existsSync(bruttoPath) ? fs.readFileSync(bruttoPath, 'utf8') : "";
     const candidate = parseCandidateInfo(bruttoCv);
 
+    // Detekter sprog fra det indsendte markdown
+    const lang = markdown.toLowerCase().includes('dear') || markdown.toLowerCase().includes('sincerely') ? 'en' : 'dk';
+
     const htmlBody = await mdToHtml(markdown, mdPath, `${baseName}_body.html`);
     const companyName = folder.split('_')[2] || 'firma';
     const jobTitle = folder.split('_').slice(3).join(' ') || 'stilling';
-    const fullHtml = wrap(typeLabel.replace('_', ' '), htmlBody, type, { company: companyName, position: jobTitle }, candidate);
+    const fullHtml = wrap(typeLabel.replace('_', ' '), htmlBody, type, { company: companyName, position: jobTitle }, candidate, lang);
     
     fs.writeFileSync(htmlPath, fullHtml);
     await printToPdf(htmlPath, pdfPath);
