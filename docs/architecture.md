@@ -92,6 +92,31 @@ Systemet er afhængigt af følgende CLI-værktøjer installeret i miljøet:
 3. **`chromium-browser`**
   * Genererer pixel-perfekte PDF'er fra HTML-skabeloner.
 
+## 🔄 Det Logiske Workflow
+
+Dette afsnit beskriver brugerrejsen og systemets logik fra start til slut.
+
+1. **Datagrundlag (Initialisering)**
+  * Systemet læser `brutto_cv.md` som den primære kilde (herunder personlige stamdata).
+  * *Mål:* Flyt al personinfo fra `.env_private` direkte ind i `brutto_cv.md`, så der kun er én fil at vedligeholde.
+
+2. **Første Generering (The "Big Bang")**
+  * Brugeren indsætter jobtekst og eventuelle start-hints (f.eks. "Vægt min erfaring med embedded software").
+  * AI'en skaber de 4 dokumenter (Ansøgning, CV, Match, ICAN+) i ét hug.
+  * Systemet gemmer dem som Markdown, genererer HTML/PDF og viser dem i 4-boks layoutet.
+
+3. **To veje til perfektion (Iterativ proces)**
+  * **A: Manuel polering (Hurtig)**
+    * Brugeren retter stavefejl eller småting direkte i Markdown-editoren.
+    * Systemet opdaterer HTML/PDF med det samme (uden AI-kald).
+  * **B: AI Refinement (Smart)**
+    * Brugeren skriver et nyt hint i den globale boks (f.eks. "Tag mere med om mine job indenfor embedded i CV'et").
+    * AI'en får de eksisterende dokumenter + det nye hint og returnerer en forbedret version.
+
+4. **Finalisering & Eksport**
+  * Brugeren kan skifte frem og tilbage mellem manuel ret og AI-hjælp, indtil resultatet er 100%.
+  * De færdige PDF'er ligger klar i den unikke job-mappe til download eller print.
+
 ## 📂 Filstruktur & Oprydning (Planlagt)
 
 For at holde projektet overskueligt flyttes skabeloner og demo-filer til dedikerede mapper:
