@@ -160,3 +160,27 @@ Under 'crash test' på Raspberry Pi 5 blev følgende observeret:
 
 1. **Handling i morgen**
   * Sikre 'Content-Disposition' header i API'et, så PDF'er downloades med deres rigtige navne i stedet for standardnavne.
+
+## Status: 17. Marts 2026 - Det Internationale Gennembrud (v2.8.1) 🌍🚀
+
+En formiddag med ekstrem høj kadence og fokus på internationalisering og layout-præcision.
+
+### Gennemførte forbedringer
+
+1. **Dynamiske Mappenavne**
+   * AI'en foreslår nu selv sigende mappenavne på brevets sprog (f.eks. 'senior_investigator_interpol').
+   * Backenden omdøber automatisk output-mapperne med tidsstempel.
+2. **Layout & CSS (v2.7.9)**
+   * Fikset "ciffer-spredning" i telefonnumre ved at tvinge venstrestilling i headeren.
+   * Brødtekst er nu professionelt "justified", mens metadata er venstrestillet.
+3. **Robust i18n Parsing (v2.8.0)**
+   * Implementeret kirurgisk regex-udtrækning af metadata (Location, Sign-off, Folder-Name).
+   * Tvungne linjeskift ved modtager-blokken (Att.: linjen).
+
+### Kendte udfordringer (Næste skridt)
+
+1. **"Høfligheds-fejlen"**
+   * AI'en sniger stadig franske gloser (À l'attention de) ind i danske/engelske breve, når modtageren bor i Frankrig.
+   * Løsning: Implementer et "Sprogligt Integritets-regelsæt" i ai_instructions.md.
+
+Fyraften (formiddag)! 🎩💤

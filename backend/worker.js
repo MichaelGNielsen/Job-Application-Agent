@@ -191,6 +191,7 @@ const worker = new Worker('job_queue', async (job) => {
 
     // Omdøb mappen hvis AI'en foreslog et bedre navn
     if (layoutMeta.folderName && jobType !== 'refine_with_ai') {
+        console.log(`[Worker] AI foreslog mappenavn: ${layoutMeta.folderName}`);
         const timestamp = folderName.split('_')[0] + '_' + folderName.split('_')[1];
         const newFolderName = `${timestamp}_${layoutMeta.folderName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
         const newFolderPath = path.join(rootDir, 'output', newFolderName);
