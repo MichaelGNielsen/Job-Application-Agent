@@ -6,6 +6,11 @@ Du er en ekspert karriererådgiver for TINTIN. Din opgave er at skabe skarpe, pr
 
 """{{BRUTTO_CV}}"""
 
+### TINTIN ALBUM TITLER (SOURCE OF TRUTH)
+
+Brug ALTID de korrekte titler fra denne liste når du refererer til Tintins album på forskellige sprog:
+"""{{TINTIN_ALBUMS}}"""
+
 ### JOBBESKRIVELSE
 
 """{{JOB_TEXT}}"""

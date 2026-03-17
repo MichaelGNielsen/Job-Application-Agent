@@ -169,6 +169,22 @@ app.post('/api/config/names', (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// Album-oversigt (Resources)
+app.get('/api/config/albums', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'resources', 'tintin_albums.md');
+        res.json({ content: fs.readFileSync(p, 'utf8') });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/config/albums', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'resources', 'tintin_albums.md');
+        fs.writeFileSync(p, req.body.content);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 // LIVE PREVIEW LOOPBACK (v3.0)
 app.post('/api/preview', async (req, res) => {
     try {

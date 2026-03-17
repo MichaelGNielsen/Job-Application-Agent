@@ -11,11 +11,12 @@ const App: React.FC = () => {
   const [hint, setHint] = useState('');
   
   // Kartotek States
-  const [activeTab, setActiveTab] = useState<'brutto' | 'ai' | 'layout' | 'names'>('brutto');
+  const [activeTab, setActiveTab] = useState<'brutto' | 'ai' | 'layout' | 'names' | 'albums'>('brutto');
   const [bruttoCv, setBruttoCv] = useState('');
   const [aiInstructions, setAiInstructions] = useState('');
   const [masterLayout, setMasterLayout] = useState('');
   const [namesResource, setNamesResource] = useState('');
+  const [albumsResource, setAlbumsResource] = useState('');
   const [showConfig, setShowConfig] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,16 +36,18 @@ const App: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const [brutto, ai, layout, names] = await Promise.all([
+      const [brutto, ai, layout, names, albums] = await Promise.all([
         fetch('/api/brutto').then(r => r.json()),
         fetch('/api/config/instructions').then(r => r.json()),
         fetch('/api/config/layout').then(r => r.json()),
-        fetch('/api/config/names').then(r => r.json())
+        fetch('/api/config/names').then(r => r.json()),
+        fetch('/api/config/albums').then(r => r.json())
       ]);
       setBruttoCv(brutto.content);
       setAiInstructions(ai.content);
       setMasterLayout(layout.content);
       setNamesResource(names.content);
+      setAlbumsResource(albums.content);
     } catch (e) { console.error("Fejl ved hentning af konfig:", e); }
   };
 
@@ -56,6 +59,7 @@ const App: React.FC = () => {
     if (type === 'ai') { url = '/api/config/instructions'; body = { content: aiInstructions }; }
     else if (type === 'layout') { url = '/api/config/layout'; body = { content: masterLayout }; }
     else if (type === 'names') { url = '/api/config/names'; body = { content: namesResource }; }
+    else if (type === 'albums') { url = '/api/config/albums'; body = { content: albumsResource }; }
 
     try {
       await fetch(url, {
@@ -91,6 +95,43 @@ const App: React.FC = () => {
           setResults({ ...results, html: { ...results.html, ...updatedHtml } });
           setStatusMessage('Layout opdateret!');
           setTimeout(() => setStatusMessage(''), 2000);
+      }
+    } catch (err: any) { setError(err.message); setIsLoading(false); }
+  };
+
+  const toggleViewMode = (id: string) => {
+    setViewModes(prev => ({ ...prev, [id]: prev[id] === 'html' ? 'markdown' : 'html' }));
+  };
+
+  const getDocUrl = (path: string) => {
+    if (!path) return '#';
+    return path;
+  };
+
+  const handleRefine = async (type: string, useAi: boolean = false) => {
+    if (!results) return;
+    setIsLoading(true); setStatusMessage(useAi ? 'AI forfiner dokumenterne...' : `Opdaterer ${type}...`);
+    try {
+      const response = await fetch('/api/refine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          folder: results.folder, 
+          type, 
+          markdown: results.markdown[type],
+          useAi,
+          hint
+        }),
+      });
+      
+      if (useAi) {
+        const { jobId } = await response.json();
+        socket.emit('join_job', jobId);
+      } else {
+        const data = await response.json();
+        setResults({ ...results, html: { ...results.html, [type]: data.html } });
+        setIsLoading(false); setStatusMessage('Opdateret!');
+        setTimeout(() => setStatusMessage(''), 2000);
       }
     } catch (err: any) { setError(err.message); setIsLoading(false); }
   };
@@ -141,7 +182,8 @@ const App: React.FC = () => {
                   { id: 'brutto', label: '📇 Master CV' },
                   { id: 'ai', label: '🤖 AI Regler' },
                   { id: 'layout', label: '🎨 Design' },
-                  { id: 'names', label: '🌍 Navne' }
+                  { id: 'names', label: '🌍 Navne' },
+                  { id: 'albums', label: '📚 Album' }
                 ].map(tab => (
                   <button 
                     key={tab.id}
@@ -161,13 +203,20 @@ const App: React.FC = () => {
               <div className="space-y-4 animate-in slide-in-from-top duration-300">
                 <textarea 
                   className="w-full h-80 bg-[#0a192f] border border-white/10 rounded p-4 font-mono text-sm text-gray-300 focus:border-cyan-500/50 outline-none transition-colors"
-                  value={activeTab === 'brutto' ? bruttoCv : activeTab === 'ai' ? aiInstructions : activeTab === 'layout' ? masterLayout : namesResource}
+                  value={
+                    activeTab === 'brutto' ? bruttoCv : 
+                    activeTab === 'ai' ? aiInstructions : 
+                    activeTab === 'layout' ? masterLayout : 
+                    activeTab === 'names' ? namesResource :
+                    albumsResource
+                  }
                   onChange={(e) => {
                     const val = e.target.value;
                     if (activeTab === 'brutto') setBruttoCv(val);
                     else if (activeTab === 'ai') setAiInstructions(val);
                     else if (activeTab === 'layout') setMasterLayout(val);
                     else if (activeTab === 'names') setNamesResource(val);
+                    else if (activeTab === 'albums') setAlbumsResource(val);
                   }}
                 />
                 <div className="flex gap-4">
