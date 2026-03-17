@@ -1,4 +1,4 @@
-# Job Application Agent - Tintin Demo (v2.7.3)
+# Job Application Agent - Tintin Demo (se VERSION filen)
 
 ![Gromit laying tracks](pictures/grommit-train-tracks.gif)
 
@@ -6,7 +6,7 @@
 
 At bygge denne agent føles præcis som scenen fra *The Wrong Trousers*, hvor Gromit lægger skinnerne, mens toget kører i fuld fart. Projektet demonstrerer, hvordan AI transformerer en personlig erfaringsbase (Master CV) til 4 professionelle, målrettede dokumenter på få sekunder.
 
-Dette er den **officielle præsentations-version (v2.7.3)**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data.
+Dette er den **officielle præsentations-version**, som er 100% GDPR-sikker og baseret udelukkende på Tintins data. Se filen `VERSION` for det aktuelle versionsnummer.
 
 ## ⚙️ Miljø-konfiguration (.env)
 

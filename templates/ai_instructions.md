@@ -57,7 +57,7 @@ Address: [Lokaliseret udgave af din adresse, f.eks. "Château de Moulinsart, 148
 
 1. START direkte med MODTAGERENS navn og adresse. Del det op så firma/adresse er øverst, og 'Att.: [Navn]' er på sin egen linje lige under.
 2. Skriv ALDRIG din egen adresse, dit navn eller DATOEN nogen steder i din tekst, da systemet automatisk indsætter din professionelle header og den aktuelle dato øverst til højre via metadata.
-3. Skriv en præcis emnelinje (Subject line) på opslagets sprog. Brug ALTID dette format: 'Vedrørende: [Stillingens fulde navn] (Ref: [Reference-nummer, hvis angivet i opslaget])'. (Skriv linjen uden brug af fed skrift).
+3. Skriv en præcis emnelinje (Subject line) på opslagets sprog. Brug det relevante ord for emne på det pågældende sprog (f.eks. 'Vedrørende:', 'Subject:', 'Objet:' eller 'Betreff:') efterfulgt af: '[Stillingens fulde navn] (Ref: [Reference-nummer, hvis angivet i opslaget])'. (Skriv linjen uden brug af fed skrift).
 4. Skriv selve ansøgningen.
 5. STOP efter det sidste punktum i selve teksten.
 6. Skriv ALDRIG 'Med venlig hilsen' eller 'Tintin' til sidst.)
