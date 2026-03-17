@@ -50,17 +50,28 @@ Sign-off: [F.eks. "Med venlig hilsen" eller "Sincerely"]
 Location: [KUN bynavn, f.eks. "Lyon". Skriv ALDRIG ordet "Address" her!]
 Date-Prefix: [F.eks. "den" eller tomt "" for engelsk]
 Address: [Din fulde adresse, f.eks. "Château de Moulinsart, 1480 Labadoux"]
-Folder-Name: [Et kort, sigende navn på opslagets sprog, f.eks. "senior_investigator_interpol" eller "seniorefterforsker_interpol"]
+Folder-Name: [Et kort, sigende navn på opslagets sprog, jf. tabellen herunder]
 
-VIGTIGT: Alle formelle betegnelser (Att.:, Emne, Sign-off) SKAL skrives på det samme sprog som selve ansøgningen. Hvis du skriver på dansk, skal der stå "Att.:" og "Vedrørende:", også selvom firmaet ligger i Frankrig.
+### OBLIGATORISK LABEL-TABEL (SPROGLIG INTEGRITET)
+
+Brug KUN labels fra denne tabel, der matcher sproget i din tekst. Ignorer firmaets lokation. Hvis du skriver på dansk til Frankrig, SKAL du bruge labels fra 'Dansk' rækken.
+
+| Sprog | Modtager Label (Attn) | Emne Label (Subject) | Folder-Name Eksempel |
+| :--- | :--- | :--- | :--- |
+| **Dansk** | Att.: | Vedrørende: | seniorefterforsker_interpol |
+| **Engelsk** | Attn: | Subject: | senior_investigator_interpol |
+| **Fransk** | À l'attention de : | Objet : | enqueteur_senior_interpol |
+| **Tysk** | z. Hd. | Betreff: | senior_ermittler_interpol |
+
+VIGTIGT: Brug ALDRIG franske gloser som "À l'attention de" eller "Objet" i et dansk eller engelsk brev, bare fordi firmaet ligger i Frankrig. Det er en kritisk fejl.
 )
 
 ---ANSØGNING---
 (Skriv målrettet ansøgning her. Følg denne struktur nøje:
 
-1. START direkte med MODTAGERENS navn og adresse. Skriv firma og adresse øverst. Lav derefter et tydeligt linjeskift (brug to mellemrum i slutningen af adresselinjen) og skriv den korrekte betegnelse for modtager PÅ BREVETS SPROG (f.eks. 'Att.:' på dansk, 'Attn:' på engelsk, 'À l'attention de :' på fransk eller 'z. Hd.' på tysk) efterfulgt af [Navn] på sin helt egen linje lige under.
+1. START direkte med MODTAGERENS navn og adresse. Skriv firma og adresse øverst. Lav derefter et tydeligt linjeskift (brug to mellemrum i slutningen af adresselinjen) og skriv den korrekte betegnelse for modtager PÅ BREVETS SPROG jf. tabellen herover (f.eks. 'Att.:' på dansk, 'Attn:' på engelsk) efterfulgt af [Navn] på sin helt egen linje lige under.
 2. Skriv ALDRIG din egen adresse, dit navn eller DATOEN nogen steder i din tekst, da systemet automatisk indsætter din professionelle header og den aktuelle dato øverst til højre via metadata.
-3. Skriv en præcis emnelinje (Subject line) PÅ BREVETS SPROG. Brug det relevante ord for emne (f.eks. 'Vedrørende:', 'Subject:', 'Objet:' eller 'Betreff:') efterfulgt af: '[Stillingens fulde navn] (Ref: [Reference-nummer, hvis angivet i opslaget])'. (Skriv linjen uden brug af fed skrift).
+3. Skriv en præcis emnelinje (Subject line) PÅ BREVETS SPROG jf. tabellen herover. Brug det korrekte ord for emne (f.eks. 'Vedrørende:', 'Subject:', 'Objet:' eller 'Betreff:') efterfulgt af: '[Stillingens fulde navn] (Ref: [Reference-nummer, hvis angivet i opslaget])'. (Skriv linjen uden brug af fed skrift).
 4. Skriv selve ansøgningen.
 5. STOP efter det sidste punktum i selve teksten.
 6. Skriv ALDRIG 'Med venlig hilsen' eller 'Tintin' til sidst.)
