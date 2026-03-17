@@ -149,6 +149,8 @@ const worker = new Worker('job_queue', async (job) => {
         docsPart = await callLocalGemini(refinePrompt);
     } else {
         updateStatus('Genererer udkast...');
+        const albumsPath = path.join(rootDir, 'resources', 'tintin_albums.md');
+        const albumsDef = fs.readFileSync(albumsPath, 'utf8');
         const aiInstructionsPath = path.join(rootDir, 'templates', 'ai_instructions.md');
         let generatePromptTemplate = fs.readFileSync(aiInstructionsPath, 'utf8');
         
@@ -156,7 +158,8 @@ const worker = new Worker('job_queue', async (job) => {
             .replace(/{{BRUTTO_CV}}/g, bruttoCv)
             .replace(/{{JOB_TEXT}}/g, jobText)
             .replace(/{{HINT}}/g, hint || "Ingen specielle hints.")
-            .replace(/{{ICAN_DEF}}/g, icanDef);
+            .replace(/{{ICAN_DEF}}/g, icanDef)
+            .replace(/{{TINTIN_ALBUMS}}/g, albumsDef);
 
         docsPart = await callLocalGemini(generatePrompt);
     }
@@ -214,6 +217,12 @@ const worker = new Worker('job_queue', async (job) => {
     const matchMd = extractSection(docsPart, '---MATCH---');
 
     const results = { markdown: {}, html: {}, links: {} };
+    // Forbered filnavne baseret på det (måske omdøbte) mappenavn
+    // Vi fjerner tidsstemplet (YYYY-MM-DD_HH) fra starten af folderName for at få et rent fil-id
+    const fileBaseId = folderName.includes('_') && folderName.split('_')[0].length === 10 
+        ? folderName.split('_').slice(2).join('_') 
+        : folderName;
+
     const sections = [
         { id: 'ansøgning', md: ansMd, title: 'Ansøgning' },
         { id: 'cv', md: cvMd, title: 'CV' },
@@ -225,7 +234,7 @@ const worker = new Worker('job_queue', async (job) => {
         if (!s.md) continue;
 
         const safeTitle = s.title.replace(/\s+/g, '_');
-        const fileName = `${safeTitle}_Tintin_${companyName}_${jobTitleSafe}`;
+        const fileName = `${safeTitle}_Tintin_${fileBaseId}`;
         const mdPath = path.join(folderPath, `${fileName}.md`);
         const htmlPath = path.join(folderPath, `${fileName}.html`);
         const pdfPath = path.join(folderPath, `${fileName}.pdf`);
