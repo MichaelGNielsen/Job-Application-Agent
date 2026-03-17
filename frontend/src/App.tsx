@@ -290,7 +290,7 @@ const App: React.FC = () => {
                           <button onClick={() => toggleViewMode(id)} className="text-[10px] text-cyan-400 hover:underline">
                             {viewModes[id] === 'html' ? 'VIS MARKDOWN' : 'VIS PREVIEW'}
                           </button>
-                          <a href={getDocUrl(results.links[id]?.pdf)} target="_blank" rel="noreferrer" className="text-[10px] text-green-400 hover:underline">ÅBEN HTML</a>
+                          <a href={getDocUrl(results.links[id]?.html)} target="_blank" rel="noreferrer" className="text-[10px] text-green-400 hover:underline">ÅBEN HTML</a>
                         </div>
                       </div>
                       <div className="p-4 flex-1">

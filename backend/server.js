@@ -47,28 +47,33 @@ const redisConnection = new IORedis({
 const jobQueue = new Queue('job_queue', { connection: redisConnection });
 
 function parseCandidateInfo(bruttoCv) {
-    const info = {
-        name: "",
-        address: "",
-        email: "",
-        phone: ""
-    };
+    const info = { name: "", address: "", email: "", phone: "" };
+    if (!bruttoCv) return info;
 
-    const lines = bruttoCv.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (line.includes('**Navn:**')) info.name = line.split('**Navn:**')[1].trim();
-        if (line.includes('**Adresse:**')) info.address = line.split('**Adresse:**')[1].trim();
-        if (line.includes('**Email:**')) info.email = line.split('**Email:**')[1].trim();
-        if (line.includes('**Telefon:**')) info.phone = line.split('**Telefon:**')[1].trim();
-    }
+    const cleanValue = (val) => val ? val.replace(/^[\s\*\-#]+|[\s\*\-#]+$/g, '').trim() : "";
+
+    const getName = bruttoCv.match(/(?:\*\*|\*|#)?\s*Navn[:\s]+(.*?)(?:\n|$)/i);
+    const getAddr = bruttoCv.match(/(?:\*\*|\*|#)?\s*Adresse[:\s]+(.*?)(?:\n|$)/i);
+    const getEmail = bruttoCv.match(/(?:\*\*|\*|#)?\s*Email[:\s]+(.*?)(?:\n|$)/i);
+    const getPhone = bruttoCv.match(/(?:\*\*|\*|#)?\s*Telefon[:\s]+(.*?)(?:\n|$)/i);
+
+    if (getName) info.name = cleanValue(getName[1]);
+    if (getAddr) info.address = cleanValue(getAddr[1]);
+    if (getEmail) info.email = cleanValue(getEmail[1]);
+    if (getPhone) info.phone = cleanValue(getPhone[1]);
+    
     return info;
 }
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 
-app.use('/api/applications', express.static(path.join(rootDir, 'output'), {
+app.use('/api/applications', (req, res, next) => {
+    try {
+        req.url = decodeURIComponent(req.url);
+    } catch (e) {}
+    next();
+}, express.static(path.join(rootDir, 'output'), {
     index: false,
     setHeaders: (res, path) => {
         if (path.endsWith('.pdf')) {

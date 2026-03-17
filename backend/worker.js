@@ -30,15 +30,17 @@ function parseCandidateInfo(bruttoCv) {
     const info = { name: "", address: "", email: "", phone: "" };
     if (!bruttoCv) return info;
 
+    const cleanValue = (val) => val ? val.replace(/^[\s\*\-#]+|[\s\*\-#]+$/g, '').trim() : "";
+
     const getName = bruttoCv.match(/(?:\*\*|\*|#)?\s*Navn[:\s]+(.*?)(?:\n|$)/i);
     const getAddr = bruttoCv.match(/(?:\*\*|\*|#)?\s*Adresse[:\s]+(.*?)(?:\n|$)/i);
     const getEmail = bruttoCv.match(/(?:\*\*|\*|#)?\s*Email[:\s]+(.*?)(?:\n|$)/i);
     const getPhone = bruttoCv.match(/(?:\*\*|\*|#)?\s*Telefon[:\s]+(.*?)(?:\n|$)/i);
 
-    if (getName) info.name = getName[1].trim();
-    if (getAddr) info.address = getAddr[1].trim();
-    if (getEmail) info.email = getEmail[1].trim();
-    if (getPhone) info.phone = getPhone[1].trim();
+    if (getName) info.name = cleanValue(getName[1]);
+    if (getAddr) info.address = cleanValue(getAddr[1]);
+    if (getEmail) info.email = cleanValue(getEmail[1]);
+    if (getPhone) info.phone = cleanValue(getPhone[1]);
     
     return info;
 }
@@ -192,31 +194,23 @@ const worker = new Worker('job_queue', async (job) => {
 
     // Omdøb mappen hvis AI'en foreslog et bedre navn
     if (layoutMeta.folderName && jobType !== 'refine_with_ai') {
-        console.log(`[Worker] AI foreslog mappenavn: ${layoutMeta.folderName}`);
         const timestamp = folderName.split('_')[0] + '_' + folderName.split('_')[1];
         const newFolderName = `${timestamp}_${layoutMeta.folderName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
         const newFolderPath = path.join(rootDir, 'output', newFolderName);
         
-        try {
-            if (!fs.existsSync(newFolderPath)) {
-                fs.renameSync(folderPath, newFolderPath);
-                folderName = newFolderName;
-                folderPath = newFolderPath;
-                console.log(`[Worker] Mappe omdøbt til: ${folderName}`);
-            }
-        } catch (e) {
-            console.error(`[Worker] Kunne ikke omdøbe mappe: ${e.message}`);
+        if (newFolderName !== folderName) {
+            try {
+                if (!fs.existsSync(newFolderPath)) {
+                    fs.renameSync(folderPath, newFolderPath);
+                    console.log(`[Worker] Mappe omdøbt: ${folderName} -> ${newFolderName}`);
+                    folderName = newFolderName;
+                    folderPath = newFolderPath;
+                }
+            } catch (e) { console.error(`[Worker] Omdøbning fejlede: ${e.message}`); }
         }
     }
 
-    const ansMd = extractSection(docsPart, '---ANSØGNING---');
-    const cvMd = extractSection(docsPart, '---CV---');
-    const icanMd = extractSection(docsPart, '---ICAN---');
-    const matchMd = extractSection(docsPart, '---MATCH---');
-
-    const results = { markdown: {}, html: {}, links: {} };
-    // Forbered filnavne baseret på det (måske omdøbte) mappenavn
-    // Vi fjerner tidsstemplet (YYYY-MM-DD_HH) fra starten af folderName for at få et rent fil-id
+    // Altid baser filnavne på det endelige mappenavn
     const fileBaseId = folderName.includes('_') && folderName.split('_')[0].length === 10 
         ? folderName.split('_').slice(2).join('_') 
         : folderName;
