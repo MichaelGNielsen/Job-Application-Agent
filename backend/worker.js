@@ -192,6 +192,14 @@ const worker = new Worker('job_queue', async (job) => {
         folderName: metadataRaw.match(/^Folder-Name:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Date-Prefix:|Address:)|$)/im)?.[1]?.trim() || ""
     };
 
+    let ansMd = "", cvMd = "", icanMd = "", matchMd = "";
+    if (typeof extractSection === 'function' && docsPart) {
+        ansMd = extractSection(docsPart, '---ANSØGNING---');
+        cvMd = extractSection(docsPart, '---CV---');
+        icanMd = extractSection(docsPart, '---ICAN---');
+        matchMd = extractSection(docsPart, '---MATCH---');
+    }
+
     // Omdøb mappen hvis AI'en foreslog et bedre navn
     if (layoutMeta.folderName && jobType !== 'refine_with_ai') {
         const timestamp = folderName.split('_')[0] + '_' + folderName.split('_')[1];
@@ -209,11 +217,6 @@ const worker = new Worker('job_queue', async (job) => {
             } catch (e) { console.error(`[Worker] Omdøbning fejlede: ${e.message}`); }
         }
     }
-
-    const ansMd = extractSection(docsPart, '---ANSØGNING---');
-    const cvMd = extractSection(docsPart, '---CV---');
-    const icanMd = extractSection(docsPart, '---ICAN---');
-    const matchMd = extractSection(docsPart, '---MATCH---');
 
     const results = { markdown: {}, html: {}, links: {} };
     // Altid baser filnavne på det endelige mappenavn
