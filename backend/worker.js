@@ -164,21 +164,16 @@ const worker = new Worker('job_queue', async (job) => {
     console.log(`[Worker] Rå AI-output modtaget (${docsPart.length} tegn). Start: ${docsPart.substring(0, 200).replace(/\n/g, ' ')}`);
     
     const extractSection = (text, tag) => {
-        // Fjern bindestreger fra tag for at matche mere fleksibelt
-        const tagName = tag.replace(/-/g, '');
-        // Match mønstre som ---TAG---, --TAG--, TAG:, osv.
-        const regex = new RegExp(`(?:-+|\\b)${tagName}(?:-+|:)?\\s*\\n?([\\s\\S]*?)(?=\\n-+[A-ZÆØÅ_]+-+|=|$)`, 'i');
+        const tagName = tag.replace(/-/g, '').toUpperCase();
+        // Meget mere tilgivende regex der stadig kræver bindestregerne som separatorer
+        const regex = new RegExp(`-+\\s*${tagName}\\s*-+[\\s\\S]*?\\n?([\\s\\S]*?)(?=\\n\\s*-+[A-ZÆØÅ_]+\\s*-+|$|\\n=)`, 'i');
         const match = text.match(regex);
         
         if (!match) {
-            // Sidste forsøg: Prøv at finde tag-teksten direkte
-            const simpleIndex = text.toUpperCase().indexOf(tagName.toUpperCase());
-            if (simpleIndex !== -1) {
-                const afterTag = text.substring(simpleIndex + tagName.length);
-                const endMatch = afterTag.match(/\\n-+[A-ZÆØÅ_]+-+/);
-                return (endMatch ? afterTag.substring(0, endMatch.index) : afterTag).replace(/^[:\s-]+/, '').trim();
-            }
-            return "";
+            // Sidste forsøg: Prøv at finde tag-teksten direkte hvis bindestreger mangler
+            const fallbackRegex = new RegExp(`(?:^|\\n)${tagName}:?\\s*\\n?([\\s\\S]*?)(?=\\n[A-ZÆØÅ_]+:|$)`, 'i');
+            const fallbackMatch = text.match(fallbackRegex);
+            return fallbackMatch ? fallbackMatch[1].trim() : "";
         }
         return match[1].trim();
     };
