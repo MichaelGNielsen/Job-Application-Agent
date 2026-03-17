@@ -182,11 +182,30 @@ const worker = new Worker('job_queue', async (job) => {
     const metadataRaw = extractSection(docsPart, 'LAYOUT_METADATA');
     
     const layoutMeta = {
-        signOff: metadataRaw.match(/^Sign-off:\s*(.*?)(?=\s*(?:Location:|Date-Prefix:|Address:)|$)/im)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
-        location: metadataRaw.match(/^Location:\s*(.*?)(?=\s*(?:Sign-off:|Date-Prefix:|Address:)|$)/im)?.[1]?.trim() || "",
-        datePrefix: metadataRaw.match(/^Date-Prefix:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Address:)|$)/im)?.[1]?.trim() || (lang === 'da' ? "den" : ""),
-        address: metadataRaw.match(/^Address:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Date-Prefix:)|$)/im)?.[1]?.trim() || ""
+        signOff: metadataRaw.match(/^Sign-off:\s*(.*?)(?=\s*(?:Location:|Date-Prefix:|Address:|Folder-Name:)|$)/im)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
+        location: metadataRaw.match(/^Location:\s*(.*?)(?=\s*(?:Sign-off:|Date-Prefix:|Address:|Folder-Name:)|$)/im)?.[1]?.trim() || "",
+        datePrefix: metadataRaw.match(/^Date-Prefix:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Address:|Folder-Name:)|$)/im)?.[1]?.trim() || (lang === 'da' ? "den" : ""),
+        address: metadataRaw.match(/^Address:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Date-Prefix:|Folder-Name:)|$)/im)?.[1]?.trim() || "",
+        folderName: metadataRaw.match(/^Folder-Name:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Date-Prefix:|Address:)|$)/im)?.[1]?.trim() || ""
     };
+
+    // Omdøb mappen hvis AI'en foreslog et bedre navn
+    if (layoutMeta.folderName && jobType !== 'refine_with_ai') {
+        const timestamp = folderName.split('_')[0] + '_' + folderName.split('_')[1];
+        const newFolderName = `${timestamp}_${layoutMeta.folderName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
+        const newFolderPath = path.join(rootDir, 'output', newFolderName);
+        
+        try {
+            if (!fs.existsSync(newFolderPath)) {
+                fs.renameSync(folderPath, newFolderPath);
+                folderName = newFolderName;
+                folderPath = newFolderPath;
+                console.log(`[Worker] Mappe omdøbt til: ${folderName}`);
+            }
+        } catch (e) {
+            console.error(`[Worker] Kunne ikke omdøbe mappe: ${e.message}`);
+        }
+    }
 
     const ansMd = extractSection(docsPart, '---ANSØGNING---');
     const cvMd = extractSection(docsPart, '---CV---');
