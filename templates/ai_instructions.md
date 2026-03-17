@@ -47,15 +47,17 @@ Generer 5 sektioner i Markdown:
 ---LAYOUT_METADATA---
 (Udfyld disse felter på det sprog, der passer til jobopslaget:
 Sign-off: [F.eks. "Med venlig hilsen" eller "Sincerely"]
-Location: [Byen hvor jobbet er, f.eks. "Lyon"]
+Location: [KUN bynavn, f.eks. "Lyon". Skriv ALDRIG ordet "Address" her!]
 Date-Prefix: [F.eks. "den" eller tomt "" for engelsk]
-Address: [Lokaliseret udgave af din adresse, f.eks. "Château de Moulinsart, 1480 Labadoux" hvis jobbet er i Frankrig/Belgien]
+Address: [Din fulde adresse, f.eks. "Château de Moulinsart, 1480 Labadoux"]
+
+VIGTIGT: Location må KUN indeholde navnet på byen. Hvis du skriver "Lyon, Address: Château...", fejler systemet.
 )
 
 ---ANSØGNING---
 (Skriv målrettet ansøgning her. Følg denne struktur nøje:
 
-1. START direkte med MODTAGERENS navn og adresse. Del det op så firma/adresse er øverst, og 'Att.: [Navn]' er på sin egen linje lige under.
+1. START direkte med MODTAGERENS navn og adresse. Skriv firma og adresse øverst. Lav derefter et tydeligt linjeskift (brug to mellemrum i slutningen af adresselinjen) og skriv den korrekte lokale betegnelse for modtager (f.eks. 'Att.:' på dansk, 'Attn:' på engelsk, 'À l'attention de :' på fransk eller 'z. Hd.' på tysk) efterfulgt af [Navn] på sin helt egen linje lige under.
 2. Skriv ALDRIG din egen adresse, dit navn eller DATOEN nogen steder i din tekst, da systemet automatisk indsætter din professionelle header og den aktuelle dato øverst til højre via metadata.
 3. Skriv en præcis emnelinje (Subject line) på opslagets sprog. Brug det relevante ord for emne på det pågældende sprog (f.eks. 'Vedrørende:', 'Subject:', 'Objet:' eller 'Betreff:') efterfulgt af: '[Stillingens fulde navn] (Ref: [Reference-nummer, hvis angivet i opslaget])'. (Skriv linjen uden brug af fed skrift).
 4. Skriv selve ansøgningen.
