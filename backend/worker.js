@@ -260,24 +260,28 @@ const worker = new Worker('job_queue', async (job) => {
         };
     }
 
-    // KOPIER TIL NEW/ MAPPE (v3.0.7 fix)
-    const newDir = path.join(rootDir, 'output', 'new');
-    if (!fs.existsSync(newDir)) {
-        fs.mkdirSync(newDir, { recursive: true });
-    } else {
-        // Tøm mappen hvis den findes
-        fs.readdirSync(newDir).forEach(f => {
-            try { fs.unlinkSync(path.join(newDir, f)); } catch (e) {}
-        });
-    }
-
-    for (const s of sections) {
-        if (!s.md) continue;
-        const fileName = `${s.title.replace(/\s+/g, '_')}_Tintin_${fileBaseId}.pdf`;
-        const srcPath = path.join(folderPath, fileName);
-        if (fs.existsSync(srcPath)) {
-            fs.copyFileSync(srcPath, path.join(newDir, fileName));
+    // KOPIER TIL NEW/ MAPPE (v3.0.8 super-robust)
+    try {
+        const newDir = path.join(rootDir, 'output', 'new');
+        if (!fs.existsSync(newDir)) {
+            fs.mkdirSync(newDir, { recursive: true });
+        } else {
+            const files = fs.readdirSync(newDir);
+            for (const f of files) {
+                try { fs.unlinkSync(path.join(newDir, f)); } catch (e) {}
+            }
         }
+
+        for (const s of sections) {
+            if (!s.md) continue;
+            const fileName = `${s.title.replace(/\s+/g, '_')}_Tintin_${fileBaseId}.pdf`;
+            const srcPath = path.join(folderPath, fileName);
+            if (fs.existsSync(srcPath)) {
+                fs.copyFileSync(srcPath, path.join(newDir, fileName));
+            }
+        }
+    } catch (e) {
+        console.error(`[Worker] Advarsel: Kunne ikke kopiere til new/ mappen: ${e.message}`);
     }
 
     updateStatus('Færdig!', { folder: folderName, lang: jobType === 'refine_with_ai' ? 'refine' : 'initial', ...results });
