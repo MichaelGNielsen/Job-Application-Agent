@@ -210,6 +210,12 @@ const worker = new Worker('job_queue', async (job) => {
         }
     }
 
+    const ansMd = extractSection(docsPart, '---ANSØGNING---');
+    const cvMd = extractSection(docsPart, '---CV---');
+    const icanMd = extractSection(docsPart, '---ICAN---');
+    const matchMd = extractSection(docsPart, '---MATCH---');
+
+    const results = { markdown: {}, html: {}, links: {} };
     // Altid baser filnavne på det endelige mappenavn
     const fileBaseId = folderName.includes('_') && folderName.split('_')[0].length === 10 
         ? folderName.split('_').slice(2).join('_') 
