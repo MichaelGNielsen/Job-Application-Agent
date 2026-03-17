@@ -182,10 +182,10 @@ const worker = new Worker('job_queue', async (job) => {
     const metadataRaw = extractSection(docsPart, 'LAYOUT_METADATA');
     
     const layoutMeta = {
-        signOff: metadataRaw.match(/Sign-off:\s*(.*)/i)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
-        location: metadataRaw.match(/Location:\s*(.*)/i)?.[1]?.trim() || "",
-        datePrefix: metadataRaw.match(/Date-Prefix:\s*(.*)/i)?.[1]?.trim() || (lang === 'da' ? "den" : ""),
-        address: metadataRaw.match(/Address:\s*(.*)/i)?.[1]?.trim() || ""
+        signOff: metadataRaw.match(/^Sign-off:\s*(.*?)(?=\s*(?:Location:|Date-Prefix:|Address:)|$)/im)?.[1]?.trim() || (lang === 'en' ? "Sincerely," : "Med venlig hilsen,"),
+        location: metadataRaw.match(/^Location:\s*(.*?)(?=\s*(?:Sign-off:|Date-Prefix:|Address:)|$)/im)?.[1]?.trim() || "",
+        datePrefix: metadataRaw.match(/^Date-Prefix:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Address:)|$)/im)?.[1]?.trim() || (lang === 'da' ? "den" : ""),
+        address: metadataRaw.match(/^Address:\s*(.*?)(?=\s*(?:Sign-off:|Location:|Date-Prefix:)|$)/im)?.[1]?.trim() || ""
     };
 
     const ansMd = extractSection(docsPart, '---ANSØGNING---');
