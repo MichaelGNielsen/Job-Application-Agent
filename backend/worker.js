@@ -27,21 +27,19 @@ const redisConnection = new IORedis({
 const socket = io('http://localhost:3002');
 
 function parseCandidateInfo(bruttoCv) {
-    const info = {
-        name: "",
-        address: "",
-        email: "",
-        phone: ""
-    };
+    const info = { name: "", address: "", email: "", phone: "" };
+    if (!bruttoCv) return info;
 
-    const lines = bruttoCv.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (line.includes('**Navn:**')) info.name = line.split('**Navn:**')[1].trim();
-        if (line.includes('**Adresse:**')) info.address = line.split('**Adresse:**')[1].trim();
-        if (line.includes('**Email:**')) info.email = line.split('**Email:**')[1].trim();
-        if (line.includes('**Telefon:**')) info.phone = line.split('**Telefon:**')[1].trim();
-    }
+    const getName = bruttoCv.match(/(?:\*\*|\*|#)?\s*Navn[:\s]+(.*?)(?:\n|$)/i);
+    const getAddr = bruttoCv.match(/(?:\*\*|\*|#)?\s*Adresse[:\s]+(.*?)(?:\n|$)/i);
+    const getEmail = bruttoCv.match(/(?:\*\*|\*|#)?\s*Email[:\s]+(.*?)(?:\n|$)/i);
+    const getPhone = bruttoCv.match(/(?:\*\*|\*|#)?\s*Telefon[:\s]+(.*?)(?:\n|$)/i);
+
+    if (getName) info.name = getName[1].trim();
+    if (getAddr) info.address = getAddr[1].trim();
+    if (getEmail) info.email = getEmail[1].trim();
+    if (getPhone) info.phone = getPhone[1].trim();
+    
     return info;
 }
 
@@ -257,6 +255,22 @@ const worker = new Worker('job_queue', async (job) => {
             html: `/api/applications/${folderName}/${fileName}.html`,
             pdf: `/api/applications/${folderName}/${fileName}.pdf`
         };
+    }
+
+    // KOPIER TIL NEW/ MAPPE (v3.0.2 fix)
+    const newDir = path.join(rootDir, 'output', 'new');
+    if (!fs.existsSync(newDir)) fs.mkdirSync(newDir, { recursive: true });
+    
+    // Tøm mappen først
+    fs.readdirSync(newDir).forEach(f => fs.unlinkSync(path.join(newDir, f)));
+
+    for (const s of sections) {
+        if (!s.md) continue;
+        const fileName = `${s.title.replace(/\s+/g, '_')}_Tintin_${fileBaseId}.pdf`;
+        const srcPath = path.join(folderPath, fileName);
+        if (fs.existsSync(srcPath)) {
+            fs.copyFileSync(srcPath, path.join(newDir, fileName));
+        }
     }
 
     updateStatus('Færdig!', { folder: folderName, lang: jobType === 'refine_with_ai' ? 'refine' : 'initial', ...results });
