@@ -5,12 +5,19 @@ const socket = io();
 const THEME_COLOR = "cyan";
 
 const App: React.FC = () => {
-  const [version, setVersion] = useState('v2.6.x-dev');
+  const [version, setVersion] = useState('v2.8.x');
   const [jobText, setJobText] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [hint, setHint] = useState('');
+  
+  // Kartotek States
+  const [activeTab, setActiveTab] = useState<'brutto' | 'ai' | 'layout' | 'names'>('brutto');
   const [bruttoCv, setBruttoCv] = useState('');
-  const [showBrutto, setShowBrutto] = useState(false);
+  const [aiInstructions, setAiInstructions] = useState('');
+  const [masterLayout, setMasterLayout] = useState('');
+  const [namesResource, setNamesResource] = useState('');
+  const [showConfig, setShowConfig] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [viewModes, setViewModes] = useState<{ [key: string]: 'markdown' | 'html' }>({
@@ -26,62 +33,64 @@ const App: React.FC = () => {
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const toggleViewMode = (id: string) => {
-    setViewModes(prev => ({ ...prev, [id]: prev[id] === 'html' ? 'markdown' : 'html' }));
+  const fetchData = async () => {
+    try {
+      const [brutto, ai, layout, names] = await Promise.all([
+        fetch('/api/brutto').then(r => r.json()),
+        fetch('/api/config/instructions').then(r => r.json()),
+        fetch('/api/config/layout').then(r => r.json()),
+        fetch('/api/config/names').then(r => r.json())
+      ]);
+      setBruttoCv(brutto.content);
+      setAiInstructions(ai.content);
+      setMasterLayout(layout.content);
+      setNamesResource(names.content);
+    } catch (e) { console.error("Fejl ved hentning af konfig:", e); }
   };
 
-  const handleSaveBrutto = async () => {
-    setIsLoading(true); setStatusMessage('Gemmer Master CV...');
+  const handleSaveConfig = async (type: typeof activeTab) => {
+    setIsLoading(true); setStatusMessage(`Gemmer ${type}...`);
+    let url = '/api/brutto';
+    let body = { content: bruttoCv };
+
+    if (type === 'ai') { url = '/api/config/instructions'; body = { content: aiInstructions }; }
+    else if (type === 'layout') { url = '/api/config/layout'; body = { content: masterLayout }; }
+    else if (type === 'names') { url = '/api/config/names'; body = { content: namesResource }; }
+
     try {
-      await fetch('/api/brutto', {
+      await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: bruttoCv }),
+        body: JSON.stringify(body),
       });
       setIsLoading(false); setStatusMessage('Gemt!');
       setTimeout(() => setStatusMessage(''), 2000);
-    } catch (err: any) { setError(err.message); setIsLoading(false); }
-  };
-
-  const handleTranslateBrutto = async () => {
-    setIsLoading(true); setStatusMessage('Oversætter til Engelsk...');
-    try {
-      const res = await fetch('/api/brutto/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: bruttoCv }),
-      });
-      const data = await res.json();
-      setBruttoCv(data.translated);
-      setIsLoading(false); setStatusMessage('Oversat!');
-    } catch (err: any) { setError(err.message); setIsLoading(false); }
-  };
-
-  const handleRefine = async (type: string, useAi: boolean = false) => {
-    if (!results) return;
-    setIsLoading(true); setStatusMessage(useAi ? 'AI forfiner dokumenterne...' : `Opdaterer ${type}...`);
-    try {
-      const response = await fetch('/api/refine', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          folder: results.folder, 
-          type, 
-          markdown: results.markdown[type],
-          useAi,
-          hint // Brug det globale hint-felt til AI refinement
-        }),
-      });
       
-      if (useAi) {
-        const { jobId } = await response.json();
-        socket.emit('join_job', jobId);
-        // Worker vil sende statusopdateringer via socket
-      } else {
-        const data = await response.json();
-        setResults({ ...results, html: { ...results.html, [type]: data.html } });
-        setIsLoading(false); setStatusMessage('Opdateret!');
-        setTimeout(() => setStatusMessage(''), 2000);
+      // LIVE DESIGN SLØJFE: Hvis vi gemmer layout og har resultater, så opdater alle previews øjeblikkeligt!
+      if (type === 'layout' && results) {
+          setStatusMessage('Opdaterer layout live...');
+          const types = ['ansøgning', 'cv', 'match', 'ican'];
+          const updatedHtml: { [key: string]: string } = {};
+          
+          for (const t of types) {
+              if (results.markdown[t]) {
+                  const res = await fetch('/api/preview', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ 
+                          markdown: results.markdown[t],
+                          type: t === 'ansøgning' ? 'Ansøgning' : t === 'cv' ? 'CV' : t === 'match' ? 'Match Analyse' : 'ICAN+ Pitch',
+                          lang: results.lang || 'dk',
+                          candidate: { name: bruttoCv.match(/\*\*Navn:\*\*\s*(.*)/)?.[1]?.trim() || "Tintin" } // Simpel parser til live preview
+                      }),
+                  });
+                  const data = await res.json();
+                  updatedHtml[t] = data.html;
+              }
+          }
+          setResults({ ...results, html: { ...results.html, ...updatedHtml } });
+          setStatusMessage('Layout opdateret!');
+          setTimeout(() => setStatusMessage(''), 2000);
       }
     } catch (err: any) { setError(err.message); setIsLoading(false); }
   };
@@ -92,7 +101,7 @@ const App: React.FC = () => {
       .then(data => setVersion(`v${data.version}`))
       .catch(e => console.error("Kunne ikke hente version fra API"));
 
-    fetch('/api/brutto').then(res => res.json()).then(data => setBruttoCv(data.content));
+    fetchData();
 
     socket.on('job_status_update', (data) => {
       setStatusMessage(data.status);
@@ -116,11 +125,6 @@ const App: React.FC = () => {
     } catch (err: any) { setError(err.message); setIsLoading(false); }
   };
 
-  const getDocUrl = (path: string) => {
-    if (!path) return '#';
-    return path;
-  };
-
   return (
     <div className="min-h-screen w-full bg-[#0a192f] text-gray-100 p-8 font-sans scroll-smooth">
       <div className="max-w-6xl mx-auto">
@@ -129,29 +133,58 @@ const App: React.FC = () => {
         </header>
 
         <main className="space-y-8">
-          {/* Master CV Sektion */}
+          {/* KARTOTEK SEKTION */}
           <section className="bg-[#112240] p-6 rounded-xl border border-white/5 shadow-xl">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-300 uppercase tracking-wider">Master CV (Kilde)</h2>
-              <button onClick={() => setShowBrutto(!showBrutto)} className="text-cyan-400 text-xs font-bold hover:underline">
-                {showBrutto ? 'SKJUL REDIGERING' : 'REDIGER MASTER CV'}
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex gap-4">
+                {[
+                  { id: 'brutto', label: '📇 Master CV' },
+                  { id: 'ai', label: '🤖 AI Regler' },
+                  { id: 'layout', label: '🎨 Design' },
+                  { id: 'names', label: '🌍 Navne' }
+                ].map(tab => (
+                  <button 
+                    key={tab.id}
+                    onClick={() => { setActiveTab(tab.id as any); setShowConfig(true); }}
+                    className={`px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-t-lg border-b-2 transition-all ${activeTab === tab.id && showConfig ? 'border-cyan-400 text-cyan-400 bg-white/5' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => setShowConfig(!showConfig)} className="text-gray-500 text-[10px] hover:text-white uppercase tracking-widest">
+                {showConfig ? 'Skjul Editor' : 'Vis Editor'}
               </button>
             </div>
             
-            {showBrutto && (
-              <div className="space-y-4">
+            {showConfig && (
+              <div className="space-y-4 animate-in slide-in-from-top duration-300">
                 <textarea 
-                  className="w-full h-64 bg-[#0a192f] border border-white/10 rounded p-4 font-mono text-sm text-gray-300"
-                  value={bruttoCv}
-                  onChange={(e) => setBruttoCv(e.target.value)}
+                  className="w-full h-80 bg-[#0a192f] border border-white/10 rounded p-4 font-mono text-sm text-gray-300 focus:border-cyan-500/50 outline-none transition-colors"
+                  value={activeTab === 'brutto' ? bruttoCv : activeTab === 'ai' ? aiInstructions : activeTab === 'layout' ? masterLayout : namesResource}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (activeTab === 'brutto') setBruttoCv(val);
+                    else if (activeTab === 'ai') setAiInstructions(val);
+                    else if (activeTab === 'layout') setMasterLayout(val);
+                    else if (activeTab === 'names') setNamesResource(val);
+                  }}
                 />
                 <div className="flex gap-4">
-                  <button onClick={handleSaveBrutto} className="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded text-xs font-bold uppercase tracking-widest">💾 Gem Ændringer</button>
-                  <button onClick={handleTranslateBrutto} className="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded text-xs font-bold uppercase tracking-widest">🌐 Oversæt til Engelsk</button>
+                  <button onClick={() => handleSaveConfig(activeTab)} className="flex-1 bg-green-600 hover:bg-green-500 text-white py-3 rounded text-xs font-bold uppercase tracking-widest transition-colors shadow-lg shadow-green-900/20">💾 Gem {activeTab.toUpperCase()}</button>
+                  {activeTab === 'brutto' && (
+                    <button onClick={async () => {
+                        setIsLoading(true); setStatusMessage('Oversætter...');
+                        const res = await fetch('/api/brutto/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: bruttoCv }) });
+                        const data = await res.json();
+                        setBruttoCv(data.translated);
+                        setIsLoading(false); setStatusMessage('Oversat!');
+                    }} className="bg-cyan-600 hover:bg-cyan-500 text-white px-8 rounded text-xs font-bold uppercase tracking-widest">🌐 Oversæt</button>
+                  )}
                 </div>
               </div>
             )}
-            {!showBrutto && <p className="text-gray-500 text-sm italic">Dette er fundamentet AI'en bruger til at skræddersy dine ansøgninger.</p>}
+            {!showConfig && <p className="text-gray-500 text-sm italic text-center py-4">Vælg en fane herover for at tilpasse systemets fundament.</p>}
           </section>
 
           <section className="bg-[#112240] p-6 rounded-xl shadow-xl border border-white/5">

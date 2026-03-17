@@ -119,6 +119,74 @@ app.post('/api/brutto', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// NYE ENDPOINTS TIL KARTOTEK-SYSTEMET (v3.0)
+
+// AI Instruktioner
+app.get('/api/config/instructions', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'templates', 'ai_instructions.md');
+        res.json({ content: fs.readFileSync(p, 'utf8') });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/config/instructions', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'templates', 'ai_instructions.md');
+        fs.writeFileSync(p, req.body.content);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Master Layout (HTML/CSS)
+app.get('/api/config/layout', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'templates', 'master_layout.html');
+        res.json({ content: fs.readFileSync(p, 'utf8') });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/config/layout', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'templates', 'master_layout.html');
+        fs.writeFileSync(p, req.body.content);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Navne-oversigt (Resources)
+app.get('/api/config/names', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'resources', 'tintin_names.md');
+        res.json({ content: fs.readFileSync(p, 'utf8') });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/api/config/names', (req, res) => {
+    try {
+        const p = path.join(rootDir, 'resources', 'tintin_names.md');
+        fs.writeFileSync(p, req.body.content);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// LIVE PREVIEW LOOPBACK (v3.0)
+app.post('/api/preview', async (req, res) => {
+    try {
+        const { markdown, type, lang, candidate, meta } = req.body;
+        
+        // Lav en midlertidig fil til pandoc
+        const tempMdPath = path.join('/tmp', `preview_${Date.now()}.md`);
+        const htmlBody = await mdToHtml(markdown, tempMdPath, `preview_${Date.now()}.html`);
+        if (fs.existsSync(tempMdPath)) fs.unlinkSync(tempMdPath);
+
+        // Hent de nyeste metadata hvis de findes i requesten
+        const layoutMeta = req.body.layoutMeta || {};
+
+        const fullHtml = wrap(type, htmlBody, type.toLowerCase(), meta, candidate, lang || 'dk', layoutMeta);
+        res.json({ html: fullHtml });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.post('/api/brutto/translate', async (req, res) => {
   try {
     const { content } = req.body;
