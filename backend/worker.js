@@ -260,16 +260,11 @@ const worker = new Worker('job_queue', async (job) => {
         };
     }
 
-    // KOPIER TIL NEW/ MAPPE (v3.0.8 super-robust)
+    // KOPIER TIL NEW/ MAPPE (v3.0.9 ultra-safe)
     try {
         const newDir = path.join(rootDir, 'output', 'new');
         if (!fs.existsSync(newDir)) {
             fs.mkdirSync(newDir, { recursive: true });
-        } else {
-            const files = fs.readdirSync(newDir);
-            for (const f of files) {
-                try { fs.unlinkSync(path.join(newDir, f)); } catch (e) {}
-            }
         }
 
         for (const s of sections) {
