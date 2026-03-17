@@ -73,6 +73,16 @@ const App: React.FC = () => {
       // LIVE DESIGN SLØJFE: Hvis vi gemmer layout og har resultater, så opdater alle previews øjeblikkeligt!
       if (type === 'layout' && results) {
           setStatusMessage('Opdaterer layout live...');
+          
+          // Robust parsing af kandidat-info direkte fra editoren
+          const clean = (val: string | undefined) => val ? val.replace(/^[\s\*\-#]+|[\s\*\-#]+$/g, '').trim() : "";
+          const candidate = {
+              name: clean(bruttoCv.match(/(?:\*\*|\*|#)?\s*Navn[:\s]+(.*?)(?:\n|$)/i)?.[1]) || "Tintin",
+              address: clean(bruttoCv.match(/(?:\*\*|\*|#)?\s*Adresse[:\s]+(.*?)(?:\n|$)/i)?.[1]),
+              email: clean(bruttoCv.match(/(?:\*\*|\*|#)?\s*Email[:\s]+(.*?)(?:\n|$)/i)?.[1]),
+              phone: clean(bruttoCv.match(/(?:\*\*|\*|#)?\s*Telefon[:\s]+(.*?)(?:\n|$)/i)?.[1])
+          };
+
           const types = ['ansøgning', 'cv', 'match', 'ican'];
           const updatedHtml: { [key: string]: string } = {};
           
@@ -85,7 +95,7 @@ const App: React.FC = () => {
                           markdown: results.markdown[t],
                           type: t === 'ansøgning' ? 'Ansøgning' : t === 'cv' ? 'CV' : t === 'match' ? 'Match Analyse' : 'ICAN+ Pitch',
                           lang: results.lang || 'dk',
-                          candidate: { name: bruttoCv.match(/\*\*Navn:\*\*\s*(.*)/)?.[1]?.trim() || "Tintin" } // Simpel parser til live preview
+                          candidate: candidate
                       }),
                   });
                   const data = await res.json();
