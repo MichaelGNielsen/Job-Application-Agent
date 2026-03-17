@@ -260,12 +260,16 @@ const worker = new Worker('job_queue', async (job) => {
         };
     }
 
-    // KOPIER TIL NEW/ MAPPE (v3.0.2 fix)
+    // KOPIER TIL NEW/ MAPPE (v3.0.7 fix)
     const newDir = path.join(rootDir, 'output', 'new');
-    if (!fs.existsSync(newDir)) fs.mkdirSync(newDir, { recursive: true });
-    
-    // Tøm mappen først
-    fs.readdirSync(newDir).forEach(f => fs.unlinkSync(path.join(newDir, f)));
+    if (!fs.existsSync(newDir)) {
+        fs.mkdirSync(newDir, { recursive: true });
+    } else {
+        // Tøm mappen hvis den findes
+        fs.readdirSync(newDir).forEach(f => {
+            try { fs.unlinkSync(path.join(newDir, f)); } catch (e) {}
+        });
+    }
 
     for (const s of sections) {
         if (!s.md) continue;
