@@ -1,0 +1,18 @@
+INTERPOL Headquarters
+200 quai Charles de Gaulle
+69006 Lyon  
+France
+
+Attn: Head of Campaigns and Advocacy
+
+Subject: SECONDMENT - Communications Officer (Ref: 1668)
+
+Having dedicated my career to investigating international crime and narrating complex global events, I am highly motivated to apply for the position of Communications Officer at INTERPOL through a secondment from my home organization, *Le Petit Vingtième*. My background as an investigative reporter has uniquely prepared me to translate intricate operational realities into compelling, strategic narratives that engage diverse stakeholders and uphold organizational values.
+
+Throughout my tenure at *Le Petit Vingtième*, I have operated in over 50 countries, often collaborating with local law enforcement and National Central Bureaus to expose trans-border criminal networks. My experience in *The Secret of the Unicorn* (Enhjørningens hemmelighed) showcases my ability to perform deep analytical work and cryptography, skills I have consistently used to draft impactful content and topline messaging for international audiences.
+
+A cornerstone of my professional journey was my role as a special consultant and security liaison during the Syldavian Space Program, as documented in *Destination Moon* (Månen tur-retur I) and *Explorers on the Moon* (Månen tur-retur II). In this high-stakes environment, I managed strategic communications under extreme pressure, handled sabotage-related crisis communications, and ensured that the mission’s mission and values were effectively communicated to a global public. This experience directly aligns with INTERPOL’s requirement for strategic advice and content production in a fast-paced, international setting.
+
+I am particularly adept at building strategic partnerships. My extensive network includes high-level scientific advisors like Professeur Tournesol (Professor Calculus) and logistics experts such as Capitaine Haddock (Captain Haddock). Living at the Château de Moulinsart (Marlinspike Hall) in Belgium, and being fluent in French and English, I am culturally and linguistically prepared to integrate seamlessly into the Lyon headquarters. 
+
+I am eager to bring my unique blend of investigative insight and storytelling expertise to the Campaigns and Advocacy team to maximize the impact of INTERPOL’s vital mission.

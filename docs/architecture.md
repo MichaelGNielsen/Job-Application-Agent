@@ -23,6 +23,8 @@ graph TD
 
 ## 🔍 Architecture Overview
 
+For en detaljeret beskrivelse af hvordan data og filer flyder gennem systemet (inkl. mappenavngivning og PDF-generering), se [Data & Fil-workflow](data_flow.md).
+
 1. **Frontend (React/Vite)**
   * En moderne, mørk-tema brugerflade, der styrer Master CV, job-input og viser resultater i realtid.
 2. **Backend (Express)**

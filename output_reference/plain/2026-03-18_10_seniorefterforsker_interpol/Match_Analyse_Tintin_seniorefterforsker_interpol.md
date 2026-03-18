@@ -1,0 +1,12 @@
+[SCORE] 96% [/SCORE]
+
+### Match Analyse: Tintin vs. INTERPOL Senior Efterforsker
+
+*   **International Erfaring (100%):** Tintin overgår kravet om 10 års erfaring. Hans globale netværk og erfaring fra over 50 lande matcher perfekt INTERPOLs behov for en profil, der kan rejse med kort varsel.
+*   **Specifik Sagshåndtering (100%):** Opslaget nævner smugling af kulturarv. Tintins historik med 'Enhjørningens hemmelighed' og 'Rackham den Rødes skat' gør ham til en absolut ekspert på dette område.
+*   **Teamledelse & Koordinering (95%):** Jobbet efterspørger en "analytisk overbygning" til at styre Dupond et Dupont (Dupont og Dupond). Tintin har livslang erfaring med netop disse to herrer og ved præcis, hvordan man håndterer deres kluntede, men velmenende metoder for at undgå diplomatiske kriser.
+*   **Sproglige Kvalifikationer (100%):** Han mestrer engelsk og fransk, og hans kendskab til syldavisk og bordurisk bliver i opslaget beskrevet som en "unik styrke", hvilket placerer ham foran de fleste andre ansøgere.
+*   **Teknisk Snilde (90%):** Hans erfaring med kryptografi, radioudstyr og endda rumteknologi matcher INTERPOLs adgang til de nyeste teknologier.
+*   **Personlighedsmatch (100%):** Hans "ungdommelige energi", "urokkelige retfærdighedssans" og hans "trofaste følgesvend" (Milou/Terry) er direkte nævnt som ønskede kvaliteter i opslaget.
+
+**Konklusion:** Tintin er ikke blot en kvalificeret kandidat; han fremstår som den person, stillingsopslaget er skrevet til. Hans evne til at navigere i grænselandet mellem journalistik, efterretning og politiarbejde er præcis det, INTERPOL søger.

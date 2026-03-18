@@ -1,0 +1,1 @@
+Erfaring med AI, TOR og Robin til darkweb-efterforskning (bruger altid VPN), og mine private AI projekter

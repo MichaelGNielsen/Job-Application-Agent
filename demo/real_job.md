@@ -2,17 +2,17 @@
 INTERPOL
 Home page
 Join us
-Before you apply 
-Contract types 
-Posts by region 
+Before you apply
+Contract types
+Posts by region
 Employee Login
-Search by Keyword 
+Search by Keyword
 Show More Options
- 
+
 Clear
-Select how often (in days) to receive an alert: 
+Select how often (in days) to receive an alert:
 7
- 
+
 SECONDMENT - Communications Officer
 Publication Starting Date: Mar 5, 2026
 
@@ -20,55 +20,55 @@ Location: Lyon, France
 
 Company: Interpol
 
-VACANCY NOTICE 1668 
+VACANCY NOTICE 1668
 
 
- 
+
 
 This vacancy announcement pertains to law enforcement and/or governmental officials within INTERPOL's member countries only.
 
- 
+
 
 Please read the Conditions of Secondment in force at INTERPOL (shared via the NCB) including the maximum duration of secondment.
 
- 
+
 
 Please be aware that your home Administration/Agency/Service/Government will be responsible for all of your salary/remuneration, social insurance, pension contributions, welfare benefits, family allowances, benefits during your assignment at INTERPOL as well as travel, removal expenses related to your arrival at and departure from INTERPOL, and any other related costs depending on your circumstances. It is requested that you obtain in writing, confirmation from your home Administration/Agency/Service/Government that it agrees with these CONDITIONS OF SECONDMENT. This confirmation letter should be forwarded to us THROUGH THE NCB.
 
- 
+
 
 INTERPOL is the world’s largest international police organization, with 196 member states. Created in 1923, it facilitates cross-border police co-operation, and supports and assists all organizations, authorities, and services whose mission is to prevent or combat international crime. INTERPOL is now looking for a qualified candidate as a SECONDMENT - Communications Officer within the Communications Office which is part of the​​​​​​ Exec. Dir. Partnerships & Planning.
 
- 
+
 
 Job title: SECONDMENT - Communications Officer
 Reporting To: Head of Campaigns and Advocacy
-Location: Lyon 
-Duration (in months): 36.00 
-Grade: 5 
+Location: Lyon
+Duration (in months): 36.00
+Grade: 5
 Number of posts: 1
 Security Clearance Level: Basic
 Deadline for applications: 6 July 2026
 
- 
 
-INTERPOL actively encourages applications from women and nationals of member countries that are currently unrepresented among our staff (please click on this link to access the list of countries). Candidates from these countries are particularly encouraged to apply. 
 
- 
+INTERPOL actively encourages applications from women and nationals of member countries that are currently unrepresented among our staff (please click on this link to access the list of countries). Candidates from these countries are particularly encouraged to apply.
+
+
 
 INTERPOL’s recruitment process is merit-based hence all hiring decisions are made considering the applicant’s qualifications and the needs of the Organization.
 
- 
+
 
 INTRODUCTION OF THE POST
 As part of the activities of the Communications Directorate, the post holder will be responsible for providing strategic communications support to the organization and/or specific projects or departments.
 The post-holder will report directly to the Campaigns & Advocacy team in the Communications Directorate to ensure alignment with organizational messaging and strategy, and may have day-to-day oversight from staff within other Directorates.
 
- 
+
 
 PRIMARY DUTIES
 
-DUTY 1 - PROVIDE STATEGIC COMMUNICATIONS ADVICE AND SUPPORT
+DUTY 1 - PROVIDE STRATEGIC COMMUNICATIONS ADVICE AND SUPPORT
 • Maximize the impact of communications, to raise awareness, build engagement with target audiences and support organizational or departmental priorities.
 • Develop and implement strategic communications by creating, shaping, and delivering targeted messaging and campaigns.
 • Provide expert advice and support to staff – both senior and operational – on strategic communications-related topics, such as stakeholder engagement, message development and channel selection, to ensure effective communications.
@@ -105,12 +105,12 @@ DUTY 5 - ADDITIONAL RESPONSIBILITIES
 • Undertake any communications or engagement activities as requested by the hierarchy.
 • Perform any other duty as required by the hierarchy.
 
- 
+
 
 REQUIREMENTS
 All candidates will be assessed on the under mentioned requirements. Please only include professional experience for which you can provide official proof of employment (i.e. pay-slip indicating your functional title, work certificates, etc.). You could be asked to provide copies of such documents prior to interviews/tests. Any discrepancies found between the information stated in any of your application documents and the evidence of employment provided, will be considered misrepresentation and may lead to your disqualification from this selection procedure. This is especially important for your current and previous functional titles (they need to be exactly the same as the one in your contractual agreement), exact dates of employment, description of responsibilities and achievements, reason(s) for leaving and part-time work.
 
- 
+
 
 Training/Education required
 • Three to four completed years’ University degree in a relevant field is required.
